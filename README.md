@@ -99,9 +99,9 @@ For example, if you want to create custom deployment with values for production 
 
 ## Prepare necessary files
 
-Server will be in air-gapped environment so we'll need to download and transfer all the necessary files to the server first.
+Server will be in air-gapped environment so we'll need to download all the necessary files to the server first.
 
-To preparing necessary files run `prepare.sh` script in `deployment` directory
+To do it run the `prepare.sh` script in `deployment` directory
 ```sh
 cd deployment
 sh prepare.sh
