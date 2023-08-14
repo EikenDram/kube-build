@@ -79,6 +79,7 @@ if matches "$OBJECT" "<init>"; then
     # binaries
     {{- range .Version.bin}}
     {{- if index . "usr-local-bin"}}
+    # {{index . "usr-local-bin"}}
     echo "Installing {{index . "usr-local-bin"}} binary into /usr/local/bin/"
     mv bin/{{$.Version.dir}}/{{index . "usr-local-bin"}} /usr/local/bin/
     chown {{$.Values.server.user}}:{{$.Values.server.user}} /usr/local/bin/{{index . "usr-local-bin"}}
@@ -105,12 +106,14 @@ if matches "$OBJECT" "<package>"; then
     kubectl wait --for=condition=ready pod -l run=loader
 
     {{- range .Images }}
+    # {{.path}}/{{.name}}:{{.version}}
     echo "Loading image {{.path}}/{{.name}}:{{.version}} into private registry."
     kubectl cp packages/{{$.Version.dir}}/{{.name}}-{{.version}}.tar loader:/tmp
     kubectl exec -i loader -- skopeo copy {{if .sha}}--preserve-digest{{end}} --dest-creds {{$.Values.registry.user}}:{{$.Values.registry.password}} --dest-tls-verify=false --insecure-policy docker-archive:/tmp/{{.name}}-{{.version}}.tar docker://{{$.Values.server.hostname}}:5000/{{.path}}/{{.name}}:{{.version}}{{if .sha}}@sha256:{{.sha}}{{end}}
 
     {{- end }}
     {{- range .Version.dockerfile}}
+    # custom {{.name}}:{{.version}}
     echo "Loading image {{.name}}:{{.version}} into private registry"
     kubectl cp packages/{{$.Version.dir}}/{{.name}}-{{.version}}.tar loader:/tmp
     kubectl exec -i loader -- skopeo copy --dest-creds {{$.Values.registry.user}}:{{$.Values.registry.password}} --dest-tls-verify=false --insecure-policy docker-archive:/tmp/{{.name}}-{{.version}}.tar docker://{{$.Values.server.hostname}}:5000/library/{{.name}}:{{.version}}

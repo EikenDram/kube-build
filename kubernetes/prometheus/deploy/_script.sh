@@ -18,13 +18,10 @@
 
     {{ template "wait" dict "Name" "prometheus" "Namespace" .Values.prometheus.helm.namespace}}
     {{ template "wait" dict "Name" "grafana" "Namespace" .Values.prometheus.helm.namespace}}
-{{- end}}
 
-{{- define "install-echo"}}
-    echo "Prometheus is deployed to http://{{.Values.prometheus.ingress}}.{{.Values.server.hostname | lower}}/"
-    echo "Grafana is deployed to http://{{.Values.grafana.ingress}}.{{.Values.server.hostname | lower}}/"
+    echo "Grafana deployed to http://{{.Values.grafana.ingress}}.{{.Values.server.hostname | lower}}/"
     echo "Grafana user is 'admin' with same password as cluster admin"
-    #{{- end}}
+{{- end}}
 
 {{- define "uninstall-post"}}
     # delete namespace

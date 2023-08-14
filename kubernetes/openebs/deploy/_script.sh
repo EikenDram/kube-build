@@ -31,8 +31,6 @@
     # manifest
     kubectl apply -f manifest/{{.Version.dir}}/openebs-operator-lite.yaml 
     kubectl apply -f manifest/{{.Version.dir}}/openebs-lite-sc.yaml
-    
-    echo "{{.Version.title}} upgraded"
 {{- end}}
 
 {{- define "uninstall"}}
@@ -43,6 +41,5 @@
     # namespace
     kubectl delete ns openebs
     
-    echo "{{.Version.title}} uninstalled"
     echo "Probably shouldn't have uninstalled default storage provider"
 {{- end}}
