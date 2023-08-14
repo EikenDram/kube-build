@@ -85,7 +85,10 @@ Download [release](https://github.com/EikenDram/kube-build/releases/) `build.tar
 
 Build tool uses deployment configuration from `config/values.yaml`. Change necessary parameters for building the deployment for your server: ssh keys, hostname, ip, admin credentials, ntp server inside local network, dummy route configuration, cluster admin credentials, registry credentials and certificate, storage and helm charts configuration
 
-Run `build` tool in project root directory to build deployment in `deployment` directory
+Run tool in project root directory to build deployment in `deployment` directory
+```sh
+./build
+```
 
 Build tool supports optional parameters to change default configuration files and directory names, check the available options by running tool with `--help` flag
 
@@ -98,7 +101,13 @@ For example, if you want to create custom deployment with values for production 
 
 Server will be in air-gapped environment so we'll need to download and transfer all the necessary files to the server first.
 
-To preparing necessary files run `prepare.sh` script in `deployment` directory. You'll need to run it on an internet-facing machine in linux shell (for example, [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/install-manual)) while having necessary tools:
+To preparing necessary files run `prepare.sh` script in `deployment` directory
+```sh
+cd deployment
+sh prepare.sh
+```
+
+We'll need to run it on an internet-facing machine in linux shell (for example, [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/install-manual)) while having necessary tools:
 
 - [helm](https://helm.sh/docs/intro/install/) for pull helm charts
 ```sh
@@ -128,7 +137,10 @@ sudo apt install podman
 sudo apt install git
 ```
 
-`prepare.sh` script supports optional parameters to prepare only specific parts of the deployment, check the available options by running `sh prepare.sh -h`
+`prepare.sh` script supports optional parameters to prepare only specific parts of the deployment, check the available options by running 
+```sh
+sh prepare.sh -h
+```
 
 ## Install the deployment on the new server
 
@@ -147,11 +159,18 @@ Reboot server with `sudo reboot` and it's ready
 
 Next step is to install kubernetes cluster and deploy all applications on the server
 
-Transfer all the necessary files to the server with `sh transfer.sh` script in `deployment` directory
+Transfer all the necessary files to the server with `transfer.sh` script in `deployment` directory
+```sh
+cd deployment
+sh transfer.sh
+```
 
-`transfer.sh` script supports optional parameters to transfer only specified parts of the deployment, you can check the available parameters by running `sh transfer.sh -h`
+`transfer.sh` script supports optional parameters to transfer only specified parts of the deployment, you can check the available parameters by running 
+```sh
+sh transfer.sh -h
+```
 
-After transferring files connect to server with ssh (for example, `ssh user@HOSTMANE` where `user` is server user defined in `values.yaml` and `HOSTNAME` is server's hostname), go to `deployment` directory and start running scripts following instructions in `README.md`
+After transferring files connect to server with ssh (for example, `ssh user@HOSTMANE` where `user` is server user defined in `values.yaml` and `HOSTNAME` is server's hostname), go to `deployment` directory on a server and start running scripts following instructions in `README.md`
 
 ## Developing applications
 
