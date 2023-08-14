@@ -81,7 +81,7 @@ KubeR, KubeUtils, KubeAppTemplate, Keycloak authorization, application developme
 
 ## Create new deployment
 
-Download [release](https://github.com/EikenDram/kube-build/releases/) `build.tar` and `build-tool.tar` for your platform and unpack them
+Download from [release](https://github.com/EikenDram/kube-build/releases/) `build.tar` and `build-tool.tar` for your platform and unpack them
 
 Build tool uses deployment configuration from `config/values.yaml`. Change necessary parameters for building the deployment for your server: ssh keys, hostname, ip, admin credentials, ntp server inside local network, dummy route configuration, cluster admin credentials, registry credentials and certificate, storage and helm charts configuration
 
@@ -91,6 +91,9 @@ Run tool in project root directory to build deployment in `deployment` directory
 ```
 
 Build tool supports optional parameters to change default configuration files and directory names, check the available options by running tool with `--help` flag
+```sh
+./build --help
+```
 
 For example, if you want to create custom deployment with values for production server from `config/values.prod.yaml` and want to build it to directory `deployment-prod` then the command to run will be: 
 ```sh
@@ -99,9 +102,9 @@ For example, if you want to create custom deployment with values for production 
 
 ## Prepare necessary files
 
-Server will be in air-gapped environment so we'll need to download and transfer all the necessary files to the server first.
+Server will be in air-gapped environment so we'll need to download all the necessary files to the server first.
 
-To preparing necessary files run `prepare.sh` script in `deployment` directory
+To do it run the `prepare.sh` script in `deployment` directory
 ```sh
 cd deployment
 sh prepare.sh
