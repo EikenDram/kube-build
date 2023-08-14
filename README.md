@@ -81,7 +81,7 @@ KubeR, KubeUtils, KubeAppTemplate, Keycloak authorization, application developme
 
 ## Create new deployment
 
-Download [release](https://github.com/EikenDram/Kubernetes/releases/) for your platform and unpack it
+Download [release](https://github.com/EikenDram/kube-build/releases/) `build.tar` and `build-tool.tar` for your platform and unpack them
 
 Build tool uses deployment configuration from `config/values.yaml`. Change necessary parameters for building the deployment for your server: ssh keys, hostname, ip, admin credentials, ntp server inside local network, dummy route configuration, cluster admin credentials, registry credentials and certificate, storage and helm charts configuration
 
