@@ -7,8 +7,12 @@ INFRASTRUCTURE.md
 
 # deployment
 deployment/*
+deployment-*/*
 config/prepare.sh
 config/init.sh
+
+# releases
+publish/*
 
 # software
 **/soft/*
@@ -20,7 +24,11 @@ build.exe
 build
 
 # custom values
+config/build.*.json
 config/values.*.yaml
+config/version.*.yaml
+config/images.*.yaml
+config/README.*.md
 
 # prepare files
 **/prepare/*
