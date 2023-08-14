@@ -1,0 +1,27 @@
+# DB2 configuration
+db2:
+  # Instance name
+  instance: {{.Values.ibmdb2.instance}}
+  # Instance password
+  password: {{.Values.ibmdb2.password}}
+  # Exposed NodePort in service
+  port: {{.Values.ibmdb2.port}}
+  # Storage
+  storage: {{.Values.ibmdb2.storage}}
+  # DB2 data management console repository database configuration
+  repodb:
+    # Create repository database on deployment
+    enable: {{.Values.ibmdb2.repodb}}
+    # name of repository database
+    dbname: repodb
+
+resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 300Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 300Mi
+
+# Node selector to use for the IBM DB2 deployment. Optional.
+nodeSelector: {}

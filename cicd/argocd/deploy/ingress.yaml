@@ -1,0 +1,46 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: argocd
+  namespace: {{.Values.argocd.namespace}}
+spec:
+  tls:
+    - hosts:
+      - {{.Values.argocd.ingress}}.{{.Values.server.hostname | lower}}
+      secretName: argocd-certificate
+  rules:
+    - host: {{.Values.argocd.ingress}}.{{.Values.server.hostname | lower}}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: argocd-server
+                port:
+                  number: 80
+
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: argocd-server
+  namespace: {{.Values.argocd.namespace}}
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`{{.Values.argocd.ingress}}.{{.Values.server.hostname | lower}}`)
+      priority: 10
+      services:
+        - name: argocd-server
+          port: 80
+    - kind: Rule
+      match: Host(`{{.Values.argocd.ingress}}.{{.Values.server.hostname | lower}}`) && Headers(`Content-Type`, `application/grpc`)
+      priority: 11
+      services:
+        - name: argocd-server
+          port: 80
+          scheme: h2c
+  tls:
+    certResolver: default

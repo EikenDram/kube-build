@@ -1,0 +1,531 @@
+# DESCRIPTION
+#
+# component:
+#   # name of directory in deployment
+#   dir:
+#   # component title to show in log
+#   title: 
+#
+#   # binaries
+#   bin:
+#     # url to download file from
+#   - url: 
+#     # name of downloaded file
+#     output:
+#     # unpack downloaded file into a directory
+#     unpack:
+#       # get unpacked directory as a tar file
+#       tar:
+#       # get file from unpacked directory
+#       extract:
+#
+#   # build docker images with podman
+#   dockerfile:
+#     # name of docker image
+#   - name:
+#     # version of docker image
+#     version:
+#     # name of Dockerfile, Dockerfile if not specified
+#     file:
+#
+#   # yaml files for deployment
+#   manifest:
+#     # url of yaml file
+#   - url:
+#     # name of downloaded file
+#     output:
+#     # (optional) remove @sha256:<> from manifests
+#     remove-sha: true
+#
+#   # helm chart
+#   helm:
+#     # local name of a helm repo
+#     repo:
+#     # url of a helm repo
+#     url:
+#     # pull chart directly from url without adding helm repo
+#     pull:
+#     # name of helm chart
+#     name:
+#     # version of helm chart
+#     version:
+#
+#   # extra docker images that are not returning from the images.sh script
+#   images:
+#     # url of an image
+#   - url: 
+#     # image host
+#     host:
+#     # path to an image on the host
+#     path:
+#     # image name
+#     name:
+#     # image version
+#     version:
+#
+#   # git repositories
+#   git:
+#     # url of git repo
+#   - url:
+#     # name of file the git repo will be archived into
+#     name:
+#
+
+## Operation system
+os: 
+  dir: os
+  title: Fedora CoreOS
+  bin:
+  # butane binary for making ignition file
+  - url: https://github.com/coreos/butane/releases/download/v0.18.0/butane-x86_64-unknown-linux-gnu
+    output: butane
+  # fedora coreos live iso image
+  - url: https://builds.coreos.fedoraproject.org/prod/streams/stable/builds/38.20230625.3.0/x86_64/fedora-coreos-38.20230625.3.0-live.x86_64.iso
+    output: fedora-coreos-38.20230625.3.0-live.x86_64.iso
+
+## Kubernetes cluster K3S
+k3s: 
+  dir: k3s
+  title: K3S
+  bin: 
+  # k3s install script
+  - url: https://get.k3s.io
+    output: install.sh
+  # k3s binary
+  - url: https://github.com/k3s-io/k3s/releases/download/v1.25.11%2Bk3s1/k3s
+    output: k3s
+  # k3s airgap images
+  - url: https://github.com/k3s-io/k3s/releases/download/v1.25.11%2Bk3s1/k3s-airgap-images-amd64.tar.gz
+    output: k3s-airgap-images-amd64.tar.gz
+    unpack:
+      tar: k3s-airgap-images-amd64.tar
+  # helm binary
+  - url: https://get.helm.sh/helm-v3.12.2-linux-amd64.tar.gz
+    output: helm.tar.gz
+    unpack:
+      extract: linux-amd64/helm
+  # helm plugin cm-push for pushing charts into repository binary
+  - url: https://github.com/chartmuseum/helm-push/releases/download/v0.10.4/helm-push_0.10.4_linux_amd64.tar.gz
+    output: cm-push.tar.gz
+  # k9s binary
+  - url: https://github.com/derailed/k9s/releases/download/v0.27.4/k9s_Linux_amd64.tar.gz
+    output: k9s.tar.gz
+    unpack:
+      extract: k9s
+
+## Private docker registry
+registry:
+  dir: registry
+  title: Docker registry
+  bin:
+  # cfssl tool binaries, for creating self-signed certificate for private registry
+  - url: https://github.com/cloudflare/cfssl/releases/download/v1.6.4/cfssl_1.6.4_linux_amd64
+    output: cfssl
+  - url: https://github.com/cloudflare/cfssl/releases/download/v1.6.4/cfssljson_1.6.4_linux_amd64
+    output: cfssljson
+  # docker image for loading images into registry with skopeo
+  dockerfile:
+  - name: tools
+    version: v1.0
+  
+## Storage provider OpenEBS
+openebs:
+  dir: openebs
+  title: OpenEBS
+  # Lite version
+  manifest: 
+  - url: https://openebs.github.io/charts/openebs-operator-lite.yaml
+    output: openebs-operator-lite.yaml
+  - url: https://openebs.github.io/charts/openebs-lite-sc.yaml
+    output: openebs-lite-sc.yaml
+  images:
+  - url: docker.io/openebs/linux-utils:3.4.0
+    host: docker.io
+    path: openebs
+    name: linux-utils
+    version: 3.4.0
+
+## Helm repository
+chartmuseum:
+  dir: chartmuseum
+  title: Chartmuseum
+  helm:
+    repo: chartmuseum
+    url: https://chartmuseum.github.io/charts
+    name: chartmuseum
+    version: 3.1.0
+
+## Access manager Keycloak
+keycloak:
+  dir: keycloak
+  title: Keycloak
+  helm: 
+    pull: oci://registry-1.docker.io/bitnamicharts/keycloak
+    name: keycloak
+    version: 15.1.7
+
+## Kubernetes dashboard
+dashboard:
+  dir: dashboard
+  title: Kubernetes dashboard
+  helm:
+    repo: kubernetes-dashboard
+    url: https://kubernetes.github.io/dashboard/
+    name: kubernetes-dashboard
+    version: 7.0.3
+
+## Cluster manager Portainer CE
+portainer:
+  dir: portainer
+  title: Portainer
+  helm: 
+    repo: portainer
+    url: https://portainer.github.io/k8s/
+    name: portainer
+    version: 1.0.43
+
+## UI for docker registry
+registry-ui:
+  dir: registry-ui
+  title: Docker registry UI
+  helm: 
+    repo: joxit
+    url: https://helm.joxit.dev
+    name: docker-registry-ui
+    version: 1.1.0
+
+## UI for traefik
+traefik-ui:
+  dir: traefik-ui
+  title: Traefik UI
+
+## Prometheus and Grafana stack
+prometheus:
+  dir: prometheus
+  title: Prometheus
+  helm: 
+    repo: prometheus-community
+    url: https://prometheus-community.github.io/helm-charts
+    name: kube-prometheus-stack
+    version: 46.8.0
+  images:
+  - url: docker.io/jimmidyson/configmap-reload:v0.5.0
+    host: docker.io
+    path: jimmidyson
+    name: configmap-reload
+    version: v0.5.0
+  - url: quay.io/brancz/kube-rbac-proxy:v0.14.1
+    host: quay.io
+    path: brancz
+    name: kube-rbac-proxy
+    version: v0.14.1
+  - url: quay.io/prometheus/alertmanager:v0.25.0
+    host: quay.io
+    path: prometheus
+    name: alertmanager
+    version: v0.25.0
+  - url: quay.io/prometheus/blackbox-exporter:v0.24.0
+    host: quay.io
+    path: prometheus
+    name: blackbox-exporter
+    version: v0.24.0
+  - url: quay.io/prometheus-operator/prometheus-config-reloader:v0.65.2
+    host: quay.io
+    path: prometheus-operator
+    name: prometheus-config-reloader
+    version: v0.65.2
+  - url: registry.k8s.io/prometheus-adapter/prometheus-adapter:v0.10.0
+    host: registry.k8s.io
+    path: prometheus-adapter
+    name: prometheus-adapter
+    version: v0.10.0
+  - url: quay.io/kiwigrid/k8s-sidecar:1.24.3
+    host: quay.io
+    path: kiwigrid
+    name: k8s-sidecar
+    version: 1.24.3
+
+# Loki stack
+loki:
+  dir: loki
+  title: Loki
+  helm: 
+    repo: grafana
+    url: https://grafana.github.io/helm-charts
+    name: loki-stack
+    version: 2.9.10
+  bin:
+  - url: https://grafana.com/api/dashboards/13186/revisions/1/download
+    output: loki-dashboard.json
+  images:
+  - url: docker.io/grafana/loki-canary:2.8.2
+    host: docker.io
+    path: grafana
+    name: loki-canary
+    version: 2.8.2
+  - url: docker.io/grafana/agent-operator:v0.25.1
+    host: docker.io
+    path: grafana
+    name: agent-operator
+    version: v0.25.1
+  - url: docker.io/nginxinc/nginx-unprivileged:1.19-alpine
+    host: docker.io
+    path: nginxinc
+    name: nginx-unprivileged
+    version: 1.19-alpine
+  - url: docker.io/grafana/loki-helm-test:latest
+    host: docker.io
+    path: grafana
+    name: loki-helm-test
+    version: latest
+  - url: docker.io/grafana/agent:v0.25.1
+    host: docker.io
+    path: grafana
+    name: agent
+    version: v0.25.1
+  - url: quay.io/prometheus-operator/prometheus-config-reloader:v0.47.0
+    host: quay.io
+    path: prometheus-operator
+    name: prometheus-config-reloader
+    version: v0.47.0
+
+## S3 storage service MinIO
+minio:
+  dir: minio
+  title: MinIO
+  bin:
+  # minio binary
+  - url: https://dl.min.io/server/minio/release/linux-amd64/minio
+    output: minio
+
+## Backup manager Velero
+velero:
+  dir: velero
+  title: Velero
+  bin:
+  # velero cli binary
+  - url: https://github.com/vmware-tanzu/velero/releases/download/v1.11.0/velero-v1.11.0-linux-amd64.tar.gz
+    output: velero.tar.gz
+    unpack:
+      extract: velero-v1.11.0-linux-amd64/velero
+    usr-local-bin: velero
+  helm: 
+    repo: vmware-tanzu
+    url: https://vmware-tanzu.github.io/helm-charts
+    name: velero
+    version: 4.0.3
+  images:
+  - url: docker.io/bitnami/kubectl:1.25
+    host: docker.io
+    path: bitname
+    name: kubectl
+    version: 1.25
+
+# Git/npm/nuget/go repository server Gitea
+gitea: 
+  dir: gitea
+  title: Gitea
+  helm: 
+    repo: gitea-charts
+    url: https://dl.gitea.io/charts/
+    name: gitea
+    version: 8.3.0
+
+# Continuous delivery service Argo CD
+argocd:
+  dir: argocd
+  title: ArgoCD
+  bin: 
+  # argocd cli binary
+  - url: https://github.com/argoproj/argo-cd/releases/download/v2.7.8/argocd-linux-amd64
+    output: argocd
+    usr-local-bin: argocd
+  manifest: 
+  - url: https://raw.githubusercontent.com/argoproj/argo-cd/v2.7.8/manifests/install.yaml
+    output: install.yaml
+  images:
+  - url: public.ecr.aws/docker/library/redis:7.0.11-alpine
+    host: public.ecr.aws
+    path: docker/library
+    name: redis
+    version: 7.0.11-alpine
+
+## Continuous delivery/continuous integration service Tekton
+tekton:
+  dir: tekton
+  title: Tekton
+  bin: 
+  # tekton cli binary
+  - url: https://github.com/tektoncd/cli/releases/download/v0.31.1/tkn_0.31.1_Linux_x86_64.tar.gz
+    output: tkn.tar.gz
+    unpack:
+      extract: tkn
+    usr-local-bin: tkn
+  manifest: 
+  - url: https://storage.googleapis.com/tekton-releases/pipeline/previous/v0.44.4/release.yaml
+    output: pipelines.yaml
+    remove-sha: true
+  - url: https://storage.googleapis.com/tekton-releases/triggers/previous/v0.24.1/release.yaml
+    output: triggers.yaml
+    remove-sha: true
+  - url: https://storage.googleapis.com/tekton-releases/triggers/previous/v0.24.1/interceptors.yaml
+    output: interceptors.yaml
+    remove-sha: true
+  - url: https://storage.googleapis.com/tekton-releases/dashboard/previous/v0.37.0/release.yaml
+    output: dashboard.yaml
+    remove-sha: true
+  images:
+  - url: gcr.io/tekton-releases/github.com/tektoncd/triggers/cmd/eventlistenersink:v0.24.1
+    host: gcr.io
+    path: tekton-releases/github.com/tektoncd/triggers/cmd
+    name: eventlistenersink
+    version: v0.24.1
+  - url: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/entrypoint:v0.49.0
+    host: gcr.io
+    path: tekton-releases/github.com/tektoncd/pipeline/cmd
+    name: entrypoint
+    version: v0.49.0
+    #sha: e160e469c149b45450be16656dad3e20253b77ee57e150d4cc770b91516b8419
+  - url: cgr.dev/chainguard/busybox
+    host: gcr.io
+    path: chainguard
+    name: busybox
+    version: latest
+    #sha: 19f02276bf8dbdd62f069b922f10c65262cc34b710eea26ff928129a736be791
+  - url: mcr.microsoft.com/powershell:nanoserver
+    host: mcr.microsoft.com
+    path: library
+    name: powershell
+    version: nanoserver
+    #sha: b6d5ff841b78bdf2dfed7550000fd4f3437385b8fa686ec0f010be24777654d6
+    args: --override-os windows
+  - url: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/nop:v0.49.0
+    host: gcr.io
+    path: tekton-releases/github.com/tektoncd/pipeline/cmd
+    name: nop
+    version: v0.49.0
+  - url: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/sidecarlogresults:v0.49.0
+    host: gcr.io
+    path: tekton-releases/github.com/tektoncd/pipeline/cmd
+    name: sidecarlogresults
+    version: v0.49.0
+    #sha: 8a948ed5d9f441ba7126f4b2425569ea0640c23a43cf2ed6f993543b4255cd04
+  - url: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/workingdirinit:v0.49.0
+    host: gcr.io
+    path: tekton-releases/github.com/tektoncd/pipeline/cmd
+    name: workingdirinit
+    version: v0.49.0
+    #sha: 2842e45fc62da00bc9b01bd6932adc1a368f98a3dc670761777d06d8d5d22aa0
+
+# Developing applications inside cluster
+dev:
+  dir: dev
+  title: Application development
+  bin:
+  # CLI for managing gitea
+  - url: https://dl.gitea.com/tea/0.9.2/tea-0.9.2-linux-amd64
+    output: tea
+    usr-local-bin: tea
+  images:
+  # for working with git repositories
+  - url: docker.io/alpine/git:v2.40.1
+    host: docker.io
+    path: alpine
+    name: git
+    version: v2.40.1
+  # for pushing npm packages into gitea npm repo
+  - url: docker.io/library/node:lts-alpine
+    host: docker.io
+    path: library
+    name: node
+    version: lts-alpine
+  # for pushing nuget packages into gitea nuget repo
+  - url: mcr.microsoft.com/dotnet/sdk:7.0
+    host: mcr.microsoft.com
+    path: dotnet
+    name: sdk
+    version: 7.0
+
+# Bitnami rabbitmq server
+rabbitmq:
+  dir: rabbitmq
+  title: RabbitMQ
+  helm: 
+    pull: oci://registry-1.docker.io/bitnamicharts/rabbitmq
+    name: rabbitmq
+    version: 12.0.9
+
+# Custom IBM DB2 community edition server
+ibmdb2:
+  dir: ibmdb2
+  title: IBM DB2
+  helm: 
+    repo: aiken
+    url: https://eikendram.github.io/kube-charts
+    name: ibmdb2
+    version: 0.1.1
+
+## DB2 data management console for docker
+db2console:
+  dir: db2console
+  title: DB2 data management console
+  images:
+  - url: docker.io/ibmcom/db2console:3.1.11
+    host: docker.io
+    path: ibmcom
+    name: db2console
+    version: 3.1.11
+
+## Custom RStudio server
+rocker:
+  dir: rocker
+  title: RStudio server
+  helm: 
+    repo: aiken
+    url: https://eikendram.github.io/kube-charts
+    name: rocker
+    version: 0.1.0
+   
+# Custom homepage application KubeHome
+kube-home:
+  dir: kube-home
+  title: KubeHome
+  git: 
+  - url: https://github.com/EikenDram/kube-home.git
+    name: kube-home
+  helm:
+    repo: aiken
+    url: https://eikendram.github.io/kube-charts
+    name: kube-home
+    version: 0.1.1
+      
+# Custom reporting service KubeR
+kube-r:
+  dir: kube-r
+  title: KubeR
+  git: 
+  - url: https://github.com/EikenDram/kube-r.git
+    name: kube-r
+  helm:
+    repo: aiken
+    url: https://eikendram.github.io/kube-charts
+    name: kube-r
+    version: 0.1.1
+  
+# Custom utilities KubeUtils
+kube-utils:
+  dir: kube-utils
+  title: KubeUtils
+  git: 
+  - url: https://github.com/EikenDram/kube-utils.git
+    name: kube-utils
+
+# Custom template application
+kube-app-template:
+  dir: kube-app-template
+  title: KubeAppTemplate
+  git:
+  - url: https://github.com/EikenDram/kube-app-template.git
+    name: kube-app-template
+  - url: https://github.com/EikenDram/kube-app-template-manifest.git
+    name: kube-app-template-manifest

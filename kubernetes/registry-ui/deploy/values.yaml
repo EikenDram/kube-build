@@ -1,0 +1,18 @@
+ui:
+  #dockerRegistryUrl: https://svc-registry.{{.Values.registry.namespace}}:5000/
+  dockerRegistryUrl: https://{{.Values.server.hostname}}:5000/
+  ingress:
+    enabled: true
+    host: {{index .Values "registry-ui" "ingress"}}.{{.Values.server.hostname | lower}}
+    ingressClassName: traefik
+
+#registry:
+#  enabled: true
+#  dataVolume:
+#    persistentVolumeClaim:
+#      claimName: pvc-registry-dev
+#  ingress:
+#    enabled: true
+#    host: dev.k3s.local
+#    ingressClassName: traefik
+    

@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: secret-basic-auth
+  namespace: tekton-pipelines
+type: kubernetes.io/basic-auth
+stringData:
+  username: {{.Values.cluster.user}}
+  password: {{.Values.cluster.password}}
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: basic-auth
+  namespace: tekton-pipelines
+spec:
+  basicAuth:
+    secret: secret-basic-auth
+    removeHeader: true
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tekton-dashboard
+  namespace: tekton-pipelines
+  annotations:
+    spec/ingressClassName: traefik
+    traefik.ingress.kubernetes.io/router.middlewares: tekton-pipelines-basic-auth@kubernetescrd
+spec:
+  rules:
+  - host: {{.Values.tekton.ingress}}.{{.Values.server.hostname | lower}}
+    http:
+      paths:
+      - pathType: ImplementationSpecific
+        backend:
+          service:
+            name: tekton-dashboard
+            port:
+              number: 9097

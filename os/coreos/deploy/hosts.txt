@@ -1,0 +1,8 @@
+{{$.Values.server.ip}} {{$.Values.server.hostname | lower}}
+{{- range .Components }}
+{{- if (index $.Values .Name) }}
+{{- if (index $.Values .Name "ingress") }}
+{{$.Values.server.ip}} {{index $.Values .Name "ingress"}}.{{$.Values.server.hostname | lower}}
+{{- end }}
+{{- end }}
+{{- end }}

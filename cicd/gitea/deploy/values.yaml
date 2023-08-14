@@ -1,0 +1,27 @@
+ingress:
+  enabled: true
+  hosts:
+    - host: {{.Values.gitea.ingress}}.{{.Values.server.hostname | lower}}
+      paths:
+        - path: /
+          pathType: Prefix
+      
+gitea: 
+  admin:
+    username: {{.Values.cluster.user}}
+    password: {{.Values.cluster.password}}
+    email: "{{.Values.cluster.email}}"
+  config:
+    webhook:
+      ALLOWED_HOST_LIST: "*.cluster.local"
+
+persistence:
+  enabled: true
+  size: {{.Values.gitea.storage}}
+  accessModes:
+  - ReadWriteOnce
+
+postgresql:
+  primary:
+    persistence:
+      size: {{index .Values.gitea "storage-db"}}

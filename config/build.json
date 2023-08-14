@@ -1,0 +1,285 @@
+{
+    "pre": [
+        {
+            "comment": "Remove file config/prepare.sh",
+            "type": "remove",
+            "location": "config",
+            "name": "prepare.sh"
+        },
+        {
+            "comment": "Remove file deployment/prepare.sh",
+            "type": "remove",
+            "location": "deployment",
+            "name": "prepare.sh"
+        },
+        {
+            "comment": "Remove file deployment/transfer.sh",
+            "type": "remove",
+            "location": "deployment",
+            "name": "transfer.sh"
+        },
+        {
+            "comment": "Remove file deployment/transfer.bat",
+            "type": "remove",
+            "location": "deployment",
+            "name": "transfer.bat"
+        },
+        {
+            "comment": "Remove file deployment/ignition.sh",
+            "type": "remove",
+            "location": "deployment",
+            "name": "ignition.sh"
+        },
+        {
+            "comment": "Remove file deployment/README.md",
+            "type": "remove",
+            "location": "deployment",
+            "name": "README.md"
+        },
+        {
+            "comment": "Remove file deployment/hosts.txt",
+            "type": "remove",
+            "location": "deployment",
+            "name": "hosts.txt"
+        },
+        {
+            "comment": "Remove directory deployment/install",
+            "type": "removeAll",
+            "location": "deployment",
+            "name": "install"
+        },
+        {
+            "comment": "Remove directory deployment/scripts",
+            "type": "removeAll",
+            "location": "deployment",
+            "name": "scripts"
+        },
+        {
+            "comment": "Create empty directory deployment/install",
+            "type": "mkDir",
+            "location": "deployment",
+            "name": "install"
+        },
+        {
+            "comment": "Create empty directory deployment/scripts",
+            "type": "mkDir",
+            "location": "deployment",
+            "name": "scripts"
+        }
+    ],
+    "build": [
+        {
+            "comment": "Copy content of config/_prepare.sh file into beginning of config/prepare.sh file",
+            "type": "copy",
+            "from": {
+                "location": "config",
+                "name": "_prepare.sh"
+            },
+            "to": {
+                "location": "config",
+                "name": "prepare.sh"
+            }
+        }
+    ],
+    "components": [
+        {
+            "name": "os",
+            "path": "./os/coreos",
+            "message": "OS"
+        },
+        {
+            "name": "k3s",
+            "path": "./kubernetes/k3s",
+            "message": "K3S"
+        },
+        {
+            "name": "registry",
+            "path": "./kubernetes/registry",
+            "message": "Registry"
+        },
+        {
+            "comment": "",
+            "name": "openebs",
+            "path": "./kubernetes/openebs",
+            "message": "Open EBS"
+        },
+        {
+            "name": "chartmuseum",
+            "path": "./kubernetes/chartmuseum",
+            "message": "Chartmuseum"
+        },
+        {
+            "name": "keycloak",
+            "path": "./kubernetes/keycloak",
+            "message": "Keycloak"
+        },
+        {
+            "name": "dashboard",
+            "path": "./kubernetes/dashboard",
+            "message": "Kubernetes dashboard"
+        },
+        {
+            "name": "portainer",
+            "path": "./kubernetes/portainer",
+            "message": "Portainer CE"
+        },
+        {
+            "name": "registry-ui",
+            "path": "./kubernetes/registry-ui",
+            "message": "Registry UI"
+        },
+        {
+            "name": "traefik-ui",
+            "path": "./kubernetes/traefik-ui",
+            "message": "Traefik UI"
+        },
+        {
+            "name": "prometheus",
+            "path": "./kubernetes/prometheus",
+            "message": "Prometheus"
+        },
+        {
+            "name": "loki",
+            "path": "./kubernetes/loki",
+            "message": "Loki"
+        },
+        {
+            "name": "minio",
+            "path": "./kubernetes/minio",
+            "message": "MinIO"
+        },
+        {
+            "name": "velero",
+            "path": "./kubernetes/velero",
+            "message": "Velero"
+        },
+        {
+            "name": "gitea",
+            "path": "./cicd/gitea",
+            "message": "Gitea"
+        },
+        {
+            "name": "argocd",
+            "path": "./cicd/argocd",
+            "message": "ArgoCD"
+        },
+        {
+            "name": "tekton",
+            "path": "./cicd/tekton",
+            "message": "Tekton"
+        },
+        {
+            "name": "dev",
+            "path": "./cicd/dev",
+            "message": "Developing pipeline"
+        },
+        {
+            "name": "rabbitmq",
+            "path": "./services/rabbitmq",
+            "message": "RabbitMQ"
+        },
+        {
+            "name": "ibmdb2",
+            "path": "./services/ibmdb2",
+            "message": "IBM DB2"
+        },
+        {
+            "name": "db2console",
+            "path": "./services/db2console",
+            "message": "DB2 data management console"
+        },
+        {
+            "name": "rocker",
+            "path": "./services/rocker",
+            "message": "Rocker"
+        },
+        {
+            "name": "kube-home",
+            "path": "./apps/kube-home",
+            "message": "KubeHome"
+        },
+        {
+            "name": "kube-r",
+            "path": "./apps/kube-r",
+            "message": "KubeR"
+        },
+        {
+            "name": "kube-utils",
+            "path": "./apps/kube-utils",
+            "message": "KubeUtils"
+        },
+        {
+            "name": "kube-app-template",
+            "path": "./apps/kube-app-template",
+            "message": "KubeAppTemplate"
+        }
+    ],
+    "post": [
+        {
+            "comment": "Generate deployment/prepare.sh script from config/prepare.sh template",
+            "message": "Prepare script",
+            "type": "template",
+            "name": "prepare.sh",
+            "from": {
+                "location": "config",
+                "name": "prepare.sh"
+            }
+        },
+        {
+            "comment": "Generate deployment/transfer.sh script from config/_transfer.sh template",
+            "message": "Transfer shell script",
+            "type": "template",
+            "name": "transfer.sh",
+            "from": {
+                "location": "config",
+                "name": "_transfer.sh"
+            }
+        },
+        {
+            "comment": "Generate deployment/transfer.bat script from config/_transfer.bat template",
+            "message": "Transfer batch script",
+            "type": "template",
+            "name": "transfer.bat",
+            "from": {
+                "location": "config",
+                "name": "_transfer.bat"
+            }
+        },
+        {
+            "comment": "Generate deployment/README.md script from config/README.md template",
+            "message": "README.md",
+            "type": "template",
+            "name": "README.md",
+            "from": {
+                "location": "config",
+                "name": "README.md"
+            }
+        },
+        {
+            "comment": "Move deployment/install/os/ignition.sh script to deployment/ignition.sh script",
+            "message": "Ignition script",
+            "type": "move",
+            "from": {
+                "location": "deployment",
+                "name": "install/os/ignition.sh"
+            },
+            "to": {
+                "location": "deployment",
+                "name": "ignition.sh"
+            }
+        },
+        {
+            "comment": "Move deployment/install/os/hosts.txt file to deployment/hosts.txt file",
+            "message": "Hosts",
+            "type": "move",
+            "from": {
+                "location": "deployment",
+                "name": "install/os/hosts.txt"
+            },
+            "to": {
+                "location": "deployment",
+                "name": "hosts.txt"
+            }
+        }
+    ]
+}

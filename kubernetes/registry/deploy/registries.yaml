@@ -1,0 +1,38 @@
+mirrors:
+  quay.io:
+    endpoint:
+      - "https://{{.Values.server.hostname}}:5000"
+  docker.io:
+    endpoint:
+      - "https://{{.Values.server.hostname}}:5000"
+  k8s.gcr.io:
+    endpoint:
+      - "https://{{.Values.server.hostname}}:5000"
+  registry.k8s.io:
+    endpoint:
+      - "https://{{.Values.server.hostname}}:5000"
+  gcr.io:
+    endpoint:
+      - "https://{{.Values.server.hostname}}:5000"
+  ghcr.io:
+    endpoint:
+      - "https://{{.Values.server.hostname}}:5000"
+  icr.io:
+    endpoint:
+      - "https://{{.Values.server.hostname}}:5000"
+  cgr.dev:
+    endpoint:
+      - "https://{{.Values.server.hostname}}:5000"
+  mcr.microsoft.com:
+    endpoint:
+      - "https://{{.Values.server.hostname}}:5000"
+
+configs:
+  "{{.Values.server.hostname}}:5000":
+    auth:
+      username: {{.Values.registry.user}}
+      password: {{.Values.registry.password}}
+    tls:
+      cert_file: /etc/rancher/k3s/certs/registry.pem
+      key_file: /etc/rancher/k3s/certs/registry-key.pem
+      ca_file: /etc/rancher/k3s/certs/cluster-ca.pem

@@ -1,0 +1,194 @@
+# full values: https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/values.yaml
+
+# k3s uses sqllite, so we cannot monitor etcd in the same way
+defaultRules:
+  rules:
+    alertmanager: false
+    etcd: false
+    configReloaders: true
+    general: true
+    k8s: true
+    kubeApiserverAvailability: false
+    kubeApiserverBurnrate: false
+    kubeApiserverHistogram: false
+    kubeApiserverSlos: false
+    kubeSchedulerAlerting: false
+    kubeSchedulerRecording: false
+    kubeControllerManager: true
+    kubelet: false
+    kubeProxy: false
+    kubePrometheusGeneral: false
+    kubePrometheusNodeRecording: false
+    kubernetesApps: true
+    kubernetesResources: true
+    kubernetesStorage: true
+    kubernetesSystem: true
+    kubeStateMetrics: true
+    network: false
+    node: true
+    nodeExporterAlerting: false
+    nodeExporterRecording: false
+    prometheus: false
+    prometheusOperator: false
+  disabled: 
+    Watchdog: true
+    PrometheusNotConnectedToAlertmanagers: true
+
+kubeEtcd:
+  enabled: false
+
+kubeApiServer:
+  enabled: true
+  ## MetricRelabelConfigs to apply to samples after scraping, but before ingestion.
+  serviceMonitor:
+    metricRelabelings: 
+    # Drop excessively noisy apiserver buckets.
+    - sourceLabels: [__name__]
+      regex: etcd_.*
+      action: drop
+    - sourceLabels: [__name__]
+      regex: apiserver_.*
+      action: drop
+
+# matched to service port 'prom-stack-kube-prometheus-kube-controller-manager' -n kube-system
+kubeControllerManager:
+  enabled: true
+  endpoints: ['{{.Values.prometheus.endpoint}}']
+  service:
+    enabled: true
+    port: 10257
+    targetPort: 10257
+  serviceMonitor:
+    enabled: true
+    https: true
+    insecureSkipVerify: true
+    metricRelabelings: 
+    # Drop excessively noisy apiserver buckets.
+    - sourceLabels: [__name__]
+      regex: etcd_.*
+      action: drop
+    - sourceLabels: [__name__]
+      regex: apiserver_.*
+      action: drop
+
+# matched to service port 'prom-stack-kube-prometheus-kube-scheduler' -n kube-system
+kubeScheduler:
+  enabled: true
+  endpoints: ['{{.Values.prometheus.endpoint}}']
+  service:
+    enabled: true
+    port: 10259
+    targetPort: 10259
+  serviceMonitor:
+    enabled: true
+    https: true
+    insecureSkipVerify: true
+    metricRelabelings: 
+    # Drop excessively noisy apiserver buckets.
+    - sourceLabels: [__name__]
+      regex: etcd_.*
+      action: drop
+    - sourceLabels: [__name__]
+      regex: apiserver_.*
+      action: drop
+
+# matched to service port 'prom-stack-kube-prometheus-kube-proxy' -n kube-system
+kubeProxy:
+  enabled: true
+  endpoints: ['{{.Values.prometheus.endpoint}}']
+  service:
+    enabled: true
+    port: 10249
+    targetPort: 10249
+  serviceMonitor:
+    metricRelabelings: 
+    # Drop excessively noisy apiserver buckets.
+    - sourceLabels: [__name__]
+      regex: etcd_.*
+      action: drop
+    - sourceLabels: [__name__]
+      regex: apiserver_.*
+      action: drop
+
+kubelet:
+  enabled: true
+  ## MetricRelabelConfigs to apply to samples after scraping, but before ingestion.
+  serviceMonitor:
+    metricRelabelings: 
+    # Drop excessively noisy apiserver buckets.
+    - sourceLabels: [__name__]
+      regex: etcd_.*
+      action: drop
+    - sourceLabels: [__name__]
+      regex: apiserver_.*
+      action: drop
+
+alertmanager:
+  enabled: false
+
+grafana:
+  # username is 'admin'
+  adminPassword: {{.Values.cluster.password}}
+  ingress:
+    enabled: true
+    annotations:
+      spec/ingressClassName: nginx
+    hosts: ['{{.Values.grafana.ingress}}.{{.Values.server.hostname | lower}}']
+    path: "/"
+    tls:
+    - secretName: tls-credential
+      hosts:
+      - {{.Values.grafana.ingress}}.{{.Values.server.hostname | lower}}
+
+prometheus-node-exporter:
+  extraArgs:
+    - --collector.disable-defaults 
+    - --collector.cpu 
+    - --collector.meminfo
+    - --collector.filesystem.mount-points-exclude=^/(dev|proc|sys|var/lib/docker/.+|var/lib/kubelet/.+)($|/)
+    - --collector.filesystem.fs-types-exclude=^(autofs|binfmt_misc|bpf|cgroup2?|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|iso9660|mqueue|nsfs|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|selinuxfs|squashfs|sysfs|tracefs)$
+
+prometheus:
+  ingress:
+    enabled: true
+    annotations:
+      spec/ingressClassName: traefik
+      traefik.ingress.kubernetes.io/router.middlewares: {{.Values.prometheus.helm.namespace}}-basic-auth@kubernetescrd
+    hosts: ['{{.Values.prometheus.ingress}}.{{.Values.server.hostname | lower}}']
+    paths: ['/']
+    tls:
+    - secretName: tls-credential
+      hosts:
+      - {{.Values.prometheus.ingress}}.{{.Values.server.hostname | lower}}
+
+  prometheusSpec:
+    externalUrl: "http://{{.Values.prometheus.ingress}}.{{.Values.server.hostname | lower}}/"
+    routePrefix: /
+
+    enableAdminAPI: true
+    scrapeInterval: "60s"
+    retention: 5d
+
+    # do not require new PrometheusRule to have all the helm labels in order to match
+    ruleSelectorNilUsesHelmValues: false
+
+    # external labels will be common for all alerts and available for templating in AlertManager
+    externalLabels: {'cluster': 'k3s', 'env': 'dev', 'jumpbox': 'localhost.local'}
+
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: {{.Values.prometheus.storage}}
+  
+    additionalScrapeConfigs:
+    - job_name: "drop1"
+      metric_relabel_configs:
+      - regex: etcd_.*
+        action: labeldrop
+    - job_name: "drop2"
+      metric_relabel_configs:
+      - regex: apiserver_.*
+        action: labeldrop

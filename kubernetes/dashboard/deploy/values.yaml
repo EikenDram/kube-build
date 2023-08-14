@@ -1,0 +1,18 @@
+# General configuration shared across resources
+app:
+  ingress:
+    enabled: false
+
+
+## Optional Metrics Server sub-chart configuration
+metrics-server:
+  enabled: false
+  
+
+## Optional Cert Manager sub-chart configuration
+cert-manager:
+  enabled: false
+
+## Optional Nginx Ingress sub-chart configuration
+nginx:
+  enabled: false

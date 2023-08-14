@@ -1,0 +1,13 @@
+service:
+  type: ClusterIP
+
+ingress:
+  enabled: true
+  ingressClassName: "traefik"
+  hosts:
+    - host: "{{.Values.portainer.ingress}}.{{.Values.server.hostname | lower}}"
+      paths:
+        - path: "/"
+          
+persistence:
+  size: "{{.Values.portainer.storage}}"

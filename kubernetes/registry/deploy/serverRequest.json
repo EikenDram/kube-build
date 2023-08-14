@@ -1,0 +1,8 @@
+{
+   "CN": "{{.Values.server.hostname}}",
+   "hosts": [ "{{.Values.server.hostname}}" ],
+   "key": {
+      "algo": "rsa",
+      "size": 2048
+   }
+}

@@ -1,0 +1,26 @@
+initContainers:
+  - name: velero-plugin-for-aws
+    image: velero/velero-plugin-for-aws:v1.7.0
+    imagePullPolicy: IfNotPresent
+    volumeMounts:
+      - mountPath: /target
+        name: plugins
+
+configuration:
+  backupStorageLocation:
+  - name: default
+    provider: aws
+    bucket: {{index .Values.velero "minio-bucket"}}
+    config:
+      region: minio-default
+      s3ForcePathStyle: true
+      s3Url: {{index .Values.velero "minio-url"}}
+      publicUrl: {{index .Values.velero "minio-public"}}
+  volumeSnapshotLocation:
+  - name: default
+    provider: aws
+    config:
+      region: minio-default
+
+snapshotsEnabled: true
+deployNodeAgent: true

@@ -1,0 +1,25 @@
+## RabbitMQ Authentication parameters
+##
+auth:
+  ## @param auth.username RabbitMQ application username
+  ## ref: https://github.com/bitnami/containers/tree/main/bitnami/rabbitmq#environment-variables
+  ##
+  username: {{.Values.cluster.user}}
+  ## @param auth.existingPasswordSecret Existing secret with RabbitMQ credentials (must contain a value for `rabbitmq-password` key)
+  ## e.g:
+  ## existingPasswordSecret: name-of-existing-secret
+  ##
+  existingPasswordSecret: "rabbitmq-pass"
+
+persistence:
+  ## @param persistence.size PVC Storage Request for RabbitMQ data volume
+  ## If you change this value, you might have to adjust `rabbitmq.diskFreeLimit` as well
+  ##
+  size: 8Gi
+
+# Ingress
+ingress:
+  # Enable the ingress for the user interface.
+  enabled: true
+  # Fully qualified domain name of a network host.
+  hostname: {{.Values.rabbitmq.ingress}}.{{.Values.server.hostname | lower}}

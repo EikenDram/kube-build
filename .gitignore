@@ -1,0 +1,29 @@
+# vs code
+.vscode/tasks.json
+.vscode/launch.json
+
+# current prod infrastructure
+INFRASTRUCTURE.md
+
+# deployment
+deployment/*
+config/prepare.sh
+config/init.sh
+
+# software
+**/soft/*
+**/*.exe
+**/*.iso
+
+# tool
+build.exe
+build
+
+# custom values
+config/values.*.yaml
+
+# prepare files
+**/prepare/*
+
+# ignition files
+**/*.ign

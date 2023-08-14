@@ -1,0 +1,21 @@
+env:
+  open:
+    # disable all routes prefixed with /api
+    DISABLE_API: false
+  secret:
+    # username for basic http authentication
+    BASIC_AUTH_USER: {{.Values.cluster.user}}
+    # password for basic http authentication
+    BASIC_AUTH_PASS: {{.Values.cluster.password}}
+
+persistence:
+  enabled: false
+  accessMode: ReadWriteOnce
+  size: {{.Values.chartmuseum.storage}}
+
+## Ingress for load balancer
+ingress:
+  enabled: true
+  hosts:
+  - name: {{.Values.chartmuseum.ingress}}.{{.Values.server.hostname | lower}}
+    path: /

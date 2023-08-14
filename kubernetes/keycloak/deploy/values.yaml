@@ -1,0 +1,8 @@
+auth:
+  adminUser: {{.Values.cluster.user}}
+  adminPassword: {{.Values.cluster.password}}
+
+ingress:
+  enabled: true
+  ingressClassName: traefik
+  hostname: {{.Values.keycloak.ingress}}.{{.Values.server.hostname | lower}}

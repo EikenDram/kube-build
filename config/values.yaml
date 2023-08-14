@@ -1,0 +1,462 @@
+# server configuration
+server:
+  #
+  # server hostname
+  hostname: SWK3S
+  #
+  # server IP
+  ip: 192.168.120.29
+  #
+  # server user which will be deploying kubernetes cluster
+  user: core
+  #
+  # ssh-rsa key for the user
+  # generate it from winsows running command:
+  #   ssh-keygen
+  # copy content of the key from 'id_rsa.pub' file
+  #    ssh-rsa <COPY KEY FROM HERE>
+  ssh: "AAAA..."
+  #
+  # create additional user you can login to server with using password
+  admin: 
+    enabled: true
+    #
+    # admin user name
+    name: admin
+    #
+    # password hash, generate with tool 'mkpasswd' from 'whois' linux package
+    #   podman run -ti --rm quay.io/coreos/mkpasswd --method=yescrypt
+    # enter admin name and password, then copy output here
+    hash: "$y$j..."
+  #
+  # ntp server in the network
+  ntp: 192.168.120.3
+  #
+  # default dummy route (needed for coredns to work)
+  # disable if your network configuration already has a default route
+  dummy:
+    enabled: true
+    mask: 192.168.120.29/24
+    gateway: 192.168.120.1
+    dns: 8.8.8.8
+
+# cluster admin credentials 
+# will have access to most cluster resources
+cluster:
+  # Gitea requirement:
+  #   username cannot be from reserved list
+  #   https://github.com/go-gitea/gitea/issues/6280
+  user: k3sadmin
+  # ArgoCD requirement:
+  #   password should be 8-32 symbols
+  password: k3sadmin
+  # email address for Gitea
+  email: gitea@local.domain
+
+# private docker registry configuration
+registry:
+  #
+  # namespace to deploy component to
+  namespace: registry
+  # 
+  # credentials to access registry
+  user: regadmin
+  password: regpass
+  #
+  # this section will be used to access registry from tekton pipeline
+  # from 'htpasswd' tool run
+  #   sudo htpasswd -B -c htpasswd <user>
+  # enter password and copy content of the file
+  htpasswd: "admin:$2y$10..."
+  #
+  # storage size for registry
+  storage: 5Gi
+  #
+  # self-signed certificate configuration
+  cert:
+    OU: OrganizationalUnit
+    O: Organization
+    L: Locality
+    S: ProvinceName
+    C: CountryName
+
+# chartmuseum configuration
+chartmuseum:
+  #
+  # subdomain name to access component from: <ingress>.<hostname>
+  ingress: chartmuseum
+  #
+  # storage size for chartmuseum
+  storage: 1Gi
+  #
+  # helm install configuration
+  helm:
+    #
+    # name
+    name: chartmuseum
+    #
+    # values file
+    values: values.yaml
+    #
+    # namespace to deploy helm to
+    namespace: chartmuseum
+
+# keycloak configuration
+keycloak:
+  #
+  # subdomain name to access component from: <ingress>.<hostname>
+  ingress: keycloak
+  #
+  # helm install configuration
+  helm:
+    #
+    # name
+    name: keycloak
+    #
+    # values file
+    values: values.yaml
+    #
+    # namespace to deploy helm to
+    namespace: keycloak
+
+# portainer configuration
+portainer:
+  #
+  # subdomain name to access component from: <ingress>.<hostname>
+  ingress: portainer
+  #
+  # storage size for component
+  storage: 2Gi
+  #
+  # helm install configuration
+  helm:
+    #
+    # name
+    name: portainer
+    #
+    # values file
+    values: values.yaml
+    #
+    # namespace to deploy helm to
+    namespace: portainer
+
+# kubernetes dashboard configuration
+dashboard:
+  #
+  # subdomain name to access component from: <ingress>.<hostname>
+  ingress: dashboard
+  #
+  # helm install configuration
+  helm:
+    #
+    # name
+    name: dashboard
+    #
+    # values file
+    values: values.yaml
+    #
+    # namespace to deploy helm to
+    namespace: kubernetes-dashboard
+
+# UI for registry configuration
+registry-ui:
+  #
+  # subdomain name to access component from: <ingress>.<hostname>
+  ingress: registry
+  #
+  # helm install configuration
+  helm:
+    #
+    # name
+    name: registry-ui
+    #
+    # values file
+    values: values.yaml
+    #
+    # namespace to deploy helm to
+    namespace: registry
+
+# UI for Traefik
+traefik-ui:
+  #
+  # subdomain name to access component from: <ingress>.<hostname>
+  ingress: traefik
+
+# prometheus configuration
+prometheus:
+  #
+  # subdomain name to access component from: <ingress>.<hostname>
+  ingress: prometheus
+  #
+  # endpoint
+  endpoint: 192.168.120.29
+  #
+  # storage size for component
+  storage: 5Gi
+  #
+  # helm install configuration
+  helm:
+    #
+    # name
+    name: prometheus
+    #
+    # values file
+    values: values.yaml
+    #
+    # namespace to deploy helm to
+    namespace: monitoring
+
+# grafana configuration
+grafana:
+  #
+  # subdomain name to access component from: <ingress>.<hostname>
+  ingress: grafana
+
+# loki configuration
+loki:
+  #
+  # storage size for component
+  storage: 2Gi
+  #
+  # helm install configuration
+  helm:
+    #
+    # name
+    name: loki
+    #
+    # values file
+    values: values.yaml
+    #
+    # namespace to deploy helm to
+    namespace: monitoring
+
+# minio configuration
+# enable if you want to install minio on same server as kubernetes
+minio:
+  enabled: true
+  #
+  # minio user group
+  group: minio-user
+  #
+  # minio service user
+  user: minio-user
+  #
+  # password
+  password: coreos
+  #
+  # encrypted password
+  # can use makepasswd tool in ubuntu:
+  #   echo "<password>" > tmp.txt
+  #   pw="$(makepasswd --crypt-md5 --clearfrom=./tmp.txt)"
+  #   echo "$pw"
+  crypt: $1$6...
+  #
+  # volume to use as minio storage
+  volume: /mnt/data
+  #
+  # bucket name
+  bucket: k3s
+
+# velero configuration
+velero:
+  #
+  # credentials to access minio server
+  minio-user: minio-user
+  minio-password: coreos
+  #
+  # minio bucket name
+  minio-bucket: k3s
+  #
+  # s3 url of minio
+  minio-url: http://192.168.120.29:9000
+  #
+  # public url of minio
+  minio-public: http://192.168.120.29:9000
+  #
+  # helm install configuration
+  helm:
+    #
+    # name
+    name: velero
+    #
+    # values file
+    values: values.yaml
+    #
+    # namespace to deploy helm to
+    namespace: velero
+
+# gitea configuration
+gitea:
+  #
+  # subdomain name to access component from: <ingress>.<hostname>
+  ingress: git
+  #
+  # storage size for gitea
+  storage: 2Gi
+  #
+  # storage size for gitea database
+  storage-db: 2Gi
+  #
+  # helm install configuration
+  helm:
+    #
+    # name
+    name: gitea
+    #
+    # values file
+    values: values.yaml
+    #
+    # namespace to deploy helm to
+    namespace: gitea
+
+# argocd configuration
+argocd:
+  #
+  # namespace to deploy component to
+  namespace: argocd
+  #
+  # subdomain name to access component from: <ingress>.<hostname>
+  ingress: argocd
+  # 
+  # pasword is auto generated during deployment, retrieve it from secret:
+  # kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
+
+# tekton configuration
+tekton:
+  #
+  # subdomain name to access component from: <ingress>.<hostname>
+  ingress: tekton
+
+# rabbitmq configuration
+rabbitmq:
+  #
+  # subdomain name to access component from: <ingress>.<hostname>
+  ingress: rabbitmq
+  # 
+  # secret cookie
+  cookie: "Rabbit MQ cookie secret"
+  #
+  # storage size for component
+  storage: 2Gi
+  #
+  # helm install configuration
+  helm:
+    #
+    # name
+    name: rabbitmq
+    #
+    # values file
+    values: values.yaml
+    #
+    # namespace to deploy helm to
+    namespace: rabbitmq
+
+# ibm db2 configuration
+ibmdb2:
+  #
+  # db2 instance name
+  instance: db2inst1
+  # 
+  # password to access db2 instance
+  password: coreos
+  #
+  # storage size for component
+  storage: 10Gi
+  #
+  # db2 port 
+  # needs to be in K3S NodePort range (30000-32767)
+  port: 32000
+  #
+  # create data management console repository database (REPODB)
+  repodb: true
+  #
+  # helm install configuration
+  helm:
+    #
+    # name
+    name: db2
+    #
+    # values file
+    values: values.yaml
+    #
+    # namespace to deploy helm to
+    namespace: ibmdb2
+
+# db2 data management console configuration
+db2console: 
+  #
+  # mount directory name
+  dir: dmc
+  #
+  # docker name
+  docker: dmc
+
+# RStudio server configuration
+rocker:
+  #
+  # subdomain name to access component from: <ingress>.<hostname>
+  ingress: rocker
+  #
+  # password to access RStudio server
+  pass: coreos
+  #
+  # helm install configuration
+  helm:
+    #
+    # name
+    name: rocker
+    #
+    # values file
+    values: values.yaml
+    #
+    # namespace to deploy helm to
+    namespace: rocker
+
+# KubeHome configuration
+kube-home:
+  #
+  # cluster contact information
+  contacts:
+    title: Administrator
+    name: Aiken Dram
+    phone: 77-77
+    mail: eikendram@gmail.com
+  #
+  # cluster specifications
+  spec:
+    cpu: 4 Cores
+    memory: 8Gi
+    os: "38.20230625.3.0"
+    k3s: v1.25.11
+  #
+  # url to minio admin
+  minio: http://swk3s:9001/
+  #
+  # KubeUtils configuration
+  utils:
+    # relative link to access manager tool release
+    access: 2D
+
+# KubeR configuration
+kube-r:
+  # 
+  # subdomain name to access component from: <ingress>.<hostname>
+  ingress: report
+
+kube-app-template:
+  # 
+  # subdomain name to access component from: <ingress>.<hostname>
+  ingress: app
+
+# images for loaders
+loaders:
+  # container image for loading docker images to docker registry
+  packages: tools:v1.0
+  # container image for working with git repositories
+  git: alpine/git:v2.40.1
+  # container image for loading npm packages to gitea
+  npm: node:lts-alpine
+  # container image for loading nuget packages to gitea
+  nuget: dotnet/sdk:7.0
+  # container image for loading go packages to gitea
+  #go: 

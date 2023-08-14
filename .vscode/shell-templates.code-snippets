@@ -1,0 +1,71 @@
+{
+	// Place your Kubernetes workspace snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and 
+	// description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope 
+	// is left empty or omitted, the snippet gets applied to all languages. The prefix is what is 
+	// used to trigger the snippet and the body will be expanded and inserted. Possible variables are: 
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. 
+	// Placeholders with the same ids are connected.
+	// Example:
+	// "Print to console": {
+	// 	"scope": "javascript,typescript",
+	// 	"prefix": "log",
+	// 	"body": [
+	// 		"console.log('$1');",
+	// 		"$2"
+	// 	],
+	// 	"description": "Log output to console"
+	// }
+	"prepare.sh": {
+		"scope": "shellscript",
+		"prefix": "shPrepare",
+		"body": [
+			"#",
+			"{{- template \"prepare\" dict \"Version\" .Version.$1 \"Images\" .Images.$1 }}",
+			"#",
+			"if matches \"<$$C> <all>\" \"$$COMPONENT\"; then",
+			"\tif matches \"$$OBJECT\" \"<$2>\"; then",
+			"\t# $2",
+			"\t#",
+			"\t",
+			"fi"
+		],
+		"description": "_prepare.sh template"
+	},
+	"script.sh": {
+		"scope": "shellscript",
+		"prefix": "shScript",
+		"body": [
+			"#!/bin/sh",
+			"",
+			"{{- template \"script\" (dict \"Values\" .Values \"Version\" .Version.$1 \"Images\" .Images.$1 \"Value\" .Values.$1)}}",
+			"",
+			"{{- define \"init\"}}",
+			"\t#init",
+			"{{- end}}",
+			"",
+			"{{- define \"install-post\"}}",
+			"{{ template \"wait\" dict \"Name\" \"$1\" \"Namespace\" .Values.$1.helm.namespace}}",
+			"{{- end}}",
+			"",
+			"{{- define \"install\"}}",
+			"\t# 2D",
+			"{{- end}}",
+			"",
+			"{{- define \"install-echo\"}}",
+    		"\techo \"Custom message\"",
+    		"\t#{{- end}}",
+			"",
+			"{{- define \"upgrade\"}}",
+			"\t# 2D",
+			"{{- end}}",
+			"",
+			"{{- define \"uninstall\"}}",
+			"\t# 2D",
+			"\t",
+			"\t# namespace",
+			"\tkubectl delete ns {{.Values.$1.namespace}}",
+			"{{- end}}",
+		],
+		"description": "script.sh template"
+	}
+}

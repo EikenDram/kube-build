@@ -1,0 +1,96 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-registry
+  namespace: {{.Values.registry.namespace}}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{.Values.registry.storage}}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: registry
+  namespace: {{.Values.registry.namespace}}
+  labels:
+    app: registry
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: registry
+  template:
+    metadata:
+      labels:
+        app: registry
+    spec:
+      containers:
+      - name: registry
+        image: registry:2
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 5000
+        env:
+        - name: REGISTRY_AUTH
+          value: htpasswd
+        - name: REGISTRY_AUTH_HTPASSWD_REALM
+          value: Registry Realm
+        - name: REGISTRY_AUTH_HTPASSWD_PATH
+          value: /auth/htpasswd
+        - name: REGISTRY_HTTP_TLS_CERTIFICATE
+          value: /certs/tls.crt
+        - name: REGISTRY_HTTP_TLS_KEY
+          value: /certs/tls.key
+        - name: REGISTRY_HTTP_HEADERS_Access-Control-Allow-Origin
+          value: "['http://{{index .Values "registry-ui" "ingress"}}.{{.Values.server.hostname | lower}}']"
+        - name: REGISTRY_HTTP_HEADERS_Access-Control-Allow-Credentials
+          value: "[true]"
+        - name: REGISTRY_HTTP_HEADERS_Access-Control-Allow-Headers
+          value: "['Authorization', 'Accept', 'Cache-Control']"
+        - name: REGISTRY_HTTP_HEADERS_Access-Control-Allow-Methods
+          value: "['HEAD', 'GET', 'OPTIONS']"
+        volumeMounts:
+        - name: registry
+          mountPath: /var/lib/registry
+        - name: tls-registry
+          mountPath: /certs
+        - name: workdir
+          mountPath: /auth
+      initContainers:
+        - name: install
+          image: busybox:1.36.1
+          command: ['sh', '-c', 'cp /sauth/* /auth/']
+          volumeMounts:
+          - name: workdir
+            mountPath: "/auth"
+          - name: htpasswd
+            mountPath: /sauth
+      volumes:
+      - name: registry
+        persistentVolumeClaim:
+          claimName: pvc-registry
+      - name: tls-registry
+        secret:
+          secretName: tls-registry
+      - name: htpasswd
+        secret:
+          secretName: htpasswd
+      - name: workdir
+        emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-registry
+  namespace: {{.Values.registry.namespace}}
+spec:
+  type: LoadBalancer
+  ports:
+    - name: http
+      port: 5000
+      targetPort: 5000
+  selector:
+    app: registry

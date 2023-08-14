@@ -1,0 +1,134 @@
+# KubeHome configuration
+config:
+  # localization
+  locale: |
+    {
+      "app": "Kubernetes cluster",
+      "utils": "Tools",
+      "open": "Open",
+      "docs": "Documentation",
+      "services": "Services",
+      "contacts": "Contacts",
+      "system": "System",
+      "specs": "Specifications"
+    }
+  # applications
+  apps: |
+    [
+      {
+        "name": "Application template",
+        "desc": "Example of an application deployed in cluster",
+        "url": "http://{{index .Values "kube-app-template" "ingress"}}.{{.Values.server.hostname | lower}}",
+        "docs": "http://{{index .Values "kube-app-template" "ingress"}}.{{.Values.server.hostname | lower}}/docs"
+      }
+    ]
+
+  cluster: |
+    {
+      "name": "{{.Values.server.hostname}}",
+      "contacts": [
+        {
+          {{- with index .Values "kube-home" "contacts"}}
+          "title": "{{.title}}",
+          "name": "{{.name}}",
+          "phone": "{{.phone}}",
+          "mail": "{{.mail}}"
+          {{- end}}
+        }
+      ],
+      "specs": [
+        { "name": "IP", "value": "{{.Values.server.ip}}" },
+        {{- with index .Values "kube-home" "spec"}}
+        { "name": "CPU", "value": "{{.cpu}}" },
+        { "name": "Memory", "value": "{{.memory}}" },
+        { "name": "Fedora CoreOS", "value": "{{.os}}" },
+        { "name": "K3S", "value": "{{.k3s}}" }
+        {{- end}}
+      ],
+      "utils": [
+        { 
+          "name": "Access manager",
+          "desc": "Tool for managing Keycloak users", 
+          "url": "http://{{.Values.gitea.ingress}}.{{.Values.server.hostname | lower}}/{{.Values.cluster.user}}/kube-utils/{{index .Values "kube-home" "utils" "access"}}" 
+        }
+      ],
+      "services": [
+        {
+          "name": "Keycloak",
+          "desc": "Access management",
+          "url": "http://{{.Values.keycloak.ingress}}.{{.Values.server.hostname | lower}}"
+        },
+        {
+          "name": "KubeR",
+          "desc": "Report processing service",
+          "url": "http://{{index .Values "kube-r" "ingress"}}.{{.Values.server.hostname | lower}}/"
+        }
+        ,
+        {
+          "name": "Rabbit MQ",
+          "desc": "Report processing service",
+          "url": "http://{{.Values.rabbitmq.ingress}}.{{.Values.server.hostname | lower}}/"
+        },
+        {
+          "name": "Gitea",
+          "desc": "Git server",
+          "url": "http://{{.Values.gitea.ingress}}.{{.Values.server.hostname | lower}}/"
+        },
+        {
+          "name": "IBM DB2",
+          "desc": "Database port: {{.Values.ibmdb2.port}}",
+          "url": "https://{{.Values.server.hostname | lower}}:11081/console/"
+        }
+      ],
+      "system": [
+        {
+          "name": "Dashboard",
+          "desc": "Kubernetes dashboard",
+          "url": "http://{{.Values.dashboard.ingress}}.{{.Values.server.hostname | lower}}/"
+        },
+        {
+          "name": "Portainer",
+          "desc": "Kubernetes management",
+          "url": "http://{{.Values.portainer.ingress}}.{{.Values.server.hostname | lower}}/"
+        },
+        {
+          "name": "Grafana",
+          "desc": "Monitoring UI",
+          "url": "http://{{.Values.grafana.ingress}}.{{.Values.server.hostname | lower}}/"
+        },
+        {
+          "name": "Argo CD",
+          "desc": "Continuous delivery software",
+          "url": "https://{{.Values.argocd.ingress}}.{{.Values.server.hostname | lower}}/"
+        },
+        {
+          "name": "Tekton",
+          "desc": "CI/CD Pipelines",
+          "url": "http://{{.Values.tekton.ingress}}.{{.Values.server.hostname | lower}}/"
+        },
+        {
+          "name": "MinIO",
+          "desc": "Backup storage",
+          "url": "{{index .Values "kube-home" "minio"}}"
+        },
+        {
+          "name": "Prometheus",
+          "desc": "Monitoring aggregator",
+          "url": "http://{{.Values.prometheus.ingress}}.{{.Values.server.hostname | lower}}/"
+        },
+        {
+          "name": "Registry",
+          "desc": "Private docker registry",
+          "url": "http://{{index .Values "registry-ui" "ingress"}}.{{.Values.server.hostname | lower}}/"
+        },
+        {
+          "name": "Traefik",
+          "desc": "Traefik dashboard",
+          "url": "http://{{index .Values "traefik-ui" "ingress"}}.{{.Values.server.hostname | lower}}/dashboard/"
+        }
+      ]
+    }
+
+ingress:
+  # Fully qualified domain name of a network host.
+  host: {{.Values.server.hostname | lower}}

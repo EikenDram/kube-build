@@ -1,0 +1,165 @@
+variant: fcos
+version: 1.4.0
+systemd:
+  units:
+    # turn off countme in air-gapped
+    - name: rpm-ostree-countme.timer
+      enabled: false
+      mask: true
+    # think i need this for storage
+    - name: iscsid.service
+      enabled: true
+passwd:
+  users:
+    # core user
+    - name: {{.Values.server.user}}
+      ssh_authorized_keys:
+        - ssh-rsa {{.Values.server.ssh}}
+    {{- if .Values.server.admin.enabled }}
+    # additional admin user with password
+    - name: {{.Values.server.admin.name}}
+      groups:
+        - "sudo"
+        - "docker"
+      password_hash: {{.Values.server.admin.hash}}
+    {{- end}}
+storage:
+  files:
+    {{- if .Values.server.admin.enabled }}
+    # enable password auth if we add admin
+    - path: /etc/ssh/sshd_config.d/20-enable-passwords.conf
+      mode: 0644
+      contents:
+        inline: |
+          # Enable SSH password login
+          PasswordAuthentication yes
+    {{- end}}
+    # hostname
+    - path: /etc/hostname
+      mode: 0644
+      contents:
+        inline: |
+          {{.Values.server.hostname}}
+    # add scripts directory to PATH for users
+    - path: /etc/profile.d/xx-scripts.sh
+      overwrite: true
+      contents:
+        inline: |
+          export PATH=$PATH:~/deployment/scripts
+    # add scripts directory to PATH for sudo command
+    - path: /etc/sudoers.d/deployment-script-sudo
+      overwrite: true
+      content:
+        inline: |
+          Defaults    secure_path = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/var/lib/snapd/snap/bin:/home/core/deployment/scripts
+    # add aliases for K3S
+    # and export KUBECONFIG for K9S
+    - path: /etc/profile.d/xx-aliases.sh
+      mode: 0644
+      contents:
+        inline: |
+          # Aliases for K3S from IBM article
+          alias k='kubectl'
+          alias kc='k config view --minify | grep name'
+          alias kdp='kubectl describe pod'
+          alias krh='kubectl run --help | more'
+          alias ugh='kubectl get --help | more'
+          alias c='clear'
+          alias kd='kubectl describe pod'
+          alias ke='kubectl explain'
+          alias kf='kubectl create -f'
+          alias kg='kubectl get pods --show-labels'
+          alias kr='kubectl replace -f'
+          alias kh='kubectl --help | more'
+          alias krh='kubectl run --help | more'
+          alias ks='kubectl get namespaces'
+          alias l='ls -lrt'
+          alias ll='vi ls -rt | tail -1'
+          alias kga='k get pod --all-namespaces'
+          alias kgaa='kubectl get all --show-labels'
+          # export
+          export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+  # deployment directories
+  directories:
+    - path: /home/{{.Values.server.user}}/deployment
+      user:
+        name: {{.Values.server.user}}
+      group:
+        name: {{.Values.server.user}}
+    - path: /home/{{.Values.server.user}}/deployment/cert
+      user:
+        name: {{.Values.server.user}}
+      group:
+        name: {{.Values.server.user}}
+    - path: /home/{{.Values.server.user}}/deployment/bin
+      user:
+        name: {{.Values.server.user}}
+      group:
+        name: {{.Values.server.user}}
+    - path: /home/{{.Values.server.user}}/deployment/git
+      user:
+        name: {{.Values.server.user}}
+      group:
+        name: {{.Values.server.user}}
+    - path: /home/{{.Values.server.user}}/deployment/helm
+      user:
+        name: {{.Values.server.user}}
+      group:
+        name: {{.Values.server.user}}
+    - path: /home/{{.Values.server.user}}/deployment/install
+      user:
+        name: {{.Values.server.user}}
+      group:
+        name: {{.Values.server.user}}
+    - path: /home/{{.Values.server.user}}/deployment/log
+      user:
+        name: {{.Values.server.user}}
+      group:
+        name: {{.Values.server.user}}
+    - path: /home/{{.Values.server.user}}/deployment/manifest
+      user:
+        name: {{.Values.server.user}}
+      group:
+        name: {{.Values.server.user}}
+    - path: /home/{{.Values.server.user}}/deployment/scripts
+      user:
+        name: {{.Values.server.user}}
+      group:
+        name: {{.Values.server.user}}
+    - path: /home/{{.Values.server.user}}/deployment/packages
+      user:
+        name: {{.Values.server.user}}
+      group:
+        name: {{.Values.server.user}}
+{{- range .Components }}
+    - path: /home/{{$.Values.server.user}}/deployment/bin/{{index $.Version .Name "dir"}}
+      user:
+        name: {{$.Values.server.user}}
+      group:
+        name: {{$.Values.server.user}}
+    - path: /home/{{$.Values.server.user}}/deployment/git/{{index $.Version .Name "dir"}}
+      user:
+        name: {{$.Values.server.user}}
+      group:
+        name: {{$.Values.server.user}}
+    - path: /home/{{$.Values.server.user}}/deployment/helm/{{index $.Version .Name "dir"}}
+      user:
+        name: {{$.Values.server.user}}
+      group:
+        name: {{$.Values.server.user}}
+    - path: /home/{{$.Values.server.user}}/deployment/install/{{index $.Version .Name "dir"}}
+      user:
+        name: {{$.Values.server.user}}
+      group:
+        name: {{$.Values.server.user}}
+    - path: /home/{{$.Values.server.user}}/deployment/manifest/{{index $.Version .Name "dir"}}
+      user:
+        name: {{$.Values.server.user}}
+      group:
+        name: {{$.Values.server.user}}
+    - path: /home/{{$.Values.server.user}}/deployment/packages/{{index $.Version .Name "dir"}}
+      user:
+        name: {{$.Values.server.user}}
+      group:
+        name: {{$.Values.server.user}}
+{{- end }}

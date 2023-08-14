@@ -1,0 +1,17 @@
+{
+   "CN": "{{.Values.server.hostname}}",
+   "hosts": [ "{{.Values.server.hostname}}" ],
+   "key": {
+      "algo": "rsa",
+      "size": 2048
+   },
+   "names": [
+      {
+         "OU": "{{.Values.registry.cert.OU}}",
+         "O": "{{.Values.registry.cert.O}}",
+         "L": "{{.Values.registry.cert.L}}",
+         "S": "{{.Values.registry.cert.S}}",
+         "C": "{{.Values.registry.cert.C}}"
+      }
+  ]
+}
