@@ -93,6 +93,7 @@ Run tool in project root directory to build deployment in `deployment` directory
 Build tool supports optional parameters to change default configuration files and directory names, check the available options by running tool with `--help` flag
 ```sh
 ./build --help
+```
 
 For example, if you want to create custom deployment with values for production server from `config/values.prod.yaml` and want to build it to directory `deployment-prod` then the command to run will be: 
 ```sh
