@@ -1,5 +1,12 @@
 # KubeHome configuration
 config:
+  # logo url
+  logo: |
+    {
+      "url": "http://{{.Values.gitea.ingress}}.{{.Values.server.hostname | lower}}/{{.Values.cluster.user}}/cluster-config/raw/branch/main/kube-home/logo.png",
+      "height": "300"
+    }
+
   # localization
   locale: |
     {
@@ -12,6 +19,7 @@ config:
       "system": "System",
       "specs": "Specifications"
     }
+
   # applications
   apps: |
     [
@@ -23,6 +31,7 @@ config:
       }
     ]
 
+  # cluster
   cluster: |
     {
       "name": "{{.Values.server.hostname}}",
@@ -62,8 +71,7 @@ config:
           "name": "KubeR",
           "desc": "Report processing service",
           "url": "http://{{index .Values "kube-r" "ingress"}}.{{.Values.server.hostname | lower}}/"
-        }
-        ,
+        },
         {
           "name": "Rabbit MQ",
           "desc": "Report processing service",

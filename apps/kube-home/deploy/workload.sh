@@ -8,7 +8,9 @@ cd cluster-config
 mkdir kube-home
 # copy values.yaml
 cp /tmp/values.yaml ./kube-home/
+# copy logo.png
+cp /tmp/logo.png ./kube-home/
 # stage all and commit
-git add -A && git commit -m "Init KubeHome values.yaml"
+git add -A && git commit -m "Init KubeHome"
 # push to gitea
 git push

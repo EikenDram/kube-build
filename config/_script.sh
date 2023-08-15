@@ -11,7 +11,7 @@ print_usage()
         -u              Upgrade {{.Version.dir}}
         -d              Uninstall {{.Version.dir}}
         -p              Load packages for {{.Version.dir}} into docker registry
-        -l              Load chart for {{.Version.dir}} into gitea
+        -l              Load chart for {{.Version.dir}} into chartmuseum
         
         -h              Help
 

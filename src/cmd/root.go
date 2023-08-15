@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"log"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -64,12 +63,10 @@ func init() {
 // build deployment files from templates in directory dir using provided name name
 func buildComponent(dir string, name string) {
 	//build deployment from directory with name
-	//go through all files and build:
+	//go through all files in deploy and build:
 	tDir := dir + "/deploy"
 	files, err := os.ReadDir(tDir)
-	if err != nil {
-		log.Fatal(err)
-	}
+	check(err)
 
 	for _, file := range files {
 		//skip directories
@@ -104,6 +101,22 @@ func buildComponent(dir string, name string) {
 		os.Mkdir("./"+deploymentDir+"/install/"+name, os.ModePerm)
 		buildTemplate("install/"+name+"/"+file.Name(), file.Name(), tDir+"/"+file.Name())
 	}
+
+	//go through all files in bin and copy them to bin
+	tDir = dir + "/bin"
+	files, err = os.ReadDir(tDir)
+	if err == nil {
+		for _, file := range files {
+			//skip directories
+			if file.IsDir() {
+				continue
+			}
+			//move all files to bin
+			os.Mkdir("./"+deploymentDir+"/bin/"+name, os.ModePerm)
+			copyFile(tDir+"/"+file.Name(), "./"+deploymentDir+"/bin/"+name+"/"+file.Name())
+		}
+	}
+
 }
 
 // return location from name
