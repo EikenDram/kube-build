@@ -92,7 +92,7 @@ config:
         {
           "name": "Dashboard",
           "desc": "Kubernetes dashboard",
-          "url": "http://{{.Values.dashboard.ingress}}.{{.Values.server.hostname | lower}}/"
+          "url": "https://{{.Values.dashboard.ingress}}.{{.Values.server.hostname | lower}}/"
         },
         {
           "name": "Portainer",
