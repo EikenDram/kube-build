@@ -169,6 +169,8 @@ prometheus.sh
 ```
 to install Prometheus and Grafana from helm chart
 
+Import `openebs-dashboard.json` from `bin/prometheus` as a new dashboard in grafana to monitor openebs
+
 ### 2. [Loki](https://grafana.com/oss/loki/)
 
 Log aggregator stack from `grafana/loki-stack` helm chart
@@ -181,7 +183,7 @@ to install Loki from helm chart
 
 To view logs in grafana, add http://loki.{{.Values.prometheus.helm.namespace}}:3100 as a new loki data source
 
-Import `loki-dashboard.json` from `bin/loki/` as a new dashboard in grafana
+Import `loki-dashboard.json` from `bin/loki/` as a new dashboard in grafana to monitor loki logs
 
 ## Backup
 

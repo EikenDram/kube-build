@@ -203,6 +203,9 @@ traefik-ui:
 prometheus:
   dir: prometheus
   title: Prometheus
+  bin:
+  - url: https://grafana.com/api/dashboards/12171/revisions/2/download
+    output: openebs-dashboard.json
   helm: 
     repo: prometheus-community
     url: https://prometheus-community.github.io/helm-charts
