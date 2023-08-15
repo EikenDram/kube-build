@@ -3,9 +3,7 @@
 {{- template "script" (dict "Values" .Values "Version" .Version.argocd "Images" .Images.argocd)}}
 
 {{- define "init"}}
-    # add ingress to gitea to hosts
-    echo "Adding argocd's ingress to /etc/hosts"
-    echo '{{.Values.server.ip}} {{.Values.argocd.ingress}}.{{.Values.server.hostname | lower}}' >> /etc/hosts
+    {{ template "etc-hosts" dict "Values" .Values "ingress" .Values.argocd.ingress }}
 {{- end}}
 
 {{- define "install"}}

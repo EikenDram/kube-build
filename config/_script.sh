@@ -214,3 +214,17 @@ fi
     sleep 3
     kubectl wait --for=condition=ready pod -l app.kubernetes.io/name={{.Name}} -n {{.Namespace}} --timeout=1m
 {{- end}}
+
+{{- define "etc-hosts"}}
+    # add ingress to {{.ingress}} to hosts
+    INGRESS="{{.Values.server.ip}} {{.ingress}}.{{.Values.server.hostname | lower}}"
+    if grep -Fxq "$INGRESS" /etc/hosts
+    then
+        # found
+        echo "Ingress already exists in /etc/hosts"
+    else
+        # not found
+        echo "Adding {{.ingress}} ingress to /etc/hosts"
+        echo "$INGRESS" >> /etc/hosts
+    fi
+{{- end}}

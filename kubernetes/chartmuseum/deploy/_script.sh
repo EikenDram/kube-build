@@ -3,9 +3,7 @@
 {{- template "script" (dict "Values" .Values "Version" .Version.chartmuseum "Images" .Images.chartmuseum)}}
 
 {{- define "init"}}
-    # add ingress to chartmuseum to hosts
-    echo "Adding chartmuseum's ingress to /etc/hosts"
-    echo '{{.Values.server.ip}} {{.Values.chartmuseum.ingress}}.{{.Values.server.hostname | lower}}' >> /etc/hosts
+    {{ template "etc-hosts" dict "Values" .Values "ingress" .Values.chartmuseum.ingress }}
 {{- end}}
 
 {{- define "install"}}
