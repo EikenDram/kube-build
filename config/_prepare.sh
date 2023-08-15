@@ -114,7 +114,7 @@ if matches "<{{$.Version.dir}}> <all>" "$COMPONENT"; then
         {{- $file := .output}}
         {{- if .unpack}}
             {{- if .unpack.extract}}
-                {{- $file = .unpack.extract}}
+                {{- $file = .unpack.extract | base}}
             {{- end}}
             {{- if .unpack.tar}}
                 {{- $file = .unpack.tar}}
