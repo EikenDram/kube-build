@@ -63,3 +63,7 @@ OpenEBS Dynamic Local Provisioner logs can be fetched using:
 ```sh
 kubectl logs -n openebs -l openebs.io/component-name=openebs-localpv-provisioner
 ```
+
+## Monitoring
+
+There's a ServiceMonitor for prometheus operator, but not sure if it works with the lite version

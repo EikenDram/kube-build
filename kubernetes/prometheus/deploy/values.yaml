@@ -172,6 +172,9 @@ prometheus:
     # do not require new PrometheusRule to have all the helm labels in order to match
     ruleSelectorNilUsesHelmValues: false
 
+    # add all ServiceMonitors
+    serviceMonitorSelectorNilUsesHelmValues: true
+
     # external labels will be common for all alerts and available for templating in AlertManager
     externalLabels: {'cluster': 'k3s', 'env': 'dev', 'jumpbox': 'localhost.local'}
 
