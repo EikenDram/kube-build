@@ -224,6 +224,8 @@ Build program goes through all components as defined in `components` array in `b
 
 - everything else is processed as a template into `deployment/install/{component name}/` directory with the same file name
 
+Files in `.path` + `/bin/` directory are copied into deployment directly
+
 ### Script templates
 
 Templates `_prepare.sh` and `_script.sh` in `config` directory contain service scripts and following sub-templates:
