@@ -2,21 +2,11 @@
 
 This is access manager for cluster resources using singe sign-on policy
 
-## Images
-
-```
-docker.io/bitnami/postgresql:15.3.0-debian-11-r17
-docker.io/bitnami/keycloak:21.1.2-debian-11-r5
-```
-
 ## Install
 
-Install from helm:
-```sh
-helm install keycloak gitea/keycloak -f manifest/keycloak/values.yaml -n keycloak --create-namespace
-```
+Install from helm chart
 
-## Batch update password
+## Update password
 
 In order to provide admin-cli secret need to switch client auth on and copy the token here
 
@@ -69,8 +59,4 @@ curl --location --request POST 'http://keycloak.k3s.local/auth/admin/realms/mast
 --data-raw '{"firstName":"Aiken","lastName":"Dram", "email":"test@test.com", "enabled":"true", "username":"app-user"}'
 ```
 
-Alright this works, can later write some sort of console tool (maybe in go) to bulk update user passwords from a file
-
-## Reverse proxy a resource inside kubernetes cluster
-
-<2D>
+Alright this works, will later write some sort of console tool in go to bulk update user passwords from a text file (KubeUtils)

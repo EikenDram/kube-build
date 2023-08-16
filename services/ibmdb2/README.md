@@ -1,17 +1,21 @@
 # IBM DB2 server
 
-There's a cloud-native version of DB2 Community edition called `db2u`, which is the one that's installed with the official helm chart, but there's some IBM Cloud prerequisites, and limitation are too restrictive i think
+There's a cloud-native version of DB2 Community edition called `db2u`, which is the one that's installed with the official helm chart, but there's some IBM Cloud prerequisites, and limitation are too strict
 
-## Fix
+Ended up writing helm chart for installing db2 community edition docker image in kubernetes
 
-If there's some access error
+## Install
 
-Run as root inside pod:
+Install from helm chart
+
+## Access error
+
+Run as root inside pod to fix access error on startup:
 ```sh
 chmod a+w /database/config
 ```
 
-And restart pod (kill in k9s for example)
+And restart pod (kill in k9s)
 
 ## DB2 CLI
 

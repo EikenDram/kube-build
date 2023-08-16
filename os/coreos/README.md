@@ -4,7 +4,7 @@ Will be using CoreOS with K3S kubernetes cluster of a single server for start
 
 Download and mount CoreOS image `image/fedora-coreos-38.20230609.3.0-live.x86_64.iso`, server will load into memory-only mode with command prompt
 
-## Prepare ignition file
+## Butane
 
 Download `butane-x86_64-pc-windows-gnu.exe` to make ignition file out of yaml
 
@@ -70,7 +70,7 @@ Check that ignition file is accessible from server with command:
 curl http://192.168.120.3/coreos.ign
 ```
 
-If you deploy `coreos.ign` in IIS add this MIME type for `.ign`: `application/vnd.coreos.ignition+json`
+If you deploy `coreos.ign` from IIS add this MIME type for `.ign`: `application/vnd.coreos.ignition+json`
 
 ## Install CoreOS
 
@@ -81,12 +81,13 @@ sudo coreos-installer install /dev/sda --ignition-url http://192.168.120.3/coreo
 
 Turn off server with 
 ```sh
-sudo shutdown
+sudo shutdown -h now
 ``` 
+and remove ISO image. 
 
-and remove ISO image. Ensure that server is accessible by the hostname thought DNS or `hosts` file, after booting server again we can connect to it through ssh with:
+Ensure that server is accessible by the hostname thought DNS or `hosts` file, after booting server again we can connect to it with ssh:
 ```sh
-ssh core@$HOSTNAME
+ssh core@k3s.local
 ```
 
 We can also access server with password for user `admin` as defined in yaml configuration
@@ -144,4 +145,4 @@ rpm-ostree override remove nfs-utils-coreos --install nfs-utils httpd-tools skop
 
 Alright, no idea how it's supposed to work, exposing 80 port doesn't seem to work, not that i know how to check if it's working or not, but `rpm-ostree install skopeo` doesn't find the package so fail for now
 
-Can try building a custom coreos image, but that's quite a lot of work, so maybe sometime later
+Can try building a custom coreos image, but that's quite a lot of work, maybe sometime later

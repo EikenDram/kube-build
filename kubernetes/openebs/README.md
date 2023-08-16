@@ -2,27 +2,11 @@
 
 Storage service for kubernetes cluster
 
-## Images
-
-```
-openebs/node-disk-manager:2.1.0
-openebs/node-disk-operator:2.1.0
-openebs/node-disk-exporter:2.1.0
-openebs/provisioner-localpv:3.4.0
-openebs/linux-utils:3.4.0
-```
-
 ## Install
 
-Install local-pv minimal installation with: 
-```sh
-kubectl apply -f storage/openebs-operator-lite.yaml 
-kubectl apply -f storage/openebs-lite-sc.yaml
-```
+Install local-pv minimal from manifests
 
-## Changing default storageclass to openebs
-
-Run
+Changing default storageclass to openebs
 ```sh
 kubectl patch storageclass local-path -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"false"}}}'
 
@@ -34,7 +18,7 @@ Check that openebs is default now
 kubectl get storageclass
 ```
 
-## Test that the storage is working
+## Testing
 
 Run
 ```sh

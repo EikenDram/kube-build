@@ -4,18 +4,20 @@ Continuous deployment for applications inside cluster
 
 ## Install
 
-From manifest:
-```sh
-k create namespace argocd
-k apply -n argocd -f argocd/install.yaml
-```
+Install from manifests
 
-Accessing Argo UI via Ingress:
+Accessing UI via ingress:
 ```sh
-k apply -f argocd/ingress.yaml
+kubectl apply -f install/argocd/ingress.yaml
 ```
 
 Password is auto-generated, can get it via:
 ```sh
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
+```
+
+Need to fix access with
+```sh
+kubectl apply -f install/argocd/argocd-params.yaml
+kubectl scale -n argocd deployment/argocd-server --replicas=0 && kubectl scale -n argocd deployment/argocd-server --replicas=1
 ```

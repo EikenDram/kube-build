@@ -4,16 +4,11 @@ Git server and packages repository
 
 ## Install
 
-From helm:
-```sh
-helm install gitea helm/gitea-8.3.0.tgz -f manifest/gitea/values.yaml --namespace=gitea --create-namespace
-```
+Install from helm
 
-## Accessing UI
+Accessing UI via ingress `git.k3s.local`
 
-Ingress will link `git.k3s.local` to gitea server
-
-From accessing machine add to hosts:
+From other machines in network add to hosts:
 ```
 192.168.120.15  git.k3s.local
 ```

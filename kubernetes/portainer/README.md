@@ -1,15 +1,9 @@
 # Installing Portainer
 
-Think dashboard had better functionality, though for managing cluster k9s feels the best so far
-
-## Images
-
-```
-portainer/portainer-ce:2.18.3
-```
+Think dashboard has better functionality, though for managing cluster k9s feels the best so far
 
 # Install
 
-```sh
-helm install portainer helm/portainer-1.0.43.tgz -f portainer/values.yaml -n portainer --create-namespace
-```
+Install from helm chart
+
+Will need to setup the server manually after deployment before it goes into time-out mode

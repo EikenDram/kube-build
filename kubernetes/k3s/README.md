@@ -41,7 +41,7 @@ to `etc/hosts`:
 sudo nano /etc/hosts
 ```
 
-## Helpful aliases for kubectl
+## Aliases for kubectl
 
 Added K3S aliases `xx-aliases.sh` to `/etc/profile.d/` in butane config
 

@@ -2,24 +2,14 @@
 
 Service for managing backups inside cluster
 
-## Images
-
-```
-velero/velero:v1.11.0
-docker.io/bitnami/kubectl:1.27
-velero/velero-plugin-for-aws:v1.7.0
-```
-
 ## Install
 
-```sh
-helm install velero helm/velero-4.0.3.tgz -f velero/values.yaml --namespace=velero --create-namespace --set-file credentials.secretContents.cloud=velero/minio-credentials
-```
+Install from helm chart
 
 ## Working with velero
 
-To create backup of everything in namespace:
+To create backup of everything in selected namespace:
 ```sh
-velero backup create <namespace-backup> --include-namespaces <namespace>
+velero backup create $BACKUP --include-namespaces $NAMESPACE
 ```
 

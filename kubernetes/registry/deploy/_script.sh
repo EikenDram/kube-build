@@ -19,10 +19,10 @@
     echo "Generating certificates in cert/ directory"
     cd cert
 
-    # Generate certificates with cfssl
+    # Generate CA certificate
     cfssl gencert -initca ./../install/{{.Version.dir}}/registry.json | cfssljson -bare registry-ca
 
-    # Confirm K3S port by running kubectl config view
+    # Generate server certificate
     cfssl gencert -ca=registry-ca.pem -ca-key=registry-ca-key.pem -config=./../install/{{.Version.dir}}/cfssl.json -profile=server -hostname={{.Values.server.hostname}} ./../install/{{.Version.dir}}/serverRequest.json | cfssljson -bare registry -server=https://127.0.0.1:6443
 
     # change owner to user

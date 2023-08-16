@@ -4,39 +4,16 @@ Continuous Integration/Continuous Delivery Pipelines
 
 ## Install
 
-Install pipelines
+Install from manifests
+
+Install dashboard ingress
 ```sh
-k apply -f tekton/pipelines.yaml
+k apply -f install/tekton/ingress.yaml
 ```
 
-Install triggers
-```sh
-k apply -f tekton/triggers.yaml
-k apply -f tekton/interceptors.yaml
-```
+## @sha256
 
-Install dashboard with ingress from `tekton.k3s.local`
-```sh
-k apply -f tekton/dashboard.yaml
-k apply -f tekton/dashboard-ingress.yaml
-```
-
-Install CLI
-```sh
-sudo mv packages/tkn /usr/local/bin/
-sudo chown core:core /usr/local/bin/tkn
-sudo chmod +x /usr/local/bin/tkn
-```
-
-## Fixes
-
-Alright, i had to modify manifests and remove all @sha from it, but could research into preserving @sha when using skopeo
-
-## Error
-
-When adding certificate directly into yaml need to add two tabs in each line
-
-Need to switch to creating secret from file, should be better
+Had to modify manifests and remove all @sha from it, tried preserving @sha when using skopeo, but WSL's ubuntu's skopeo doesn't support the flag it seems
 
 ## Error
 

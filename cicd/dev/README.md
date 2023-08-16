@@ -7,4 +7,4 @@
 
 # 2D:
 
-Need to make a script that would automate pushing packages into gitea using loaders with these images
+Need to make a script? that would automate moving packages into gitea using loaders
