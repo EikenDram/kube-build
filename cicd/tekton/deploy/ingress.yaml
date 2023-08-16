@@ -1,22 +1,15 @@
-apiVersion: v1
-kind: Secret
-metadata:
-  name: secret-basic-auth
-  namespace: tekton-pipelines
-type: kubernetes.io/basic-auth
-stringData:
-  username: {{.Values.cluster.user}}
-  password: {{.Values.cluster.password}}
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
-  name: basic-auth
+  name: oauth2
   namespace: tekton-pipelines
 spec:
-  basicAuth:
-    secret: secret-basic-auth
-    removeHeader: true
+  forwardAuth:
+    address: http://oauth2-proxy.tekton-pipelines/
+    trustForwardHeader: true
+    authResponseHeaders:
+      - X-Forwarded-User
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -25,7 +18,7 @@ metadata:
   namespace: tekton-pipelines
   annotations:
     spec/ingressClassName: traefik
-    traefik.ingress.kubernetes.io/router.middlewares: tekton-pipelines-basic-auth@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: tekton-pipelines-oauth2@kubernetescrd
 spec:
   rules:
   - host: {{.Values.tekton.ingress}}.{{.Values.server.hostname | lower}}

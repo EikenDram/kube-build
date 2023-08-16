@@ -130,9 +130,9 @@ if matches "$OBJECT" "<helm>"; then
     # helm
     echo "Loading helm chart {{.name}}-{{.version}}.tgz into chartmuseum"
     #helm cm-push "helm/{{$.Version.dir}}/{{.name}}-{{.version}}.tgz" chartmuseum
-    #helm repo update > /dev/null
     curl --user "{{$.Values.cluster.user}}:{{$.Values.cluster.password}}"  --data-binary "@helm/{{$.Version.dir}}/{{.name}}-{{.version}}.tgz" http://{{$.Values.chartmuseum.ingress}}.{{$.Values.server.hostname | lower}}/api/charts
     echo ""
+    helm repo update > /dev/null
     #
 fi
 {{- end}}

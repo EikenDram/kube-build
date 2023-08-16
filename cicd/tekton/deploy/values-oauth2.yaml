@@ -1,0 +1,18 @@
+# Oauth client configuration specifics
+config:
+  clientID: "prometheus-proxy"
+  clientSecret: "LF8yYSgMzr7pus5QjUASRl77Gyr4U62b"
+  # Create a new secret with the following command
+  # openssl rand -base64 32 | head -c 32 | base64
+  cookieSecret: "amN2d2k5UXBKaWlCaUZEcFlFS0FVMGIrTjU2Y0ZRS3I="
+  configFile: |-
+    --provider=keycloak-oidc
+    --client-id=prometheus-oauth
+    --client-secret=LF8yYSgMzr7pus5QjUASRl77Gyr4U62b
+    --redirect-url=https://tekton.swk3s/oauth2/callback
+    --oidc-issuer-url=https://keycloak.keycloak/auth/realms/cluster
+  #  --allowed-role=<realm role name> // Optional, required realm role
+
+metrics:
+  # Enable Prometheus metrics endpoint
+  enabled: false

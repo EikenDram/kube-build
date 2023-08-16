@@ -164,6 +164,16 @@ keycloak:
     name: keycloak
     version: 15.1.7
 
+## Reverse proxy OAuth2
+oauth2:
+  dir: oauth2
+  title: OAuth2
+  helm:
+    repo: oauth2
+    url: https://oauth2-proxy.github.io/manifests
+    name: oauth2-proxy
+    version: 6.16.1
+
 ## Kubernetes dashboard
 dashboard:
   dir: dashboard

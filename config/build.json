@@ -114,6 +114,11 @@
             "message": "Keycloak"
         },
         {
+            "name": "oauth2",
+            "path": "./kubernetes/oauth2",
+            "message": "OAuth2"
+        },
+        {
             "name": "dashboard",
             "path": "./kubernetes/dashboard",
             "message": "Kubernetes dashboard"

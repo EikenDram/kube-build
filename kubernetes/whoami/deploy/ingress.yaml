@@ -1,0 +1,42 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: whoami-oauth2
+spec:
+  forwardAuth:
+    address: http://whoami-oauth2-proxy.default/
+    trustForwardHeader: true
+    authResponseHeaders:
+      - X-Forwarded-User
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: whoami
+  annotations:
+    spec/ingressClassName: traefik
+    traefik.ingress.kubernetes.io/router.middlewares: default-whoami-oauth2@kubernetescrd
+spec:
+  rules:
+  - host: whoami.swk3s
+    http:
+      paths:
+      - pathType: ImplementationSpecific
+        backend:
+          service:
+            name: whoami
+            port:
+              number: 80
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: whoami-oauth2
+spec:
+  routes:
+    - match: "Host(`whoami.swk3s`) && PathPrefix(`/oauth2/`)"
+      kind: Rule
+      services:
+        - name: whoami-oauth2-proxy
+          port: 80

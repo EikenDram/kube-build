@@ -1,0 +1,30 @@
+config:
+  clientID: "oauth2-proxy"
+  clientSecret: "LF8yYSgMzr7pus5QjUASRl77Gyr4U62b"
+  # Create a new secret with the following command
+  # openssl rand -base64 32 | head -c 32 | base64
+  cookieSecret: "bGFsZWlyOHhxZEw2ZTRiUmdjcGpKRzViNW80RGJhWUk="
+  configFile: |-
+    provider="oidc"
+    provider_display_name="Keycloak"
+    redirect_url="http://whoami.swk3s/oauth2/callback"
+    oidc_issuer_url="http://keycloak.swk3s/realms/cluster"
+    cookie_secure="false"
+    cookie_domains=[".swk3s"]
+    email_domains=["*"]
+    pass_authorization_header=true
+    pass_access_token=true
+    pass_user_headers=true
+    set_authorization_header=true
+    set_xauthrequest=true
+    ssl_insecure_skip_verify=true
+    whitelist_domains=[".swk3s"]
+    insecure_oidc_allow_unverified_email=true
+    scope="openid profile email"
+    cookie_csrf_per_request=true
+
+ingress:
+  enabled: true
+  path: /
+  hosts:
+    - oauth.swk3s

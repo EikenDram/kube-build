@@ -10,11 +10,13 @@
 
 - `keycloak` - managing single-sign on access for cluster resources
 
-- `traefik-ui` - traefik dashboard
+- `oauth2` - reverse proxy for using keycloak for auth
 
 - `dashboard` - kubernetes dashboard
 
 - `portainer` - UI for managing the cluster
+
+- `traefik-ui` - traefik dashboard
 
 - `registry-ui` - UI for our private docker registry
 
