@@ -11,10 +11,10 @@
 
     # Load tar files into containerd filesystem
     echo "Loading images into k3s ctr"
-    k3s ctr images import packages/{{.Version.dir}}/registry.tar
-    k3s ctr images import packages/{{.Version.dir}}/tools.tar
-    k3s ctr images import packages/{{.Version.dir}}/busybox.tar
-
+    {{- range .Images}}
+    k3s ctr images import packages/{{$.Version.dir}}/{{.name}}-{{.version}}.tar
+    {{- end}}
+    
     # certificates
     echo "Generating certificates in cert/ directory"
     cd cert
@@ -39,14 +39,6 @@
     cp registry-key.pem /etc/rancher/k3s/certs/
     cp registry-ca.pem /etc/rancher/k3s/certs/
     cd ..
-
-    # Update k3s registry settings
-    echo "Copying registries.yaml into /etc/rancher/k3s/"
-    cp install/{{.Version.dir}}/registries.yaml /etc/rancher/k3s/
-
-    # Restart k3s service for changes to take effect
-    echo "Restarting k3s"
-    systemctl restart k3s
 {{- end}}
 
 {{- define "install"}}
@@ -69,6 +61,14 @@
     echo "Waiting for pod to run..."
     sleep 2
     kubectl wait --for=condition=ready pod -l app=registry -n {{.Values.registry.namespace}} --timeout=1m
+
+    # Update k3s registry settings
+    echo "Copying registries.yaml into /etc/rancher/k3s/"
+    cp install/{{.Version.dir}}/registries.yaml /etc/rancher/k3s/
+
+    # Restart k3s service for changes to take effect
+    echo "Restarting k3s"
+    systemctl restart k3s
 {{- end}}
 
 {{- define "install-echo"}}

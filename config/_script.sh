@@ -1,4 +1,6 @@
 {{- define "script"}}
+cd /home/{{.Values.server.user}}/deployment
+
 #
 # help information
 print_usage() 
@@ -66,7 +68,7 @@ if [ -z "$OBJECT" ]; then
 fi
 
 # check for necessary commands
-check_cmd "kubectl"; if [ "$retval" = 1 ]; then exit 1; fi
+check_cmd "kubectl" "optional" "could not find kubectl"
 check_cmd "grep"; if [ "$retval" = 1 ]; then exit 1; fi
 check_cmd "helm" "optional" "helm charts can't be pushed"
 

@@ -191,7 +191,7 @@ sudo mv *.gz /home/guestshare/share/
 ## Share windows SSH key in WSL
 
 ```sh
-cp -r /mnt/c/Users/<WindowsUser>/.ssh ~/.ssh
+cp -r /mnt/c/Users/<WindowsUser>/.ssh/* ~/.ssh/
 chmod 600 ~/.ssh/id_rsa
 ```
 

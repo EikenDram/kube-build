@@ -104,9 +104,9 @@ k3s:
     output: helm.tar.gz
     unpack:
       extract: linux-amd64/helm
-  # helm plugin cm-push for pushing charts into repository binary
-  - url: https://github.com/chartmuseum/helm-push/releases/download/v0.10.4/helm-push_0.10.4_linux_amd64.tar.gz
-    output: cm-push.tar.gz
+  # helm plugin cm-push for pushing charts into repository binary (replaced gitea with chartmuseum so don't need it)
+  #- url: https://github.com/chartmuseum/helm-push/releases/download/v0.10.4/helm-push_0.10.4_linux_amd64.tar.gz
+  #  output: cm-push.tar.gz
   # k9s binary
   - url: https://github.com/derailed/k9s/releases/download/v0.27.4/k9s_Linux_amd64.tar.gz
     output: k9s.tar.gz
@@ -134,11 +134,11 @@ registry:
     path: library
     name: registry
     version: 2
-  - url: docker.io/library/busybox:latest
+  - url: docker.io/library/busybox:1.36.1
     host: docker.io
     path: library
     name: busybox
-    version: latest
+    version: 1.36.1
   
 ## Storage provider OpenEBS
 openebs:

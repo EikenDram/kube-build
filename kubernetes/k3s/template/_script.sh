@@ -26,11 +26,11 @@
     chmod +x /usr/local/bin/helm
 
     ## Helm cm-push plugin
-    echo "Installing cm-push helm plugin"
-    mkdir bin/{{.Version.dir}}/cm-push
-    tar -xvf bin/{{.Version.dir}}/cm-push.tar.gz -C bin/{{.Version.dir}}/cm-push
+    #echo "Installing cm-push helm plugin"
+    #mkdir bin/{{.Version.dir}}/cm-push
+    #tar -xvf bin/{{.Version.dir}}/cm-push.tar.gz -C bin/{{.Version.dir}}/cm-push
     # will next line work without kubernetes configuration?
-    helm plugin install bin/{{.Version.dir}}/cm-push
+    #helm plugin install bin/{{.Version.dir}}/cm-push
 
     {{- if .Values.server.dummy.enabled }}
     # Adding dummy connection 

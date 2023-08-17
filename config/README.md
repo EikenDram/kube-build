@@ -42,6 +42,8 @@ k3s.sh -a
 ```
 to install K3S
 
+Wait until K3S is up before proceeding to the next step
+
 ### 3. [Docker registry](https://docs.docker.com/registry/)
 
 Private docker registry to pull container images from in our air-gapped environment
@@ -54,7 +56,7 @@ to install cfssl binaries, load images into containerd from tar files, and creat
 
 Next, run
 ```sh
-registry.sh
+sudo registry.sh -a
 ```
 to install docker registry
 
