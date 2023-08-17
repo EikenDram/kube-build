@@ -84,9 +84,53 @@ KubeR, KubeUtils, KubeAppTemplate, Keycloak authorization, application developme
 
 Download from [release](https://github.com/EikenDram/kube-build/releases/) `build.tar` and `build-tool.tar` for your platform and unpack them
 
-Build tool uses deployment configuration from `config/values.yaml`. Change necessary parameters for building the deployment for your server: ssh keys, hostname, ip, admin credentials, ntp server inside local network, dummy route configuration, cluster admin credentials, registry credentials and certificate, storage and helm charts configuration
+Build tool uses deployment configuration from `config/values.yaml`. Update necessary parameters:
 
-Run tool in project root directory to build deployment in `deployment` directory
+- server.hostname - hostname of your server
+
+- server.ip - ip address of your server
+
+- server.ssh - generate ssh key to access core user with command
+```sh 
+ssh-keygen
+```
+and copy content of `id_rsa.pub`
+
+- server.admin.hash - password hash for admin user, generate with command
+```sh
+mkpasswd --method=yescrypt
+```
+
+- server.ntp - NTP server in your air-gapped network
+
+- server.dummy - default route for your server
+
+- cluster.user and cluster.password - credentials that will be used for accessing most cluster resources
+
+- registry.user and registry.password - credentials that will be used for accessing private docker registry inside cluster
+
+- registry.htpasswd - htpasswd for registry user and password, generate with command
+```sh
+htpasswd -B -n <registry.user>
+```
+
+- registry.cert - self-signed certificate for docker registry server
+
+- prometheus.endpoint - endpoint for prometheus
+
+- minio.crypt - encrypted password for minio server, generate with command
+```sh
+echo "<password>" > tmp.txt
+pw="$(makepasswd --crypt-md5 --clearfrom=./tmp.txt)"
+echo "$pw"
+rm tmp.txt
+```
+
+- velero.minio-url and velero.minio-public - url to minio server
+
+- kube-home.contacts, kube-home.spec, kube-home.minio, kube-home.utils - configuration for cluster's home page
+
+Once `values.yaml` is ready, run `build` tool in project root directory to build deployment in `deployment` directory:
 ```sh
 ./build
 ```
