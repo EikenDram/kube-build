@@ -49,7 +49,7 @@ storage:
     # add scripts directory to PATH for sudo command
     - path: /etc/sudoers.d/deployment-script-sudo
       overwrite: true
-      content:
+      contents:
         inline: |
           Defaults    secure_path = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/var/lib/snapd/snap/bin:/home/core/deployment/scripts
     # add aliases for K3S
