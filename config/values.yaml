@@ -11,7 +11,7 @@ server:
   user: core
   #
   # ssh-rsa key for the user
-  # generate it from winsows running command:
+  # generate it with command:
   #   ssh-keygen
   # copy content of the key from 'id_rsa.pub' file
   #    ssh-rsa <COPY KEY FROM HERE>
@@ -25,8 +25,8 @@ server:
     name: admin
     #
     # password hash, generate with tool 'mkpasswd' from 'whois' linux package
-    #   podman run -ti --rm quay.io/coreos/mkpasswd --method=yescrypt
-    # enter admin name and password, then copy output here
+    #   mkpasswd --method=yescrypt
+    # enter password, then copy output here
     hash: "$y$j..."
   #
   # ntp server in the network
@@ -65,8 +65,8 @@ registry:
   #
   # this section will be used to access registry from tekton pipeline
   # from 'htpasswd' tool run
-  #   sudo htpasswd -B -c htpasswd <user>
-  # enter password and copy content of the file
+  #   htpasswd -B -n <user>
+  # enter password and copy output here
   htpasswd: "admin:$2y$10..."
   #
   # storage size for registry
@@ -249,7 +249,8 @@ minio:
   #   echo "<password>" > tmp.txt
   #   pw="$(makepasswd --crypt-md5 --clearfrom=./tmp.txt)"
   #   echo "$pw"
-  crypt: $1$6...
+  #   rm tmp.txt
+  crypt: "$1$6..."
   #
   # volume to use as minio storage
   volume: /mnt/data
@@ -317,9 +318,6 @@ argocd:
   #
   # subdomain name to access component from: <ingress>.<hostname>
   ingress: argocd
-  # 
-  # pasword is auto generated during deployment, retrieve it from secret:
-  # kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
 
 # tekton configuration
 tekton:
