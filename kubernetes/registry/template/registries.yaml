@@ -35,4 +35,4 @@ configs:
     tls:
       cert_file: /etc/rancher/k3s/certs/registry.pem
       key_file: /etc/rancher/k3s/certs/registry-key.pem
-      ca_file: /etc/rancher/k3s/certs/cluster-ca.pem
+      ca_file: /etc/rancher/k3s/certs/registry-ca.pem

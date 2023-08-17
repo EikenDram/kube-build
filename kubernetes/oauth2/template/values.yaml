@@ -17,9 +17,3 @@ config:
     login_url="http://keycloak.swk3s/realms/cluster/protocol/openid-connect/auth"
     redeem_url="http://keycloak.swk3s/realms/cluster/protocol/openid-connect/token"
     validate_url="http://keycloak.swk3s/realms/cluster/protocol/openid-connect/userinfo"
-
-ingress:
-  enabled: true
-  path: /
-  hosts:
-    - oauth.swk3s

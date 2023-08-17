@@ -104,6 +104,16 @@ keycloak.sh
 ```
 to install Keycloak from helm chart
 
+### 7. [OAuth2-proxy](https://github.com/oauth2-proxy/oauth2-proxy)
+
+Reverse proxy
+
+Run
+```sh
+oauth2.sh
+```
+to load OAuth2-proxy image to registry
+
 ## Kubernetes management
 
 ### [Traefik dashboard](https://doc.traefik.io/traefik/operations/dashboard/)
@@ -314,7 +324,7 @@ to install DB2 data management console as podman container on server
 
 Run
 ```sh
-rabbitmq.sh
+rocker.sh
 ```
 to install R Studio server from custom helm chart
 

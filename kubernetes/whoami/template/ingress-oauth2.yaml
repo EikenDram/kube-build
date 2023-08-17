@@ -1,0 +1,33 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: traefik-ingress
+spec:
+  routes:
+    - match: "Host(`whoami.swk3s`) && PathPrefix(`/oauth2`)"
+      kind: Rule
+      services:
+        - name: whoami-oauth2-proxy
+          port: 80
+    - match: Host(`whoami.swk3s`)
+      kind: Rule
+      middlewares:
+        - name: oauth2-proxy
+          namespace: default
+      services:
+        - name: whoami
+          port: 80
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: oauth2-proxy
+spec:
+  forwardAuth:
+    address: http://whoami-oauth2-proxy.default
+    trustForwardHeader: true
+    authResponseHeaders:
+      - X-Auth-Request-User
+      - Set-Cookie
+---

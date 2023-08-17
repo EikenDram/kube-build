@@ -6,7 +6,7 @@
 {{- define "install"}}
     #
     kubectl apply -f install/whoami/whoami.yaml
-    helm install whoami chartmuseum/oauth2-proxy -f install/whoami/values-oauth2.yaml
+    helm install whoami chartmuseum/oauth2-proxy -f install/whoami/values.yaml
     kubectl apply install/whoami/ingress.yaml
 {{- end}}
 

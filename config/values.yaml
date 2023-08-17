@@ -449,7 +449,8 @@ kube-app-template:
 # images for loaders
 loaders:
   # container image for loading docker images to docker registry
-  packages: tools:v1.0
+  # loaded from ctr, so have to be same name as in k3s ctr images list
+  packages: docker.io/eikendram/tools:v1.0
   # container image for working with git repositories
   git: alpine/git:v2.40.1
   # container image for loading npm packages to gitea
