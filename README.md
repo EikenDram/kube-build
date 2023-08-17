@@ -71,6 +71,7 @@ KubeR, KubeUtils, KubeAppTemplate, Keycloak authorization, application developme
 - `cicd` - Continuous Integration/Continuous Delivery components
 - `config` - Build configuration
 - `deployment` - Default cluster deployment
+- `docker` - Docker files
 - `kubernetes` - Kubernetes components
 - `os` - OS component
 - `services` - Service components
@@ -126,12 +127,6 @@ sudo apt-get install helm
 ```sh
 # for ubuntu:
 sudo apt-get -y install skopeo
-```
-
-- [podman](https://podman.io/docs/installation) for building custom docker images
-```sh
-# for ubuntu: (wont work on WSL1 ubuntu)
-sudo apt install podman
 ```
 
 - [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) for cloning git repositories from github
@@ -211,12 +206,22 @@ Build tool has command `images` that creates `images.sh` script in deployment di
 
 Script uses:
 - `/bin/bash` linux shell
+
 - `helm` tool with installed [images](https://github.com/nikhilsbhat/helm-images) plugin 
+```sh
+helm plugin install https://github.com/nikhilsbhat/helm-images
+```
+
 - [yq](https://github.com/mikefarah/yq) tool
+```sh
+# for ubuntu
+sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+sudo chmod a+x /usr/local/bin/yq
+```
 
 ### Build process
 
-Build program goes through all components as defined in `components` array in `build.json`, looks for files in `.path` + `/deploy/` directory, and processes them as follow:
+Build program goes through all components as defined in `components` array in `build.json`, looks for files in `.path` + `/template/` directory, and processes them as follow:
 
 - `_prepare.sh` files are  all appended to `config/_prepare.sh` into single `config/prepare.sh` template and then processed into `deployment/prepare.sh` script
 
@@ -224,7 +229,7 @@ Build program goes through all components as defined in `components` array in `b
 
 - everything else is processed as a template into `deployment/install/{component name}/` directory with the same file name
 
-Files in `.path` + `/bin/` directory are copied into deployment directly
+Files in `.path` + `/copy/` directory are copied into deployment directly
 
 ### Script templates
 

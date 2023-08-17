@@ -64,7 +64,7 @@ func init() {
 func buildComponent(dir string, name string) {
 	//build deployment from directory with name
 	//go through all files in deploy and build:
-	tDir := dir + "/deploy"
+	tDir := dir + "/template"
 	files, err := os.ReadDir(tDir)
 	check(err)
 
@@ -103,7 +103,7 @@ func buildComponent(dir string, name string) {
 	}
 
 	//go through all files in bin and copy them to bin
-	tDir = dir + "/bin"
+	tDir = dir + "/copy"
 	files, err = os.ReadDir(tDir)
 	if err == nil {
 		for _, file := range files {
@@ -113,7 +113,7 @@ func buildComponent(dir string, name string) {
 			}
 			//move all files to bin
 			os.Mkdir("./"+deploymentDir+"/bin/"+name, os.ModePerm)
-			copyFile(tDir+"/"+file.Name(), "./"+deploymentDir+"/bin/"+name+"/"+file.Name())
+			copyFile(tDir+"/"+file.Name(), "./"+deploymentDir+"/install/"+name+"/"+file.Name())
 		}
 	}
 

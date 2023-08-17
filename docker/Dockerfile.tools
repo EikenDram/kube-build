@@ -1,0 +1,6 @@
+FROM alpine
+LABEL org.opencontainers.image.source=https://github.com/EikenDram/kube-build
+LABEL org.opencontainers.image.description="Tool image for loading docker images into registry using skopeo"
+LABEL org.opencontainers.image.licenses=MIT
+RUN  apk --no-cache add curl && \
+     apk --no-cache add skopeo --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community

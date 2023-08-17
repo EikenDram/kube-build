@@ -299,6 +299,23 @@ rabbitmq:
   name: rabbitmq
   version: 3.12.2-debian-11-r8
 
+registry:
+- url: ghcr.io/eikendram/tools:v1.0
+  host: ghcr.io
+  path: eikendram
+  name: tools
+  version: v1.0
+- url: docker.io/library/registry:2
+  host: docker.io
+  path: library
+  name: registry
+  version: 2
+- url: docker.io/library/busybox:latest
+  host: docker.io
+  path: library
+  name: busybox
+  version: latest
+
 registry-ui:
 - url: docker.io/joxit/docker-registry-ui:2.5.0
   host: docker.io
@@ -352,14 +369,13 @@ tekton:
   path: tekton-releases/github.com/tektoncd/pipeline/cmd
   name: entrypoint
   version: v0.49.0
-- url: gcr.io/chainguard/busybox:latest
-  host: gcr.io
+- url: cgr.dev/chainguard/busybox:latest
+  host: cgr.dev
   path: chainguard
   name: busybox
   version: latest
-- url: mcr.microsoft.com/library/powershell:nanoserver
+- url: mcr.microsoft.com//powershell:nanoserver
   host: mcr.microsoft.com
-  path: library
   name: powershell
   version: nanoserver
   args: --override-os windows
@@ -395,8 +411,8 @@ velero:
   path: velero
   name: velero
   version: v1.11.0
-- url: docker.io/bitname/kubectl:1.25
+- url: docker.io/bitnami/kubectl:1.25
   host: docker.io
-  path: bitname
+  path: bitnami
   name: kubectl
   version: 1.25

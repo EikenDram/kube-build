@@ -73,6 +73,10 @@ func images() {
 
 	//run the script
 	fmt.Println("Running images.sh script...")
+	fmt.Println("Should be installed:")
+	fmt.Println("    helm images plugin")
+	fmt.Println("    yq")
+
 	cmd := shImages()
 	fmt.Print(cmd)
 

@@ -83,7 +83,9 @@ func imageProcess() {
 							p := parseUrl(v.(string))
 							f.WriteString(fmt.Sprintf("- url: %s", p.url) + "\n")
 							f.WriteString(fmt.Sprintf("  host: %s", p.host) + "\n")
-							f.WriteString(fmt.Sprintf("  path: %s", p.path) + "\n")
+							if len(p.path) > 0 {
+								f.WriteString(fmt.Sprintf("  path: %s", p.path) + "\n")
+							}
 							f.WriteString(fmt.Sprintf("  name: %s", p.name) + "\n")
 							f.WriteString(fmt.Sprintf("  version: %s", p.version) + "\n")
 							if len(p.sha) > 0 {
@@ -127,7 +129,7 @@ func parseUrl(url string) UrlParse {
 		path = s[0]
 	case c > 2:
 		//multiple tags? let's panic
-		panic("shouldn't be multiple tags in url")
+		panic("shouldn't be multiple tags in url!")
 	case c == 1:
 		//there's no tag
 		res.version = "latest"
@@ -171,8 +173,13 @@ func parseUrl(url string) UrlParse {
 			res.path = strings.TrimSuffix(res.path, "/")
 		} else {
 			//first element was host and last one was name, and no other elements
-			//gonna default path to library then
-			res.path = "library"
+			if res.host == "docker.io" {
+				//if host is docker gonna default path to library
+				res.path = "library"
+			} else {
+				//if other host then leave with no path
+				res.path = ""
+			}
 		}
 	}
 

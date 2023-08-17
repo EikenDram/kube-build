@@ -123,10 +123,22 @@ registry:
     output: cfssl
   - url: https://github.com/cloudflare/cfssl/releases/download/v1.6.4/cfssljson_1.6.4_linux_amd64
     output: cfssljson
-  # docker image for loading images into registry with skopeo
-  dockerfile:
-  - name: tools
+  images:
+  - url: ghcr.io/eikendram/tools:v1.0
+    host: ghcr.io
+    path: eikendram
+    name: tools
     version: v1.0
+  - url: docker.io/library/registry:2
+    host: docker.io
+    path: library
+    name: registry
+    version: 2
+  - url: docker.io/library/busybox:latest
+    host: docker.io
+    path: library
+    name: busybox
+    version: latest
   
 ## Storage provider OpenEBS
 openebs:
@@ -160,7 +172,8 @@ keycloak:
   dir: keycloak
   title: Keycloak
   helm: 
-    pull: oci://registry-1.docker.io/bitnamicharts/keycloak
+    repo: bitnami
+    url: https://charts.bitnami.com/bitnami
     name: keycloak
     version: 15.1.7
 
@@ -330,7 +343,7 @@ velero:
   images:
   - url: docker.io/bitnami/kubectl:1.25
     host: docker.io
-    path: bitname
+    path: bitnami
     name: kubectl
     version: 1.25
 
@@ -400,14 +413,13 @@ tekton:
     version: v0.49.0
     #sha: e160e469c149b45450be16656dad3e20253b77ee57e150d4cc770b91516b8419
   - url: cgr.dev/chainguard/busybox
-    host: gcr.io
+    host: cgr.dev
     path: chainguard
     name: busybox
     version: latest
     #sha: 19f02276bf8dbdd62f069b922f10c65262cc34b710eea26ff928129a736be791
   - url: mcr.microsoft.com/powershell:nanoserver
     host: mcr.microsoft.com
-    path: library
     name: powershell
     version: nanoserver
     #sha: b6d5ff841b78bdf2dfed7550000fd4f3437385b8fa686ec0f010be24777654d6
@@ -464,7 +476,8 @@ rabbitmq:
   dir: rabbitmq
   title: RabbitMQ
   helm: 
-    pull: oci://registry-1.docker.io/bitnamicharts/rabbitmq
+    repo: bitnami
+    url: https://charts.bitnami.com/bitnami
     name: rabbitmq
     version: 12.0.9
 
@@ -519,11 +532,11 @@ kube-r:
   git: 
   - url: https://github.com/EikenDram/kube-r.git
     name: kube-r
-  helm:
-    repo: aiken
-    url: https://eikendram.github.io/kube-charts
-    name: kube-r
-    version: 0.1.1
+  #helm:
+  #  repo: aiken
+  #  url: https://eikendram.github.io/kube-charts
+  #  name: kube-r
+  #  version: 0.1.1
   
 # Custom utilities KubeUtils
 kube-utils:

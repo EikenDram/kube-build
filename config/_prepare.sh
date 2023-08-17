@@ -191,9 +191,9 @@ if matches "<{{$.Version.dir}}> <all>" "$COMPONENT"; then
         if [ ! -d "packages/{{$.Version.dir}}" ]; then mkdir packages/{{$.Version.dir}}; fi
         {{- range .Images }}
         if [ ! -f "packages/{{$.Version.dir}}/{{.name}}-{{.version}}.tar" ] || [ $FORCE = 1 ]; then
-            echo "Downloading package {{.path}}/{{.name}}:{{.version}}"
+            echo "Downloading package {{if .path}}{{.path}}/{{end}}{{.name}}:{{.version}}"
             rm -f packages/{{$.Version.dir}}/{{.name}}-{{.version}}.tar
-            skopeo copy {{if .sha}}--preserve-digests{{end}} docker://{{.host}}/{{.path}}/{{.name}}:{{.version}}{{if .sha}}@sha256:{{.sha}}{{end}} docker-archive:./packages/{{$.Version.dir}}/{{.name}}-{{.version}}.tar:{{.path}}/{{.name}}:{{.version}}{{if .sha}}@sha256:{{.sha}}{{end}} {{if .args}} {{.args}} {{end}}
+            skopeo copy {{if .sha}}--preserve-digests{{end}} docker://{{.host}}/{{if .path}}{{.path}}/{{end}}{{.name}}:{{.version}}{{if .sha}}@sha256:{{.sha}}{{end}} docker-archive:./packages/{{$.Version.dir}}/{{.name}}-{{.version}}.tar:{{if .path}}{{.path}}/{{end}}{{.name}}:{{.version}}{{if .sha}}@sha256:{{.sha}}{{end}} {{if .args}} {{.args}} {{end}}
         else
             echo "File packages/{{$.Version.dir}}/{{.name}}-{{.version}}.tar exists, skipping"
         fi
