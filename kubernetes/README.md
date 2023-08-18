@@ -27,3 +27,5 @@
 - `minio` - storage for backups
 
 - `velero` - managing backups
+
+- `whoami` - simple web service for testing

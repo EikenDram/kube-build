@@ -119,6 +119,24 @@ keycloak:
     # namespace to deploy helm to
     namespace: keycloak
 
+# reverse proxy for keycloak
+oauth2:
+  #
+  # subdomain name to access component from: <ingress>.<hostname>
+  ingress: keycloak
+  #
+  # helm install configuration
+  helm:
+    #
+    # name
+    name: auth
+    #
+    # values file
+    values: values.yaml
+    #
+    # namespace to deploy helm to
+    namespace: oauth2
+
 # portainer configuration
 portainer:
   #

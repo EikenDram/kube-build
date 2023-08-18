@@ -1,19 +1,43 @@
 config:
   clientID: "oauth2-proxy"
-  clientSecret: "LF8yYSgMzr7pus5QjUASRl77Gyr4U62b"
+  clientSecret: "DN0OCSRvCxuuFeJFWhad9Nfu5cVcjm4d"
   # Create a new secret with the following command
   # openssl rand -base64 32 | head -c 32 | base64
   cookieSecret: "bGFsZWlyOHhxZEw2ZTRiUmdjcGpKRzViNW80RGJhWUk="
   configFile: |-
-    provider="oidc"
-    oidc_issuer_url="http://keycloak-headless.keycloak:8080/realms/cluster"
-    provider_display_name="Keycloak"
-    redirect_url="http://oauth.swk3s/oauth2/callback"
-    cookie_domains=[".swk3s"]
-    whitelist_domains=[".swk3s"]
-    insecure_oidc_allow_unverified_email="true"
-    email_domains=[ "*" ]
-    cookie_secure=false
-    login_url="http://keycloak.swk3s/realms/cluster/protocol/openid-connect/auth"
-    redeem_url="http://keycloak.swk3s/realms/cluster/protocol/openid-connect/token"
-    validate_url="http://keycloak.swk3s/realms/cluster/protocol/openid-connect/userinfo"
+    provider = "oidc"
+    oidc_issuer_url = "http://keycloak.swk3s/realms/cluster"
+    ssl_insecure_skip_verify="true"
+    scope="openid email profile groups"
+    reverse_proxy = "true"
+    cookie_secure = "false"
+    email_domains = [ "*" ]
+    cookie_domains = ["*.swk3s" ]
+    upstreams = [ "static://202" ]
+    silence_ping_logging = "true"
+    skip_provider_button = "true"
+
+ingress:
+  enabled: true
+  # className: nginx
+  path: /
+  # Only used if API capabilities (networking.k8s.io/v1) allow it
+  pathType: ImplementationSpecific
+  # Used to create an Ingress record.
+  hosts:
+    - auth.swk3s
+
+extraObjects:
+  - apiVersion: traefik.containo.us/v1alpha1
+    kind: Middleware
+    metadata:
+      name: auth-proxy
+      namespace: default
+    spec:
+      forwardAuth:
+        address: http://auth.swk3s/
+        trustForwardHeader: true
+        authResponseHeaders:
+          - X-Auth-Request-Access-Token
+          - Authorization
+          - Set-Cookie

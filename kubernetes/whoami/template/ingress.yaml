@@ -1,25 +1,14 @@
 ---
 apiVersion: traefik.containo.us/v1alpha1
-kind: Middleware
-metadata:
-  name: traefik-forward-auth
-spec:
-  forwardAuth:
-    address: http://auth.swk3s
-    trustForwardHeader: true
-    authResponseHeaders:
-      - X-Forwarded-User
----
-apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: whoami
+  name: whoami-ingress
 spec:
   routes:
-    - kind: Rule
-      match: Host(`whoami.swk3s`)
+    - match: Host(`whoami.swk3s`)
+      kind: Rule
       middlewares:
-        - name: traefik-forward-auth
+        - name: auth-proxy
           namespace: default
       services:
         - name: whoami
@@ -28,11 +17,12 @@ spec:
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: traefik-forward-auth
+  name: whoami-auth
 spec:
   routes:
-    - kind: Rule
-      match: Host(`auth.swk3s`)
+    - match: "Host(`whoami.swk3s`) && PathPrefix(`/oauth2/`)"
+      kind: Rule
       services:
-        - name: traefik-forward-auth
+        - name: auth-oauth2-proxy
           port: 80
+---
