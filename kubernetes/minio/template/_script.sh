@@ -11,7 +11,7 @@ chmod +x /usr/local/bin/minio
 # add minio user and minio group
 echo "Creating minio user"
 groupadd -r {{.Values.minio.group}}
-pw="{{.Values.minio.crypt}}"
+pw=$(openssl passwd -1 {{.Values.minio.password}})
 useradd -M -r -g {{.Values.minio.group}} -p "$pw" {{.Values.minio.user}}
 
 # this is minio storage, needs to be on another partition than root?

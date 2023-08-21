@@ -21,7 +21,7 @@ passwd:
       groups:
         - "sudo"
         - "docker"
-      password_hash: {{.Values.server.admin.hash}}
+      password_hash: __passhash__
     {{- end}}
 storage:
   files:

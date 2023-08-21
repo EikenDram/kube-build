@@ -22,12 +22,12 @@
 			"#",
 			"{{- template \"prepare\" dict \"Version\" .Version.$1 \"Images\" .Images.$1 }}",
 			"#",
-			"if matches \"<$$C> <all>\" \"$$COMPONENT\"; then",
+			"if matches \"<$1> <all>\" \"$$COMPONENT\"; then",
 			"\tif matches \"$$OBJECT\" \"<$2>\"; then",
 			"\t# $2",
-			"\t#",
-			"\t",
-			"fi"
+			"\tfi",
+			"fi",
+			"#"
 		],
 		"description": "_prepare.sh template"
 	},

@@ -24,10 +24,8 @@ server:
     # admin user name
     name: admin
     #
-    # password hash, generate with tool 'mkpasswd' from 'whois' linux package
-    #   mkpasswd --method=yescrypt
-    # enter password, then copy output here
-    hash: "$y$j..."
+    # password
+    password: "coreos"
   #
   # ntp server in the network
   ntp: 192.168.120.3
@@ -62,12 +60,6 @@ registry:
   # credentials to access registry
   user: regadmin
   password: regpass
-  #
-  # this section will be used to access registry from tekton pipeline
-  # from 'htpasswd' tool run
-  #   htpasswd -B -n <user>
-  # enter password and copy output here
-  htpasswd: "admin:$2y$10..."
   #
   # storage size for registry
   storage: 5Gi
@@ -261,14 +253,6 @@ minio:
   #
   # password
   password: coreos
-  #
-  # encrypted password
-  # can use makepasswd tool in ubuntu:
-  #   echo "<password>" > tmp.txt
-  #   pw="$(makepasswd --crypt-md5 --clearfrom=./tmp.txt)"
-  #   echo "$pw"
-  #   rm tmp.txt
-  crypt: "$1$6..."
   #
   # volume to use as minio storage
   volume: /mnt/data

@@ -18,8 +18,9 @@ print_usage()
         -l              Prepare helm
         -i              Prepare docker images
         -g              Prepare git repositories
+        -c              Prepare encryption
 
-        -f              Force redownload already existing files
+        -f              Force download already existing files
 
         -h              Help
 
@@ -64,7 +65,7 @@ matches() {
 
 # read parameters
 FORCE=0
-while getopts n:pmblhigf flag;
+while getopts n:pmblhigfc flag;
 do
     case "${flag}" in
         n) COMPONENT="<${OPTARG}>";;
@@ -74,6 +75,7 @@ do
         l) OBJECT="$OBJECT <helm>";;
         i) OBJECT="$OBJECT <image>";;
         g) OBJECT="$OBJECT <git>";;
+        c) OBJECT="$OBJECT <crypt>";;
         f) FORCE=1;;
         h) print_usage
         exit 1 ;;
@@ -85,7 +87,7 @@ done
 # if no object is specified, prepare all objects
 if [ -z "$OBJECT" ]; then
     echo Preparing component: ${COMPONENT}, object: all
-    OBJECT="<manifest> <package> <bin> <helm> <image> <git>"
+    OBJECT="<crypt> <manifest> <package> <bin> <helm> <image> <git>"
 else
     echo Preparing component: ${COMPONENT}, object: ${OBJECT}
 fi
@@ -244,6 +246,8 @@ check_cmd "skopeo" "optional" "docker images can't be downloaded"
 check_cmd "helm" "optional" "helm charts can't be pulled"
 check_cmd "podman" "optional" "custom docker images can't be created"
 check_cmd "git" "optional" "git repositories can't be pulled"
+check_cmd "mkpasswd" "optional" "encryption cant be prepared"
+check_cmd "htpasswd" "optional" "encryption cant be prepared"
 
 # create directories if don't exist
 if [ ! -d "bin" ]; then mkdir bin; fi
@@ -252,7 +256,7 @@ if [ ! -d "packages" ]; then mkdir packages; fi
 if [ ! -d "manifest" ]; then mkdir manifest; fi
 if [ ! -d "git" ]; then mkdir git; fi
 
-############################################################################
-### Next part is assebled from _prepare.sh files in each build component ###
-############################################################################
+#############################################################################
+### Next part is assembled from _prepare.sh files in each build component ###
+#############################################################################
 #
