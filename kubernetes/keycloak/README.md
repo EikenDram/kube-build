@@ -6,6 +6,14 @@ This is access manager for cluster resources using singe sign-on policy
 
 Install from helm chart
 
+## Setup
+
+Need to add a new realm called "cluster" and create a client called "oauth2-proxy", and add client scopes with mapping for audience? and groups
+
+Also create a role "cluster-admin" and change protocol to allow auth for users with this group
+
+Will do this manually for now, but can probably export configuration later and import it during installation
+
 ## Update password
 
 In order to provide admin-cli secret need to switch client auth on and copy the token here
@@ -15,7 +23,7 @@ Now we need to generate access token for `admin-cli`:
 export access_token=$(curl --insecure -X POST http://keycloak.k3s.local/realms/master/protocol/openid-connect/token --user admin-cli:DBUfVLsd7iSDe1XD96dpr8Vz4cuPJiD3 -H 'content-type: application/x-www-form-urlencoded' -d 'username=admin&password=coreos&grant_type=password' | jq --raw-output '.access_token' )
 ```
 
-Or with username and password:
+With username and password:
 ```sh
 curl --location --request POST 'http://localhost:8080/auth/realms/master/protocol/openid-connect/token' \
 --header 'Content-Type: application/x-www-form-urlencoded' \
@@ -25,7 +33,7 @@ curl --location --request POST 'http://localhost:8080/auth/realms/master/protoco
 --data-urlencode 'client_id=admin-cli'
 ```
 
-Or with access token:
+With access token:
 ```sh
 curl --location --request POST 'http://localhost:8080/auth/realms/master/protocol/openid-connect/token' \
 --header 'Content-Type: application/x-www-form-urlencoded' \
@@ -38,7 +46,7 @@ Duration is 1 minute, can be changed in settings
 
 List all users:
 ```sh
-curl -k -X GET http://keycloak.k3s.local/admin/realms/master/users -H "Authorization: Bearer "$access_token | jq
+curl -k -X GET http://keycloak.k3s.local/admin/realms/master/users -H "Authorization: Bearer $access_token" | jq
 ```
 
 Change password for user:
@@ -48,7 +56,7 @@ curl -k -X POST http://keycloak.k3s.local/admin/realms/master/users/b910fa62-8c7
 
 To add user execute a POST http://<host>/admin/realms/<realm>/users with a JSON Payload which contains details about the User
 ```sh
-curl -k -X POST http://keycloak.k3s.local/admin/realms/master/users/ -H "Content-Type: application/json" -H "Authorization: Bearer $access_token" --data '{ "value": "newpassword" }'
+curl -k -X POST http://keycloak.k3s.local/admin/realms/master/users/ -H "Content-Type: application/json" -H "Authorization: Bearer $access_token" --data '{ "value": "" }'
 ```
 
 Or:

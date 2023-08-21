@@ -14,7 +14,9 @@
 {{- end}}
 
 {{- define "install-post"}}
-    kubectl apply -f install/{{.Version.dir}}/auth.yaml -n {{.Value.helm.namespace}}
+    # basic auth
+    #kubectl apply -f install/{{.Version.dir}}/ingress-basic.yaml -n {{.Value.helm.namespace}}
+    kubectl apply -f install/{{.Version.dir}}/ingress-auth.yaml -n {{.Value.helm.namespace}}
 
     {{ template "wait" dict "Name" "prometheus" "Namespace" .Values.prometheus.helm.namespace}}
     {{ template "wait" dict "Name" "grafana" "Namespace" .Values.prometheus.helm.namespace}}

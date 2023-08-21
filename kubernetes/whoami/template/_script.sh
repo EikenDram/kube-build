@@ -6,7 +6,7 @@
 {{- define "install"}}
     #
     kubectl apply -f install/whoami/whoami.yaml
-    kubectl apply install/whoami/ingress.yaml
+    kubectl apply -f install/whoami/ingress.yaml
 {{- end}}
 
 {{- define "uninstall"}}

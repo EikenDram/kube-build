@@ -10,8 +10,14 @@
 {{- end}}
 
 {{- define "install"}}
-    # manifest
+    # service
     kubectl apply -f install/{{.Version.dir}}/dashboard.yaml
+
+    # basic auth
+    #kubectl apply -f install/{{.Version.dir}}/ingress-basic.yaml
+
+    # keycloak auth
+    kubectl apply -f install/{{.Version.dir}}/ingress-auth.yaml
 {{- end}}
 
 {{- define "install-echo"}}
@@ -19,11 +25,23 @@
     #{{- end}}
 
 {{- define "upgrade"}}
-    # manifest
+    # service
     kubectl apply -f install/{{.Version.dir}}/dashboard.yaml
+
+    # basic auth
+    #kubectl apply -f install/{{.Version.dir}}/ingress-basic.yaml
+
+    # keycloak auth
+    kubectl apply -f install/{{.Version.dir}}/ingress-auth.yaml
 {{- end}}
 
 {{- define "uninstall"}}
-    # manifest
+    # basic auth
+    #kubectl delete -f install/{{.Version.dir}}/ingress-basic.yaml
+
+    # keycloak auth
+    kubectl delete -f install/{{.Version.dir}}/ingress-auth.yaml
+
+    # service
     kubectl delete -f install/{{.Version.dir}}/dashboard.yaml
 {{- end}}

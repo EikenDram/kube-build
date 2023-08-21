@@ -1,0 +1,34 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: traefik-ingress
+  namespace: kube-system
+  annotations:
+    spec/ingressClassName: traefik
+    traefik.ingress.kubernetes.io/router.middlewares: default-auth-proxy@kubernetescrd
+spec:
+  rules:
+    - host: {{index .Values "traefik-ui" "ingress"}}.{{.Values.server.hostname | lower}}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: traefik-dashboard
+                port:
+                  number: 9000
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: traefik-ingress-auth
+  namespace: kube-system
+spec:
+  routes:
+    - match: "Host(`{{index .Values "traefik-ui" "ingress"}}.{{.Values.server.hostname | lower}}`) && PathPrefix(`/oauth2/`)"
+      kind: Rule
+      services:
+        - name: {{.Values.oauth2.helm.name}}-oauth2-proxy
+          port: 80
+---

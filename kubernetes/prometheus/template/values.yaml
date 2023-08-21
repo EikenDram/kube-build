@@ -153,7 +153,10 @@ prometheus:
     enabled: true
     annotations:
       spec/ingressClassName: traefik
-      traefik.ingress.kubernetes.io/router.middlewares: {{.Values.prometheus.helm.namespace}}-basic-auth@kubernetescrd
+      # basic auth
+      #traefik.ingress.kubernetes.io/router.middlewares: {{.Values.prometheus.helm.namespace}}-basic-auth@kubernetescrd
+      # keycloak auth
+      traefik.ingress.kubernetes.io/router.middlewares: default-auth-proxy@kubernetescrd
     hosts: ['{{.Values.prometheus.ingress}}.{{.Values.server.hostname | lower}}']
     paths: ['/']
     tls:

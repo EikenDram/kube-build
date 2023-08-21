@@ -1,0 +1,33 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tekton-dashboard
+  namespace: tekton-pipelines
+  annotations:
+    spec/ingressClassName: traefik
+    traefik.ingress.kubernetes.io/router.middlewares: default-auth-proxy@kubernetescrd
+spec:
+  rules:
+  - host: {{.Values.tekton.ingress}}.{{.Values.server.hostname | lower}}
+    http:
+      paths:
+      - pathType: ImplementationSpecific
+        backend:
+          service:
+            name: tekton-dashboard
+            port:
+              number: 9097
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: traefik-ingress-auth
+  namespace: kube-system
+spec:
+  routes:
+    - match: "Host(`{{.Values.tekton.ingress}}.{{.Values.server.hostname | lower}}`) && PathPrefix(`/oauth2/`)"
+      kind: Rule
+      services:
+        - name: {{.Values.oauth2.helm.name}}-oauth2-proxy
+          port: 80
+---

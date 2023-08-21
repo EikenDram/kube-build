@@ -10,7 +10,10 @@
     kubectl apply -f manifest/{{.Version.dir}}/dashboard.yaml
 
     # ingress
-    kubectl apply -f install/{{.Version.dir}}/ingress.yaml
+    # basic auth
+    #kubectl apply -f install/{{.Version.dir}}/ingress-basic.yaml
+    # keycloak auth
+    kubectl apply -f install/{{.Version.dir}}/ingress-auth.yaml
 
     # copy certificate to cert.yaml and apply it
     #sed -e '1d' -e '$d' cert/registry.pem >> install/{{.Version.dir}}/cert.yaml
@@ -26,12 +29,12 @@
     kubectl apply -f manifest/{{.Version.dir}}/triggers.yaml
     kubectl apply -f manifest/{{.Version.dir}}/interceptors.yaml
     kubectl apply -f manifest/{{.Version.dir}}/dashboard.yaml
-    kubectl apply -f install/{{.Version.dir}}/ingress.yaml
+    kubectl apply -f install/{{.Version.dir}}/ingress-auth.yaml
 {{- end}}
 
 {{- define "uninstall"}}
     # manifest
-    kubectl delete -f install/{{.Version.dir}}/ingress.yaml
+    kubectl delete -f install/{{.Version.dir}}/ingress-auth.yaml
     kubectl delete -f manifest/{{.Version.dir}}/dashboard.yaml
     kubectl delete -f manifest/{{.Version.dir}}/interceptors.yaml
     kubectl delete -f manifest/{{.Version.dir}}/triggers.yaml

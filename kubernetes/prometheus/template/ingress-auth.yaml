@@ -1,0 +1,12 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: traefik-ingress-auth
+  namespace: {{.Values.prometheus.helm.namespace}}
+spec:
+  routes:
+    - match: "Host(`prometheus.{{.Values.server.hostname | lower}}`) && PathPrefix(`/oauth2/`)"
+      kind: Rule
+      services:
+        - name: {{.Values.oauth2.helm.name}}-oauth2-proxy
+          port: 80

@@ -1,18 +1,18 @@
 config:
   clientID: "oauth2-proxy"
-  clientSecret: "DN0OCSRvCxuuFeJFWhad9Nfu5cVcjm4d"
+  clientSecret: "__secret__"
   # Create a new secret with the following command
   # openssl rand -base64 32 | head -c 32 | base64
-  cookieSecret: "bGFsZWlyOHhxZEw2ZTRiUmdjcGpKRzViNW80RGJhWUk="
+  cookieSecret: "__cookie__"
   configFile: |-
     provider = "oidc"
-    oidc_issuer_url = "http://keycloak.swk3s/realms/cluster"
+    oidc_issuer_url = "http://{{.Values.keycloak.ingress}}.{{.Values.server.hostname | lower}}/realms/cluster"
     ssl_insecure_skip_verify="true"
     scope="openid email profile groups"
     reverse_proxy = "true"
     cookie_secure = "false"
     email_domains = [ "*" ]
-    cookie_domains = ["*.swk3s" ]
+    cookie_domains = ["*.{{.Values.server.hostname | lower}}" ]
     upstreams = [ "static://202" ]
     silence_ping_logging = "true"
     skip_provider_button = "true"
@@ -25,7 +25,7 @@ ingress:
   pathType: ImplementationSpecific
   # Used to create an Ingress record.
   hosts:
-    - auth.swk3s
+    - {{.Values.oauth2.ingress}}.{{.Values.server.hostname | lower}}
 
 extraObjects:
   - apiVersion: traefik.containo.us/v1alpha1
@@ -35,7 +35,7 @@ extraObjects:
       namespace: default
     spec:
       forwardAuth:
-        address: http://auth.swk3s/
+        address: http://{{.Values.oauth2.ingress}}.{{.Values.server.hostname | lower}}/
         trustForwardHeader: true
         authResponseHeaders:
           - X-Auth-Request-Access-Token

@@ -5,7 +5,7 @@ metadata:
   name: whoami-ingress
 spec:
   routes:
-    - match: Host(`whoami.swk3s`)
+    - match: Host(`whoami.{{.Values.server.hostname | lower}}`)
       kind: Rule
       middlewares:
         - name: auth-proxy
@@ -20,9 +20,9 @@ metadata:
   name: whoami-auth
 spec:
   routes:
-    - match: "Host(`whoami.swk3s`) && PathPrefix(`/oauth2/`)"
+    - match: "Host(`whoami.{{.Values.server.hostname | lower}}`) && PathPrefix(`/oauth2/`)"
       kind: Rule
       services:
-        - name: auth-oauth2-proxy
+        - name: {{.Values.oauth2.helm.name}}-oauth2-proxy
           port: 80
 ---
