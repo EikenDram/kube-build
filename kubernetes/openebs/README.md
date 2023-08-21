@@ -51,3 +51,16 @@ kubectl logs -n openebs -l openebs.io/component-name=openebs-localpv-provisioner
 ## Monitoring
 
 There's a ServiceMonitor for prometheus operator, but not sure if it works with the lite version
+
+## Additional images
+
+openebs-operator-lite.yaml:
+```yaml
+            - name: CLEANUP_JOB_IMAGE
+              value: "openebs/linux-utils:3.4.0"
+---
+        - name: OPENEBS_IO_HELPER_IMAGE
+          value: "openebs/linux-utils:3.4.0"
+```
+
+Added search for "*_IMAGE"

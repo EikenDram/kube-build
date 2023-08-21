@@ -21,3 +21,10 @@ Need to fix access with
 kubectl apply -f install/argocd/argocd-params.yaml
 kubectl scale -n argocd deployment/argocd-server --replicas=0 && kubectl scale -n argocd deployment/argocd-server --replicas=1
 ```
+
+## Additional images
+
+Different host and path for redis image
+```
+public.ecr.aws/docker/library/redis:7.0.11-alpine
+```

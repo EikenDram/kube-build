@@ -46,7 +46,18 @@ echo "{{.Version.dir}}:" >> $IMAGES
 {{- if .Version.manifest}}
 echo "# manifest" >> $IMAGES
 {{- range .Version.manifest}}
-cat $DEPLOYMENT/manifest/{{$.Version.dir}}/{{.output}} | yq -N '..|.image? | select(.)' | sort -u | sed -e 's/^/- url: /' >> $IMAGES
+    cat $DEPLOYMENT/manifest/{{$.Version.dir}}/{{.output}} | yq -N '..|.image? | select(.)' | sort -u | sed -e 's/^/- url: /' >> $IMAGES
+    {{- if .search}}
+    cat $DEPLOYMENT/manifest/{{$.Version.dir}}/{{.output}} | yq -N '.. | select(has("name")) | select(.name == "{{.search}}") | select (.).value' |
+     sort -u | sed -e 's/^/- url: /' >> $IMAGES
+    {{- end}}
+    {{- if .args}}
+    {{$output:=.output}}
+    {{- range .args}}
+    cat $DEPLOYMENT/manifest/{{$.Version.dir}}/{{$output}} | yq -N '.spec.template.spec.containers[].args | (.[] | select(. == "{{.}}") | key + 1) 
+as $pos | .[($pos)]' | sed -e 's/^/- url: /' >> $IMAGES
+    {{- end}}
+    {{- end}}
 {{- end}}
 {{- end}}
 

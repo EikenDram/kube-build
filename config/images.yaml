@@ -339,6 +339,51 @@ tekton:
   path: tekton-releases/github.com/tektoncd/pipeline/cmd
   name: webhook
   version: v0.44.4
+- url: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.44.4
+  host: gcr.io
+  path: tekton-releases/github.com/tektoncd/pipeline/cmd
+  name: git-init
+  version: v0.44.4
+- url: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/entrypoint:v0.44.4
+  host: gcr.io
+  path: tekton-releases/github.com/tektoncd/pipeline/cmd
+  name: entrypoint
+  version: v0.44.4
+- url: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/nop:v0.44.4
+  host: gcr.io
+  path: tekton-releases/github.com/tektoncd/pipeline/cmd
+  name: nop
+  version: v0.44.4
+- url: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/sidecarlogresults:v0.44.4
+  host: gcr.io
+  path: tekton-releases/github.com/tektoncd/pipeline/cmd
+  name: sidecarlogresults
+  version: v0.44.4
+- url: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/imagedigestexporter:v0.44.4
+  host: gcr.io
+  path: tekton-releases/github.com/tektoncd/pipeline/cmd
+  name: imagedigestexporter
+  version: v0.44.4
+- url: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/pullrequest-init:v0.44.4
+  host: gcr.io
+  path: tekton-releases/github.com/tektoncd/pipeline/cmd
+  name: pullrequest-init
+  version: v0.44.4
+- url: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/workingdirinit:v0.44.4
+  host: gcr.io
+  path: tekton-releases/github.com/tektoncd/pipeline/cmd
+  name: workingdirinit
+  version: v0.44.4
+- url: gcr.io/google.com/cloudsdktool/cloud-sdk:latest
+  host: gcr.io
+  path: google.com/cloudsdktool
+  name: cloud-sdk
+  version: latest
+- url: cgr.dev/chainguard/busybox:latest
+  host: cgr.dev
+  path: chainguard
+  name: busybox
+  version: latest
 - url: gcr.io/tekton-releases/github.com/tektoncd/triggers/cmd/controller:v0.24.1
   host: gcr.io
   path: tekton-releases/github.com/tektoncd/triggers/cmd
@@ -348,6 +393,11 @@ tekton:
   host: gcr.io
   path: tekton-releases/github.com/tektoncd/triggers/cmd
   name: webhook
+  version: v0.24.1
+- url: gcr.io/tekton-releases/github.com/tektoncd/triggers/cmd/eventlistenersink:v0.24.1
+  host: gcr.io
+  path: tekton-releases/github.com/tektoncd/triggers/cmd
+  name: eventlistenersink
   version: v0.24.1
 - url: gcr.io/tekton-releases/github.com/tektoncd/triggers/cmd/interceptors:v0.24.1
   host: gcr.io
@@ -359,41 +409,11 @@ tekton:
   path: tekton-releases/github.com/tektoncd/dashboard/cmd
   name: dashboard
   version: v0.37.0
-- url: gcr.io/tekton-releases/github.com/tektoncd/triggers/cmd/eventlistenersink:v0.24.1
-  host: gcr.io
-  path: tekton-releases/github.com/tektoncd/triggers/cmd
-  name: eventlistenersink
-  version: v0.24.1
-- url: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/entrypoint:v0.49.0
-  host: gcr.io
-  path: tekton-releases/github.com/tektoncd/pipeline/cmd
-  name: entrypoint
-  version: v0.49.0
-- url: cgr.dev/chainguard/busybox:latest
-  host: cgr.dev
-  path: chainguard
-  name: busybox
-  version: latest
 - url: mcr.microsoft.com//powershell:nanoserver
   host: mcr.microsoft.com
   name: powershell
   version: nanoserver
   args: --override-os windows
-- url: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/nop:v0.49.0
-  host: gcr.io
-  path: tekton-releases/github.com/tektoncd/pipeline/cmd
-  name: nop
-  version: v0.49.0
-- url: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/sidecarlogresults:v0.49.0
-  host: gcr.io
-  path: tekton-releases/github.com/tektoncd/pipeline/cmd
-  name: sidecarlogresults
-  version: v0.49.0
-- url: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/workingdirinit:v0.49.0
-  host: gcr.io
-  path: tekton-releases/github.com/tektoncd/pipeline/cmd
-  name: workingdirinit
-  version: v0.49.0
 
 velero:
 - url: docker.io/bitnami/kubectl:1.27

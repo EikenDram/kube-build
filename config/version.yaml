@@ -148,14 +148,9 @@ openebs:
   manifest: 
   - url: https://openebs.github.io/charts/openebs-operator-lite.yaml
     output: openebs-operator-lite.yaml
+    search: "*_IMAGE"
   - url: https://openebs.github.io/charts/openebs-lite-sc.yaml
     output: openebs-lite-sc.yaml
-  images:
-  - url: docker.io/openebs/linux-utils:3.4.0
-    host: docker.io
-    path: openebs
-    name: linux-utils
-    version: 3.4.0
 
 ## Helm repository
 chartmuseum:
@@ -391,9 +386,21 @@ tekton:
   - url: https://storage.googleapis.com/tekton-releases/pipeline/previous/v0.44.4/release.yaml
     output: pipelines.yaml
     remove-sha: true
+    args:
+    - -git-image
+    - -entrypoint-image
+    - -nop-image
+    - -sidecarlogresults-image
+    - -imagedigest-exporter-image
+    - -pr-image
+    - -workingdirinit-image
+    - -gsutil-image
+    - -shell-image
   - url: https://storage.googleapis.com/tekton-releases/triggers/previous/v0.24.1/release.yaml
     output: triggers.yaml
     remove-sha: true
+    args:
+    - -el-image
   - url: https://storage.googleapis.com/tekton-releases/triggers/previous/v0.24.1/interceptors.yaml
     output: interceptors.yaml
     remove-sha: true
@@ -401,46 +408,11 @@ tekton:
     output: dashboard.yaml
     remove-sha: true
   images:
-  - url: gcr.io/tekton-releases/github.com/tektoncd/triggers/cmd/eventlistenersink:v0.24.1
-    host: gcr.io
-    path: tekton-releases/github.com/tektoncd/triggers/cmd
-    name: eventlistenersink
-    version: v0.24.1
-  - url: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/entrypoint:v0.49.0
-    host: gcr.io
-    path: tekton-releases/github.com/tektoncd/pipeline/cmd
-    name: entrypoint
-    version: v0.49.0
-    #sha: e160e469c149b45450be16656dad3e20253b77ee57e150d4cc770b91516b8419
-  - url: cgr.dev/chainguard/busybox
-    host: cgr.dev
-    path: chainguard
-    name: busybox
-    version: latest
-    #sha: 19f02276bf8dbdd62f069b922f10c65262cc34b710eea26ff928129a736be791
   - url: mcr.microsoft.com/powershell:nanoserver
     host: mcr.microsoft.com
     name: powershell
     version: nanoserver
-    #sha: b6d5ff841b78bdf2dfed7550000fd4f3437385b8fa686ec0f010be24777654d6
     args: --override-os windows
-  - url: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/nop:v0.49.0
-    host: gcr.io
-    path: tekton-releases/github.com/tektoncd/pipeline/cmd
-    name: nop
-    version: v0.49.0
-  - url: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/sidecarlogresults:v0.49.0
-    host: gcr.io
-    path: tekton-releases/github.com/tektoncd/pipeline/cmd
-    name: sidecarlogresults
-    version: v0.49.0
-    #sha: 8a948ed5d9f441ba7126f4b2425569ea0640c23a43cf2ed6f993543b4255cd04
-  - url: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/workingdirinit:v0.49.0
-    host: gcr.io
-    path: tekton-releases/github.com/tektoncd/pipeline/cmd
-    name: workingdirinit
-    version: v0.49.0
-    #sha: 2842e45fc62da00bc9b01bd6932adc1a368f98a3dc670761777d06d8d5d22aa0
 
 # Developing applications inside cluster
 dev:
