@@ -36,6 +36,10 @@
 #     output:
 #     # (optional) remove @sha256:<> from manifests
 #     remove-sha: true
+#     # (optional) search for template in name-value pairs in yaml fields and add value to images
+#     search: template
+#     # (optional) array of searches for args in yaml and add next array element to images
+#     args: []
 #
 #   # helm chart
 #   helm:
