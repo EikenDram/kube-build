@@ -18,7 +18,7 @@ Connect to server with `ssh {{.Values.server.user}}@{{.Values.server.hostname}}`
 
 ## Required components
 
-### 1. OS initialization
+### 1. [Fedora CoreOS](https://fedoraproject.org/coreos/) initialization
 
 Run
 ```sh
@@ -112,10 +112,11 @@ Run
 ```sh
 oauth2.sh
 ```
-to load OAuth2-proxy image to registry
+to install reverse proxy for Keycloak
 
 ## Kubernetes management
-
+{{- range .Components}}
+{{- if eq .Name "traefik-ui"}}
 ### [Traefik dashboard](https://doc.traefik.io/traefik/operations/dashboard/)
 
 Run
@@ -123,7 +124,8 @@ Run
 traefik-ui.sh
 ```
 to install dashboard for traefik
-
+{{- end}}
+{{- if eq .Name "dashboard"}}
 ### [Kubernetes Dashboard](https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/)
 
 Run
@@ -138,7 +140,8 @@ You can retrieve token later with command
 ```sh
 kubectl get secret admin-user -n kubernetes-dashboard -o jsonpath={".data.token"} | base64 -d
 ```
-
+{{- end}}
+{{- if eq .Name "portainer"}}
 ### [Portainer CE](https://docs.portainer.io/start/install-ce)
 
 Run
@@ -148,7 +151,8 @@ portainer.sh
 to install Portainer CE from helm chart
 
 After installing you need to access portainer through web to do initial setup before portainer goes into timeout mode
-
+{{- end}}
+{{- if eq .Name "registry-ui"}}
 ### [Docker registry UI](https://github.com/Joxit/docker-registry-ui)
 
 Dashboard for the private docker registry
@@ -161,10 +165,13 @@ to install docker registry dashboard from helm chart
 
 Since docker registry uses self-signed certificate there will be error when accessing the dashboard for the first time
 
-Access the registry with http://{{.Values.server.hostname}}:5000 and allow insecure certificate to be able to use registry dashboard
+Access the registry with http://{{$.Values.server.hostname}}:5000 and allow insecure certificate to be able to use registry dashboard
+{{- end}}
+{{- end}}
 
 ## Monitoring
-
+{{- range .Components}}
+{{- if eq .Name "prometheus"}}
 ### 1. [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/)
 
 Monitoring stack from `prometheus-community/kube-prometheus-stack` helm chart
@@ -182,7 +189,8 @@ prometheus.sh
 to install Prometheus and Grafana from helm chart
 
 Import `openebs-dashboard.json` from `bin/prometheus` as a new dashboard in grafana to monitor openebs
-
+{{- end}}
+{{- if eq .Name "loki"}}
 ### 2. [Loki](https://grafana.com/oss/loki/)
 
 Log aggregator stack from `grafana/loki-stack` helm chart
@@ -193,13 +201,16 @@ loki.sh
 ```
 to install Loki from helm chart
 
-To view logs in grafana, add http://loki.{{.Values.prometheus.helm.namespace}}:3100 as a new loki data source
+To view logs in grafana, add http://loki.{{$.Values.prometheus.helm.namespace}}:3100 as a new loki data source
 
 Import `loki-dashboard.json` from `bin/loki/` as a new dashboard in grafana to monitor loki logs
+{{- end}}
+{{- end}}
 
 ## Backup
-
-### 1. [Minio](https://min.io/)
+{{- range .Components}}
+{{- if eq .Name "minio"}}
+### [Minio](https://min.io/)
 
 Storage for backups (should be preferably installed on a separate server, and velero configured accordingly)
 
@@ -209,9 +220,10 @@ sudo minio.sh
 ```
 to install MinIO on server
 
-Then access server and create a bucket with name {{.Values.minio.bucket}}
-
-### 2. [Velero](https://velero.io/)
+Then access server and create a bucket with name {{$.Values.minio.bucket}}
+{{- end}}
+{{- if eq .Name "velero"}}
+### [Velero](https://velero.io/)
 
 Backup tool for creating cluster backups to MinIO storage
 
@@ -226,10 +238,13 @@ Next, run
 velero.sh
 ```
 to install Velero from helm chart
+{{- end}}
+{{- end}}
 
 ## CI/CD
-
-### 1. [Gitea](https://about.gitea.com/)
+{{- range .Components}}
+{{- if eq .Name "gitea"}}
+### [Gitea](https://about.gitea.com/)
 
 Git, nuget, npm repository server
 
@@ -244,8 +259,9 @@ Next, run
 gitea.sh
 ```
 to install Gitea from helm chart
-
-### 2. [ArgoCD](https://argo-cd.readthedocs.io/en/stable/)
+{{- end}}
+{{- if eq .Name "argocd"}}
+### [ArgoCD](https://argo-cd.readthedocs.io/en/stable/)
 
 Continuous delivery service 
 
@@ -255,14 +271,9 @@ argocd.sh
 ```
 to install Argo CD from helm chart
 
-Password for user {{.Values.cluster.user}} will be auto-generated and displayed in console
-
-Can retrieve it later with command
-```sh
-kubectl -n {{.Values.argocd.namespace}} get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
-```
-
-### 3. [Tekton](https://tekton.dev/)
+{{- end}}
+{{- if eq .Name "tekton"}}
+### [Tekton](https://tekton.dev/)
 
 Continuous integration and continuous delivery pipelines 
 
@@ -277,8 +288,9 @@ Next, run
 tekton.sh
 ```
 to install Tekton from manifests
-
-### 4. Developing applications
+{{- end}}
+{{- if eq .Name "dev"}}
+### Developing applications
 
 Images for running tekton pipelines
 
@@ -287,9 +299,12 @@ Run
 dev.sh
 ```
 to load necessary images to run package loaders and init cluster-config git repository to gitea
+{{- end}}
+{{- end}}
 
 ## Services
-
+{{- range .Components}}
+{{- if eq .Name "rabbitmq"}}
 ### [Rabbit MQ](https://www.rabbitmq.com/)
 
 Message queue server 
@@ -299,7 +314,8 @@ Run
 rabbitmq.sh
 ```
 to install Rabbit MQ server from helm chart
-
+{{- end}}
+{{- if eq .Name "ibmdb2"}}
 ### [IBM DB2 community edition](https://www.ibm.com/products/db2/developers)
 
 Database server 
@@ -309,7 +325,8 @@ Run
 ibmdb2.sh
 ```
 to install IBM DB2 community edition from custom helm chart
-
+{{- end}}
+{{- if eq .Name "db2console"}}
 ### [DB2 data management console](https://www.ibm.com/products/db2-data-management-console)
 
 Database server management console (will run inside podman container on the server)
@@ -319,7 +336,8 @@ Run
 db2console.sh
 ```
 to install DB2 data management console as podman container on server
-
+{{- end}}
+{{- if eq .Name "rocker"}}
 ### [R studio server](https://posit.co/download/rstudio-server/)
 
 Run
@@ -327,9 +345,12 @@ Run
 rocker.sh
 ```
 to install R Studio server from custom helm chart
+{{- end}}
+{{- end}}
 
 ## Applications
-
+{{- range .Components}}
+{{- if eq .Name "kube-home"}}
 ### KubeHome
 
 Home page for cluster
@@ -339,7 +360,8 @@ Run
 kube-home.sh
 ```
 to install home page for cluster as ArgoCD application from helm chart hosted on chartmuseum and `values.yaml` from git repository `cluster-config` hosted on gitea
-
+{{- end}}
+{{- if eq .Name "kube-r"}}
 ### KubeR
 
 Service to run R scripts from message queue
@@ -349,7 +371,8 @@ Run
 kube-r.sh
 ```
 to install service as ArgoCD application from helm chart hosted on chartmuseum and `values.yaml` from git repository `2D` hosted on gitea
-
+{{- end}}
+{{- if eq .Name "kube-utils"}}
 ### KubeUtils
 
 Console tools for managing cluster
@@ -359,7 +382,8 @@ Run
 kube-utils.sh
 ```
 to publish tools in cluster as git repository release
-
+{{- end}}
+{{- if eq .Name "kube-app-template"}}
 ### KubeAppTemplate
 
 Template application
@@ -369,3 +393,5 @@ Run
 kube-app-template.sh
 ```
 to install application as full CI/CD with tekton pipeline and ArgoCD application from manifest in kube-app-template-manifest git repository
+{{- end}}
+{{- end}}
