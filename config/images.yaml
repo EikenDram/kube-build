@@ -286,11 +286,6 @@ prometheus:
   path: prometheus-adapter
   name: prometheus-adapter
   version: v0.10.0
-- url: quay.io/kiwigrid/k8s-sidecar:1.24.3
-  host: quay.io
-  path: kiwigrid
-  name: k8s-sidecar
-  version: 1.24.3
 
 rabbitmq:
 - url: docker.io/bitnami/rabbitmq:3.12.2-debian-11-r8
@@ -441,10 +436,3 @@ velero:
   path: velero
   name: velero-plugin-for-aws
   version: v1.7.0
-
-whoami:
-- url: docker.io/traefik/whoami:v1.10.1
-  host: docker.io
-  path: traefik
-  name: whoami
-  version: v1.10.1
