@@ -47,10 +47,6 @@ spec:
 ```
 
 ```yaml
-# Please edit the object below. Lines beginning with a '#' will be ignored,
-# and an empty file will abort the edit. If an error occurs while saving this file will be
-# reopened with the relevant failures.
-#
 apiVersion: v1
 data:
   oauth2_proxy.cfg: |-
@@ -64,39 +60,11 @@ data:
     cookie_domains = ["*.swk3s" ]
     upstreams = [ "static://202" ]
     silence_ping_logging = "true"
-kind: ConfigMap
-metadata:
-  annotations:
-    meta.helm.sh/release-name: keycloak
-    meta.helm.sh/release-namespace: default
-  creationTimestamp: "2023-08-18T12:42:44Z"
-  labels:
-    app: oauth2-proxy
-    app.kubernetes.io/component: authentication-proxy
-    app.kubernetes.io/instance: keycloak
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: oauth2-proxy
-    app.kubernetes.io/part-of: oauth2-proxy
-    app.kubernetes.io/version: 7.4.0
-    helm.sh/chart: oauth2-proxy-6.16.1
-  name: keycloak-oauth2-proxy
-  namespace: default
-  resourceVersion: "30339"
-  uid: 14d48b50-f5a6-4365-a88d-c41aa8d5e4fa
 ```
 
 ```yaml
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
-metadata:
-  annotations:
-    kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"traefik.containo.us/v1alpha1","kind":"IngressRoute","metadata":{"annotations":{},"name":"auth-proxy","namespace":"default"},"spec":{"routes":[{"kind":"Rule","match":"Host(`auth.swk3s`)",">  creationTimestamp: "2023-08-18T11:13:09Z"
-  generation: 1
-  name: auth-proxy
-  namespace: default
-  resourceVersion: "25577"
-  uid: b3e01c51-d23b-4c2d-ba84-5baddc47688d
 spec:
   routes:
   - kind: Rule
@@ -111,15 +79,6 @@ spec:
 ```yaml
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
-metadata:
-  annotations:
-    kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"traefik.containo.us/v1alpha1","kind":"IngressRoute","metadata":{"annotations":{},"name":"whoami-ingress","namespace":"default"},"spec":{"routes":[{"kind":"Rule","match":"Host(`whoami.swk3>  creationTimestamp: "2023-08-18T11:13:09Z"
-  generation: 1
-  name: whoami-ingress
-  namespace: default
-  resourceVersion: "25579"
-  uid: 93a2f7dc-5209-4438-874d-20f0e9ee3c8b
 spec:
   routes:
   - kind: Rule
@@ -135,15 +94,6 @@ spec:
 ```yaml
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
-metadata:
-  annotations:
-    kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"traefik.containo.us/v1alpha1","kind":"IngressRoute","metadata":{"annotations":{},"name":"whoami-oauth2","namespace":"default"},"spec":{"routes":[{"kind":"Rule","match":"Host(`whoami.swk3s>  creationTimestamp: "2023-08-18T11:13:09Z"
-  generation: 1
-  name: whoami-oauth2
-  namespace: default
-  resourceVersion: "25580"
-  uid: 2672116b-94f6-4ea0-8b10-de8fb4b4d8e4
 spec:
   routes:
   - kind: Rule
@@ -160,14 +110,8 @@ spec:
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
-  annotations:
-    kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"traefik.containo.us/v1alpha1","kind":"Middleware","metadata":{"annotations":{},"name":"auth-proxy","namespace":"default"},"spec":{"forwardAuth":{"address":"http://auth.swk3s/","authRespon>  creationTimestamp: "2023-08-18T11:13:09Z"
-  generation: 1
   name: auth-proxy
   namespace: default
-  resourceVersion: "25581"
-  uid: af8f5adf-0565-44bd-bac1-22838752cfeb
 spec:
   forwardAuth:
     address: http://auth.swk3s/
@@ -182,14 +126,8 @@ spec:
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
-  annotations:
-    kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"traefik.containo.us/v1alpha1","kind":"Middleware","metadata":{"annotations":{},"name":"oauth2-proxy-headers","namespace":"default"},"spec":{"headers":{"browserXssFilter":true,"contentType>  creationTimestamp: "2023-08-18T11:13:09Z"
-  generation: 1
   name: oauth2-proxy-headers
   namespace: default
-  resourceVersion: "25578"
-  uid: bf6c47be-19d6-44da-8a27-dd72a513d609
 spec:
   headers:
     browserXssFilter: true
@@ -200,5 +138,4 @@ spec:
     stsIncludeSubdomains: true
     stsPreload: true
     stsSeconds: 315360000
-
 ```

@@ -2,14 +2,14 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: whoami-ingress
+  name: whoami
 spec:
   routes:
     - match: Host(`whoami.{{.Values.server.hostname | lower}}`)
       kind: Rule
       middlewares:
         - name: auth-proxy
-          namespace: default
+          namespace: {{.Values.oauth2.helm.namespace}}
       services:
         - name: whoami
           port: 80
@@ -22,7 +22,10 @@ spec:
   routes:
     - match: "Host(`whoami.{{.Values.server.hostname | lower}}`) && PathPrefix(`/oauth2/`)"
       kind: Rule
+      #middlewares:
+      #  - name: auth-proxy-headers
+      #    namespace: {{.Values.oauth2.helm.namespace}}
       services:
         - name: {{.Values.oauth2.helm.name}}-oauth2-proxy
+          namespace: {{.Values.oauth2.helm.namespace}}
           port: 80
----

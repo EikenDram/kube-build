@@ -69,7 +69,7 @@ echo "- url: {{.host}}/{{if .path}}{{.path}}/{{end}}{{.name}}:{{.version}}{{if .
 {{- end}}
 
 echo "# install" >> $IMAGES
-for f in install/{{.Version.dir}}/*.yaml
+for f in $DEPLOYMENT/install/{{.Version.dir}}/*.yaml
 do
   # take action on each file. $f store current file name
   cat "$f" | yq -N '..|.image? | select(.)' | sort -u | sed -e 's/^/- url: /' >> $IMAGES
