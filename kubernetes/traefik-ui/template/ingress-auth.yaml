@@ -1,23 +1,20 @@
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
 metadata:
   name: traefik-ingress
   namespace: kube-system
-  annotations:
-    spec/ingressClassName: traefik
-    traefik.ingress.kubernetes.io/router.middlewares: {{.Values.oauth2.helm.namespace}}-auth-proxy@kubernetescrd
 spec:
-  rules:
-    - host: {{index .Values "traefik-ui" "ingress"}}.{{.Values.server.hostname | lower}}
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: traefik-dashboard
-                port:
-                  number: 9000
+  routes:
+    - match: Host(`{{index .Values "traefik-ui" "ingress"}}.{{.Values.server.hostname | lower}}`)
+      kind: Rule
+      middlewares:
+        - name: auth-proxy
+          namespace: {{.Values.oauth2.helm.namespace}}
+        - name: traefik-ingress-redirect
+          namespace: kube-system
+      services:
+        - name: traefik-dashboard
+          port: 9000
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
@@ -33,3 +30,12 @@ spec:
           namespace: {{.Values.oauth2.helm.namespace}}
           port: 80
 ---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: traefik-ingress-redirect
+  namespace: kube-system
+spec:
+  redirectRegex:
+    regex: "^http://([^/]+)/?$"
+    replacement: http://${1}/dashboard/
