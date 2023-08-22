@@ -1,3 +1,4 @@
+{{$.Values.server.ip}} {{$.Values.server.hostname}}
 {{$.Values.server.ip}} {{$.Values.server.hostname | lower}}
 {{- range .Components }}
 {{- if (index $.Values .Name) }}

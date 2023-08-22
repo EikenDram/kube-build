@@ -108,7 +108,23 @@ to install Keycloak from helm chart
 
 Reverse proxy
 
+To use Keycloak with reverse proxy for accessing cluster resources you'll need to manually create necessary objects in Keycloak first:
+
+- new realm called "cluster"
+
+- new client scopes "audience" and "groups"
+
+- new client called "oauth2-proxy"
+
+- new user "{{.Values.cluster.user}}" with password "{{.Values.cluster.password}}"
+
 Run
+```sh
+sudo oauth2.sh -i
+```
+to initialize oauth2-proxy, you will be prompted to enter client secret from Keycloak
+
+Next, run
 ```sh
 oauth2.sh
 ```

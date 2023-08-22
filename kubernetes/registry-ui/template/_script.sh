@@ -6,5 +6,5 @@
     {{ template "wait" dict "Name" "docker-registry-ui" "Namespace" (index .Values "registry-ui" "helm" "namespace")}}
 
     echo "Registry uses self-signed certificate which will be disallowed in browser by default"
-    echo "Go to http://{{.Values.server.hostname}}:5000 and allow insecure certificates to use Registry dashboard"
+    echo "Go to https://{{.Values.server.hostname}}:5000 and allow insecure certificate to use Registry dashboard"
 {{- end}}

@@ -76,6 +76,9 @@
 
     # Can check that registry is available with
     echo "Checking that registry is available:"
+    # wait til pod is created
+    sleep 2
+    kubectl wait --for=condition=ready pod -l app=registry -n {{.Values.registry.namespace}} --timeout=1m
     sleep 2
     curl -u {{.Values.registry.user}}:{{.Values.registry.password}} https://{{.Values.server.hostname}}:5000/v2/_catalog
     #{{- end}}

@@ -13,14 +13,27 @@
     sed -i "s/__secret__/$secret/gi" install/{{.Version.dir}}/values.yaml
 
     # change traefik configuration
-    # might not be necessary
     echo "Copying traefik-config.yaml to /var/lib/rancher/k3s/server/manifests/"
-    cp install/traefik-ui/traefik-config.yaml /var/lib/rancher/k3s/server/manifests/
+    cp install/{{.Version.dir}}/traefik-config.yaml /var/lib/rancher/k3s/server/manifests/
+
+    # patch coredns
+    echo "Patching coredns configuration..."
+    kubectl patch configmap coredns -n kube-system --patch-file install/{{.Version.dir}}/coredns-patch.yaml
+
+    # restart coredns
+    echo "Restarting coredns"
+    kubectl delete pod -l k8s-app=kube-dns -n kube-system
+    sleep 2
+    kubectl wait --for=condition=ready pod -l k8s-app=kube-dns -n kube-system
+    
 {{- end}}
 
 {{- define "install-post"}}
     # add ingress
+    echo "Adding ingress..."
     kubectl apply -f install/{{.Version.dir}}/ingress.yaml
+
+    
 {{- end}}
 
 {{- define "upgrade"}}

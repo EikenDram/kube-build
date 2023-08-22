@@ -1,0 +1,5 @@
+data:
+  NodeHosts: |
+    {{.Values.server.ip}} {{.Values.server.hostname | lower}}
+    {{.Values.server.ip}} {{.Values.keycloak.ingress}}.{{.Values.server.hostname | lower}}
+    {{.Values.server.ip}} {{.Values.oauth2.ingress}}.{{.Values.server.hostname | lower}}

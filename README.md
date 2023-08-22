@@ -25,6 +25,7 @@ This project was initially a set of notes about setting everything up on a virtu
 | openebs     | kubernetes/openebs     | [OpenEBS](https://openebs.io/) storage provider
 | chartmuseum | kubernetes/chartmuseum | Helm chart repository [Chartmuseum](https://chartmuseum.com/)
 | keycloak    | kubernetes/keycloak    | Access manager [Keycloak](https://www.keycloak.org/)
+| oauth2      | kubernetes/oauth2      | Reverse proxy [OAuth2-proxy](https://oauth2-proxy.github.io/oauth2-proxy/)
 | dashboard   | kubernetes/dashboard   | [Kubernetes dashboard](https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/)
 | portainer   | kubernetes/portainer   | Kubernetes manager [Portainer CE](https://docs.portainer.io/start/install-ce)
 | registry-ui | kubernetes/registry-ui | [Docker registry dashboard](https://github.com/Joxit/docker-registry-ui)
@@ -41,7 +42,7 @@ This project was initially a set of notes about setting everything up on a virtu
 | gitea     | cicd/gitea  | Git and package repository [Gitea](https://about.gitea.com/)
 | tekton    | cicd/tekton | CI/CD pipeline [Tekton](https://tekton.dev/)
 | argocd    | cicd/argocd | CD automation [Argo CD](https://argo-cd.readthedocs.io/en/stable/)
-| dev       | cicd/dev    | Loaders for npm/nuget packages to gitea
+| dev       | cicd/dev    | Loaders for npm/nuget/go packages into gitea
 
 ### Services:
 
@@ -96,10 +97,7 @@ ssh-keygen
 ```
 and copy content of `id_rsa.pub`
 
-- server.admin.hash - password hash for admin user, generate with command
-```sh
-mkpasswd --method=yescrypt
-```
+- server.admin.name and server.admin.password - credentials for server's user that uses password authentication
 
 - server.ntp - NTP server in your air-gapped network
 
@@ -109,22 +107,9 @@ mkpasswd --method=yescrypt
 
 - registry.user and registry.password - credentials that will be used for accessing private docker registry inside cluster
 
-- registry.htpasswd - htpasswd for registry user and password, generate with command
-```sh
-htpasswd -B -n <registry.user>
-```
-
 - registry.cert - self-signed certificate for docker registry server
 
 - prometheus.endpoint - endpoint for prometheus
-
-- minio.crypt - encrypted password for minio server, generate with command
-```sh
-echo "<password>" > tmp.txt
-pw="$(makepasswd --crypt-md5 --clearfrom=./tmp.txt)"
-echo "$pw"
-rm tmp.txt
-```
 
 - velero.minio-url and velero.minio-public - url to minio server
 
@@ -179,6 +164,8 @@ sudo apt-get -y install skopeo
 sudo apt install git
 ```
 
+- `mkpasswd` and `htpasswd` tools for encrypting passwords
+
 `prepare.sh` script supports optional parameters to prepare only specific parts of the deployment, check the available options by running 
 ```sh
 sh prepare.sh -h
@@ -216,17 +203,17 @@ After transferring files connect to server with ssh (for example, `ssh user@HOST
 
 ## Developing applications
 
-Manuals in `dev` directory describe how to build and deploy dotnet, nodejs, golang and java applications inside kubernetes cluster
+Manuals in `dev` directory describe how to build and deploy dotnet, nodejs and golang applications inside kubernetes cluster
 
 # Compilation
 
-## Running tool from source code
+## Running from source code
 
 Install [go](https://go.dev/)
 
 Clone this git repository and run `go run build`
 
-## Building tool from source code
+## Building from source code
 
 Run `GOOS=<os> GOARCH=<arch> go build build` for building tool for specific platform
 
@@ -234,7 +221,7 @@ Run `GOOS=<os> GOARCH=<arch> go build build` for building tool for specific plat
 
 ### Configuration files
 
-Build tool uses `template/text` go module to process files as templates with following data:
+Build tool uses `text/template` go module to process files as templates with following data:
 
 - `.Values` contains component values configuration and is loaded from `config/values.yaml` by default
 

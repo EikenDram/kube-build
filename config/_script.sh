@@ -122,7 +122,7 @@ if matches "$OBJECT" "<package>"; then
     
     {{- end}}
     # stop loader
-    kubectl delete pod loader
+    kubectl delete pod loader --grace-period=1
     #
 fi
 {{- end}}
@@ -214,7 +214,7 @@ fi
     # wait for pod to get ready
     echo "Waiting for pod to get ready..."
     sleep 3
-    kubectl wait --for=condition=ready pod -l app.kubernetes.io/name={{.Name}} -n {{.Namespace}} --timeout=1m
+    kubectl wait --for=condition=ready pod -l app.kubernetes.io/name={{.Name}} -n {{.Namespace}} --timeout=2m
 {{- end}}
 
 {{- define "etc-hosts"}}
