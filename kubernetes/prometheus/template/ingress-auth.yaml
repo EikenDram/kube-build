@@ -9,4 +9,5 @@ spec:
       kind: Rule
       services:
         - name: {{.Values.oauth2.helm.name}}-oauth2-proxy
+          namespace: {{.Values.oauth2.helm.namespace}}
           port: 80

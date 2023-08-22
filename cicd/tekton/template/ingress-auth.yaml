@@ -5,7 +5,7 @@ metadata:
   namespace: tekton-pipelines
   annotations:
     spec/ingressClassName: traefik
-    traefik.ingress.kubernetes.io/router.middlewares: default-auth-proxy@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: {{.Values.oauth2.helm.namespace}}-auth-proxy@kubernetescrd
 spec:
   rules:
   - host: {{.Values.tekton.ingress}}.{{.Values.server.hostname | lower}}
@@ -29,5 +29,6 @@ spec:
       kind: Rule
       services:
         - name: {{.Values.oauth2.helm.name}}-oauth2-proxy
+          namespace: {{.Values.oauth2.helm.namespace}}
           port: 80
 ---
