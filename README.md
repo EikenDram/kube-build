@@ -201,10 +201,6 @@ sh transfer.sh -h
 
 After transferring files connect to server with ssh (for example, `ssh user@HOSTMANE` where `user` is server user defined in `values.yaml` and `HOSTNAME` is server's hostname), go to `deployment` directory on a server and start running scripts following instructions in `README.md`
 
-## Developing applications
-
-Manuals in `dev` directory describe how to build and deploy dotnet, nodejs and golang applications inside kubernetes cluster
-
 # Compilation
 
 ## Running from source code
