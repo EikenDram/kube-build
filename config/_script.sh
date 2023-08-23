@@ -109,9 +109,9 @@ if matches "$OBJECT" "<package>"; then
 
     {{- range .Images }}
     # {{.path}}/{{.name}}:{{.version}}
-    echo "Loading image {{.path}}/{{.name}}:{{.version}} into private registry."
+    echo "Loading image {{if .path}}{{.path}}/{{end}}{{.name}}:{{.version}} into private registry."
     kubectl cp packages/{{$.Version.dir}}/{{.name}}-{{.version}}.tar loader:/tmp
-    kubectl exec -i loader -- skopeo copy {{if .sha}}--preserve-digest{{end}} --dest-creds {{$.Values.registry.user}}:{{$.Values.registry.password}} --dest-tls-verify=false --insecure-policy docker-archive:/tmp/{{.name}}-{{.version}}.tar docker://{{$.Values.server.hostname}}:5000/{{.path}}/{{.name}}:{{.version}}{{if .sha}}@sha256:{{.sha}}{{end}}
+    kubectl exec -i loader -- skopeo copy {{if .sha}}--preserve-digest{{end}} --dest-creds {{$.Values.registry.user}}:{{$.Values.registry.password}} --dest-tls-verify=false --insecure-policy docker-archive:/tmp/{{.name}}-{{.version}}.tar docker://{{$.Values.server.hostname}}:5000/{{if .path}}{{.path}}/{{end}}{{.name}}:{{.version}}{{if .sha}}@sha256:{{.sha}}{{end}}
 
     {{- end }}
     {{- range .Version.dockerfile}}
@@ -214,7 +214,7 @@ fi
     # wait for pod to get ready
     echo "Waiting for pod to get ready..."
     sleep 3
-    kubectl wait --for=condition=ready pod -l app.kubernetes.io/name={{.Name}} -n {{.Namespace}} --timeout=2m
+    kubectl wait --for=condition=ready pod -l {{if .Label}}{{.Label}}{{else}}app.kubernetes.io/name{{end}}={{.Name}} {{if .Namespace}}-n {{.Namespace}}{{end}} --timeout=5m
 {{- end}}
 
 {{- define "etc-hosts"}}

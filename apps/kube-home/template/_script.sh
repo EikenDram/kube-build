@@ -1,14 +1,16 @@
+#!/bin/sh
+
 {{- template "script" (dict "Values" .Values "Version" (index .Version "kube-home") "Images" (index .Images "kube-home"))}}
 
 {{- define "install"}}
     # we'll need to run git-loader to run workload.sh
     kubectl run worker-git --image={{.Values.loaders.git}} --command -- sh -c 'while true; do sleep 10; done'
-    kubectl wait --for=condition=ready pod -l run=worker-git
+    {{ template "wait" dict "Label" "run" "Name" "worker-git"}}
     kubectl cp install/{{.Version.dir}}/values.yaml worker-git:/tmp
     kubectl cp install/{{.Version.dir}}/logo.png worker-git:/tmp
     kubectl cp install/{{.Version.dir}}/workload.sh worker-git:/tmp
     kubectl exec -i worker-git -- sh /tmp/workload.sh
-    kubectl delete pod worker-git
+    kubectl delete pod worker-git --grace-period=1
     
     # then make a new argocd application from application.yaml
     kubectl apply -f install/{{.Version.dir}}/application.yaml

@@ -3,17 +3,6 @@
 {{- template "script" (dict "Values" .Values "Version" .Version.dev "Images" .Images.dev "Value" .Values.dev)}}
 
 {{- define "install"}}
-    # add gitea admin to tea
-    # generate token (because token generated with tea login add user and password wont have any scopes)
-    TOKEN=curl "http://{{.Values.gitea.ingress}}.{{.Values.server.hostname | lower}}/api/v1/users/{{.Values.cluster.user}}/tokens" --silent --request POST --header 'Content-Type: application/json' --user "{{.Values.cluster.user}}:{{.Values.cluster.password}}" --data '{ "name": "tea", "scopes": [ "all" ] }' | jq -r '.sha1'
-
-    # add login to tea
-    tea login add --name=gitea --token=$TOKEN --url=http://{{.Values.gitea.ingress}}.{{.Values.server.hostname | lower}}/
-    tea login default gitea
-
-    # add new repo cluster-config
-    tea repo create --name=cluster-config --init --description="Cluster configuration"
-
     # loaders: 
     # - working with git repo
     #kubectl run worker-git --image={{.Values.loaders.git}} --command -- sh -c 'while true; do sleep 10; done'

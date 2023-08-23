@@ -7,3 +7,7 @@
     kubectl create ns {{.Values.rabbitmq.helm.namespace}}
     kubectl -n {{.Values.rabbitmq.helm.namespace}} create secret generic rabbitmq-pass --from-literal=rabbitmq-password={{.Values.cluster.password}}
 {{- end}}
+
+{{- define "install-post"}}
+    {{template "wait" dict "Name" "rabbitmq" "Namespace" .Value.helm.namespace}}
+{{- end}}

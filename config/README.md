@@ -232,11 +232,17 @@ Storage for backups (should be preferably installed on a separate server, and ve
 
 Run
 ```sh
+sudo minio.sh -i
+```
+to initialize MiniO for installation
+
+Next, run
+```sh
 sudo minio.sh
 ```
-to install MinIO on server
+to install MinIO
 
-Then access server and create a bucket with name {{$.Values.minio.bucket}}
+Access server and create a new bucket with the name {{$.Values.minio.bucket}}
 {{- end}}
 {{- if eq .Name "velero"}}
 ### [Velero](https://velero.io/)
@@ -283,6 +289,12 @@ Continuous delivery service
 
 Run
 ```sh
+sudo argocd.sh -i
+```
+to initialize argocd installation
+
+Next, run
+```sh
 argocd.sh
 ```
 to install Argo CD from helm chart
@@ -314,7 +326,7 @@ Run
 ```sh
 dev.sh
 ```
-to load necessary images to run package loaders and init cluster-config git repository to gitea
+to load necessary images for running package loaders
 {{- end}}
 {{- end}}
 
@@ -349,7 +361,13 @@ Database server management console (will run inside podman container on the serv
 
 Run
 ```sh
-db2console.sh
+sudo db2console.sh -i
+```
+to prepare mounted directory for installation
+
+Next, run
+```sh
+db2console.sh -a
 ```
 to install DB2 data management console as podman container on server
 {{- end}}

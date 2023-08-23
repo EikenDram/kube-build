@@ -58,9 +58,7 @@
     kubectl create -f install/{{.Version.dir}}/deployment.yaml
 
     # wait til pod is created
-    echo "Waiting for pod to run..."
-    sleep 2
-    kubectl wait --for=condition=ready pod -l app=registry -n {{.Values.registry.namespace}} --timeout=1m
+    {{template "wait" dict "Label" "app" "Name" "registry" "Namespace" .Values.registry.namespace}}
 
     # Update k3s registry settings
     echo "Copying registries.yaml into /etc/rancher/k3s/"
@@ -76,9 +74,8 @@
 
     # Can check that registry is available with
     echo "Checking that registry is available:"
-    # wait til pod is created
-    sleep 2
-    kubectl wait --for=condition=ready pod -l app=registry -n {{.Values.registry.namespace}} --timeout=1m
+    {{template "wait" dict "Label" "app" "Name" "registry" "Namespace" .Values.registry.namespace}}
+    
     sleep 2
     curl -u {{.Values.registry.user}}:{{.Values.registry.password}} https://{{.Values.server.hostname}}:5000/v2/_catalog
     #{{- end}}

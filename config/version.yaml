@@ -340,6 +340,11 @@ velero:
 gitea: 
   dir: gitea
   title: Gitea
+  bin:
+  # CLI for managing gitea
+  - url: https://dl.gitea.com/tea/0.9.2/tea-0.9.2-linux-amd64
+    output: tea
+    usr-local-bin: tea
   helm: 
     repo: gitea-charts
     url: https://dl.gitea.io/charts/
@@ -412,11 +417,6 @@ tekton:
 dev:
   dir: dev
   title: Application development
-  bin:
-  # CLI for managing gitea
-  - url: https://dl.gitea.com/tea/0.9.2/tea-0.9.2-linux-amd64
-    output: tea
-    usr-local-bin: tea
   images:
   # for working with git repositories
   - url: docker.io/alpine/git:v2.40.1

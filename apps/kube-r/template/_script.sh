@@ -1,3 +1,5 @@
+#!/bin/sh
+
 {{- template "script" (dict "Values" .Values "Version" (index .Version "kube-r") "Images" (index .Images "kube-r"))}}
 
 {{- define "install"}}

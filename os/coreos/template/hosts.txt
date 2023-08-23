@@ -7,3 +7,4 @@
 {{- end }}
 {{- end }}
 {{- end }}
+{{$.Values.server.ip}} {{$.Values.grafana.ingress}}.{{$.Values.server.hostname | lower}}
