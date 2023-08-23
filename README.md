@@ -4,7 +4,7 @@ This is a console tool for building a [K3S](https://k3s.io/) kubernetes cluster 
 
 ## Introduction
 
-Coming from developing .net web applications for windows server, switching recently to dotnet core allowed me to build applications for linux platform as well. Decided to try updating server architecture to cloud and implement some DevOps; and after a bit of research ended up with K3S on Fedora CoreOS - as something that looked simple enough to start with.
+Coming from developing .net web applications for windows server, switching recently to dotnet core allowed me to build applications for linux platform as well. Decided to try updating server architecture to cloud and implement some DevOps; after a bit of research ended up with K3S on Fedora CoreOS - as something that looked simple enough to start with.
 
 This project was initially a set of notes about setting everything up on a virtual machine, but as the production environment i'm working with is air-gapped, setting everything up required quite a lot of additional work, which I then decided to automate by making this tool.
 
