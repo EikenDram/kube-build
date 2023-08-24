@@ -10,53 +10,36 @@ This project was initially a set of notes about setting everything up on a virtu
 
 ## Cluster configuration
 
-### System
-
-| COMPONENT  | DIRECTORY | CONTENT
-|------------|-----------|-----------------------------------
-| os         | os/coreos | [Fedora CoreOS](https://fedoraproject.org/coreos/)
-
-### Kubernetes:
-
-| COMPONENT   | DIRECTORY              | CONTENT
-|-------------|------------------------|-----------------------------------
-| k3s         | kubernetes/k3s         | [K3S](https://k3s.io/) kubernetes cluster
-| registry    | kubernetes/registry    | Private [Docker registry](https://docs.docker.com/registry/)
-| openebs     | kubernetes/openebs     | [OpenEBS](https://openebs.io/) storage provider
-| chartmuseum | kubernetes/chartmuseum | Helm chart repository [Chartmuseum](https://chartmuseum.com/)
-| keycloak    | kubernetes/keycloak    | Access manager [Keycloak](https://www.keycloak.org/)
-| oauth2      | kubernetes/oauth2      | Reverse proxy [OAuth2-proxy](https://oauth2-proxy.github.io/oauth2-proxy/)
-| dashboard   | kubernetes/dashboard   | [Kubernetes dashboard](https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/)
-| portainer   | kubernetes/portainer   | Kubernetes manager [Portainer CE](https://docs.portainer.io/start/install-ce)
-| registry-ui | kubernetes/registry-ui | [Docker registry dashboard](https://github.com/Joxit/docker-registry-ui)
-| traefik-ui  | kubernetes/traefik-ui  | [Traefik dashboard](https://doc.traefik.io/traefik/operations/dashboard/)
-| prometheus  | kubernetes/prometheus  | Monitoring service [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/)
-| loki        | kubernetes/loki        | Logging service [Loki](https://grafana.com/oss/loki/)
-| minio       | kubernetes/minio       | Backup storage [MinIO](https://min.io/)
-| velero      | kubernetes/velero      | Backup service [Velero](https://velero.io/)
-
-### CI/CD:
-
-| COMPONENT | DIRECTORY   | CONTENT
-|-----------|-------------|---------------------------
-| gitea     | cicd/gitea  | Git and package repository [Gitea](https://about.gitea.com/)
-| tekton    | cicd/tekton | CI/CD pipeline [Tekton](https://tekton.dev/)
-| argocd    | cicd/argocd | CD automation [Argo CD](https://argo-cd.readthedocs.io/en/stable/)
-| dev       | cicd/dev    | Loaders for npm/nuget/go packages into gitea
-
-### Services:
-
-| COMPONENT  | DIRECTORY           | CONTENT
-|------------|---------------------|-------------------------------
-| ibmdb2     | services/ibmdb2     | [IBM DB2 community edition](https://www.ibm.com/products/db2/developers) database server
-| db2console | services/db2console | [DB2 data management console](https://www.ibm.com/products/db2-data-management-console)
-| rabbitmq   | services/rabbitmq   | Message query server [Rabbit MQ](https://www.rabbitmq.com/)
-| rocker     | services/rocker     | [RStudio server](https://posit.co/download/rstudio-server/)
-
-### Applications:
-
 | COMPONENT         | DIRECTORY              | CONTENT
-|-------------------|------------------------|----------------------------
+|-------------------|------------------------|-----------------------------------
+| **System**        |                        |
+| os                | os/coreos              | [Fedora CoreOS](https://fedoraproject.org/coreos/)
+| **Kubernetes**    |                        |
+| k3s               | kubernetes/k3s         | [K3S](https://k3s.io/) kubernetes cluster
+| registry          | kubernetes/registry    | Private [Docker registry](https://docs.docker.com/registry/)
+| openebs           | kubernetes/openebs     | [OpenEBS](https://openebs.io/) storage provider
+| chartmuseum       | kubernetes/chartmuseum | Helm chart repository [Chartmuseum](https://chartmuseum.com/)
+| keycloak          | kubernetes/keycloak    | Access manager [Keycloak](https://www.keycloak.org/)
+| oauth2            | kubernetes/oauth2      | Reverse proxy [OAuth2-proxy](https://oauth2-proxy.github.io/oauth2-proxy/)
+| dashboard         | kubernetes/dashboard   | [Kubernetes dashboard](https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/)
+| portainer         | kubernetes/portainer   | Kubernetes manager [Portainer CE](https://docs.portainer.io/start/install-ce)
+| registry-ui       | kubernetes/registry-ui | [Docker registry dashboard](https://github.com/Joxit/docker-registry-ui)
+| traefik-ui        | kubernetes/traefik-ui  | [Traefik dashboard](https://doc.traefik.io/traefik/operations/dashboard/)
+| prometheus        | kubernetes/prometheus  | Monitoring service [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/)
+| loki              | kubernetes/loki        | Logging service [Loki](https://grafana.com/oss/loki/)
+| minio             | kubernetes/minio       | Backup storage [MinIO](https://min.io/)
+| velero            | kubernetes/velero      | Backup service [Velero](https://velero.io/)
+| **CI/CD**         |                        |
+| gitea             | cicd/gitea             | Git and package repository [Gitea](https://about.gitea.com/)
+| tekton            | cicd/tekton            | CI/CD pipeline [Tekton](https://tekton.dev/)
+| argocd            | cicd/argocd            | CD automation [Argo CD](https://argo-cd.readthedocs.io/en/stable/)
+| dev               | cicd/dev               | Loaders for npm/nuget/go packages into gitea
+| **Services**      |                        |
+| ibmdb2            | services/ibmdb2        | [IBM DB2 community edition](https://www.ibm.com/products/db2/developers) database server
+| db2console        | services/db2console    | [DB2 data management console](https://www.ibm.com/products/db2-data-management-console)
+| rabbitmq          | services/rabbitmq      | Message query server [Rabbit MQ](https://www.rabbitmq.com/)
+| rocker            | services/rocker        | [RStudio server](https://posit.co/download/rstudio-server/)
+| **Applications**  |                        |
 | kube-home         | apps/kube-home         | [KubeHome](https://github.com/EikenDram/kube-home) home page for cluster
 | kube-r            | apps/kube-r            | [KubeR](https://github.com/EikenDram/kube-r) service for processing reports as R scripts
 | kube-utils        | apps/kube-utils        | [KubeUtils](https://github.com/EikenDram/kube-utils) tools for managing cluster resources
@@ -64,7 +47,7 @@ This project was initially a set of notes about setting everything up on a virtu
 
 ## Development status
 
-KubeR, KubeUtils, KubeAppTemplate, Keycloak authorization, application development are still work in progress
+KubeR, KubeUtils, KubeAppTemplate, Keycloak authorization, application development are work in progress
 
 ## Project structure
 
