@@ -17,7 +17,7 @@ server:
   #    ssh-rsa <COPY KEY FROM HERE>
   ssh: "AAAA..."
   #
-  # create additional user you can login to server with using password
+  # create additional user you can access the server with using password
   admin: 
     enabled: true
     #
@@ -57,7 +57,7 @@ registry:
   # namespace to deploy component to
   namespace: registry
   # 
-  # credentials to access registry
+  # credentials for accessing registry
   user: regadmin
   password: regpass
   #
@@ -77,6 +77,10 @@ chartmuseum:
   #
   # subdomain name to access component from: <ingress>.<hostname>
   ingress: chartmuseum
+  # 
+  # credentials for accessing chartmuseum
+  user: chartadmin
+  password: chartpass
   #
   # storage size for chartmuseum
   storage: 1Gi

@@ -16,7 +16,7 @@
 
     # add helm repository from new chartmuseum server
     sleep 1
-    helm repo add --username {{.Values.cluster.user}} --password {{.Values.cluster.password}} chartmuseum http://{{.Values.chartmuseum.ingress}}.{{.Values.server.hostname | lower}}/
+    helm repo add --username {{.Values.chartmuseum.user}} --password {{.Values.chartmuseum.password}} chartmuseum http://{{.Values.chartmuseum.ingress}}.{{.Values.server.hostname | lower}}/
     helm repo update
 {{- end}}
 

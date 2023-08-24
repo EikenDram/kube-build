@@ -32,7 +32,7 @@
 
     # add chartmuseum helm repo
     echo "Adding chartmuseum repository"
-    argocd repo add http://{{.Values.chartmuseum.helm.name}}.{{.Values.chartmuseum.helm.namespace}}:8080/ --username {{.Values.cluster.user}} --password {{.Values.cluster.password}} --type helm --name chartmuseum
+    argocd repo add http://{{.Values.chartmuseum.helm.name}}.{{.Values.chartmuseum.helm.namespace}}:8080/ --username {{.Values.chartmuseum.user}} --password {{.Values.chartmuseum.password}} --type helm --name chartmuseum
 
     # add cluster-config git repo
     echo "Adding cluster-config git repository"

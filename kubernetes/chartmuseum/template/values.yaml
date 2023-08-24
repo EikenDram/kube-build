@@ -4,9 +4,9 @@ env:
     DISABLE_API: false
   secret:
     # username for basic http authentication
-    BASIC_AUTH_USER: {{.Values.cluster.user}}
+    BASIC_AUTH_USER: {{.Values.chartmuseum.user}}
     # password for basic http authentication
-    BASIC_AUTH_PASS: {{.Values.cluster.password}}
+    BASIC_AUTH_PASS: {{.Values.chartmuseum.password}}
 
 persistence:
   enabled: false

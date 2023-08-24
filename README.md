@@ -83,29 +83,31 @@ KubeR, KubeUtils, KubeAppTemplate, Keycloak authorization, application developme
 
 ## Create new deployment
 
-Download from [release](https://github.com/EikenDram/kube-build/releases/) `build.tar` and `build-tool.tar` for your platform and unpack them
+Download from [releases](https://github.com/EikenDram/kube-build/releases/) `build.tar.gz` and `build-tool.tar.gz` for your platform and unpack them
 
-Build tool uses deployment configuration from `config/values.yaml`. Update necessary parameters:
+Build tool uses configuration from `config/values.yaml`. Change necessary parameters:
 
 - server.hostname - hostname of your server
 
 - server.ip - ip address of your server
 
-- server.ssh - generate ssh key to access core user with command
+- server.ssh - generate ssh key to access server with command
 ```sh 
 ssh-keygen
 ```
 and copy content of `id_rsa.pub`
 
-- server.admin.name and server.admin.password - credentials for server's user that uses password authentication
+- server.admin.name and server.admin.password - credentials for server's user that will use password authentication in case ssh key gets lost
 
 - server.ntp - NTP server in your air-gapped network
 
-- server.dummy - default route for your server
+- server.dummy - dummy default route for your server, if your network configuration doesn't have one
 
 - cluster.user and cluster.password - credentials that will be used for accessing most cluster resources
 
 - registry.user and registry.password - credentials that will be used for accessing private docker registry inside cluster
+
+- charts.user and charts.password - credentials that will be used for accessing chartmuseum repository
 
 - registry.cert - self-signed certificate for docker registry server
 
