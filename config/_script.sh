@@ -219,14 +219,14 @@ fi
 
 {{- define "etc-hosts"}}
     # add ingress to {{.ingress}} to hosts
-    INGRESS="{{.Values.server.ip}} {{.ingress}}.{{.Values.server.hostname | lower}}"
+    INGRESS="{{.Values.server.ip}} {{.Ingress}}.{{.Values.server.hostname | lower}}"
     if grep -Fxq "$INGRESS" /etc/hosts
     then
         # found
         echo "Ingress already exists in /etc/hosts"
     else
         # not found
-        echo "Adding {{.ingress}} ingress to /etc/hosts"
+        echo "Adding {{.Ingress}} ingress to /etc/hosts"
         echo "$INGRESS" >> /etc/hosts
     fi
 {{- end}}

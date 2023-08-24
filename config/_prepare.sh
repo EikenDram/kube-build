@@ -7,16 +7,16 @@ OBJECT=""
 print_usage() 
 {
     echo "
-        Usage: sh prepare.sh [-n Name] [-i/m/p/b/s/l/e/g/f] [-h]
+        Usage: sh prepare.sh [-n Name] [-i/m/p/b/s/l/e/g/c/f] [-h]
 
         -n Name         Component (directory) to prepare. 
                         If not specified prepare all components
 
         -m              Prepare manifests
-        -p              Prepare packages
+        -p              Prepare docker images
         -b              Prepare binaries
         -l              Prepare helm
-        -i              Prepare docker images
+        -i              Prepare custom docker images
         -g              Prepare git repositories
         -c              Prepare encryption
 
@@ -34,8 +34,11 @@ print_usage()
         - prepare only ibmdb2 helm chart
             sh prepare.sh -n ibmdb2 -l
 
-        - prepare k3s binaries and packages
+        - prepare k3s binaries and images
             sh prepare.sh -n gitea -b -p
+
+        - force redownload tekton images
+            sh prepare.sh -n tekton -p -f
     "
     exit
 }
@@ -65,7 +68,7 @@ matches() {
 
 # read parameters
 FORCE=0
-while getopts n:pmblhigfc flag;
+while getopts n:nmpbligcfh flag;
 do
     case "${flag}" in
         n) COMPONENT="<${OPTARG}>";;

@@ -105,7 +105,7 @@ and copy content of `id_rsa.pub`
 
 - cluster.user and cluster.password - credentials that will be used for accessing most cluster resources
 
-- registry.user and registry.password - credentials that will be used for accessing private docker registry inside cluster
+- registry.user and registry.password - credentials that will be used for accessing private docker registry
 
 - charts.user and charts.password - credentials that will be used for accessing chartmuseum repository
 
@@ -134,17 +134,16 @@ For example, if you want to create custom deployment with values for production 
 
 ## Prepare necessary files
 
-Server will be in air-gapped environment so we'll need to download all the necessary files to the server first.
+Server will be in air-gapped environment so we'll need to download and transfer all the necessary files to the server first.
 
-To do it run the `prepare.sh` script in `deployment` directory
+Run the `prepare.sh` script in `deployment` directory
 ```sh
-cd deployment
 sh prepare.sh
 ```
 
 We'll need to run it on an internet-facing machine in linux shell (for example, [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/install-manual)) while having necessary tools:
 
-- [helm](https://helm.sh/docs/intro/install/) for pull helm charts
+- [helm](https://helm.sh/docs/intro/install/) for pulling helm charts
 ```sh
 # for ubuntu:
 curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
@@ -160,7 +159,7 @@ sudo apt-get install helm
 sudo apt-get -y install skopeo
 ```
 
-- [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) for cloning git repositories from github
+- [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) for cloning git repositories
 ```sh
 # for ubuntu:
 sudo apt install git
@@ -177,31 +176,39 @@ sh prepare.sh -h
 
 ### 1. OS
 
-To install CoreOS first you'll need to generate ignition file by running `deployment/ignition.sh` script and then having the ignition file `deployment/coreos.ign` to be accessible from some URL on the new server, for example: `http://URL/coreos.ign`
+First you'll need to generate ignition file by running
+```sh
+sh ignition.sh
+```
+and then having the ignition file `deployment/coreos.ign` to be accessible from some URL on the new server, for example: `http://URL/coreos.ign`
 
-Live ISO will be downloaded to `deployment/bin/os/` directory, mount it on a new server and it'll load into memory-only mode with command prompt. Run this command to install CoreOS:
+Live ISO will be downloaded to `deployment/bin/os/` directory, mount it on a new server and it'll load into memory-only mode with command prompt. 
+
+Run this command to install CoreOS:
 ```sh
 sudo coreos-installer install /dev/sda --ignition-url http://URL/coreos.ign --insecure-ignition
 ```
 
-Reboot server with `sudo reboot` and it's ready
+Remove ISO and reboot the server with 
+```sh
+sudo reboot
+```
 
 ### 2. Deploy cluster components
 
-Next step is to install kubernetes cluster and deploy all applications on the server
+Next step is to install kubernetes cluster and deploy applications on the server
 
-Transfer all the necessary files to the server with `transfer.sh` script in `deployment` directory
+Transfer necessary files to the server with `transfer.sh` script in `deployment` directory
 ```sh
-cd deployment
 sh transfer.sh
 ```
 
-`transfer.sh` script supports optional parameters to transfer only specified parts of the deployment, you can check the available parameters by running 
+`transfer.sh` script supports optional parameters to transfer only specified parts of the deployment, you can check the available options by running 
 ```sh
 sh transfer.sh -h
 ```
 
-After transferring files connect to server with ssh (for example, `ssh user@HOSTMANE` where `user` is server user defined in `values.yaml` and `HOSTNAME` is server's hostname), go to `deployment` directory on a server and start running scripts following instructions in `README.md`
+After transferring files connect to server with ssh (for example, `ssh user@HOSTMANE` where `user` is server user defined in `values.yaml` and `HOSTNAME` is server's hostname), go to `deployment` directory on a server and start running scripts following instructions in `deployment/README.md`
 
 # Compilation
 
@@ -209,29 +216,36 @@ After transferring files connect to server with ssh (for example, `ssh user@HOST
 
 Install [go](https://go.dev/)
 
-Clone this git repository and run `go run build`
+Clone this git repository and run 
+```sh
+go run build
+```
 
 ## Building from source code
 
-Run `GOOS=<os> GOARCH=<arch> go build build` for building tool for specific platform
+Run 
+```sh
+GOOS=$os GOARCH=$arch go build build
+``` 
+for building tool for specific platform
 
-## Build customization
+## Customization
 
 ### Configuration files
 
-Build tool uses `text/template` go module to process files as templates with following data:
+Build tool uses `text/template` module to process files as templates using following data:
 
-- `.Values` contains component values configuration and is loaded from `config/values.yaml` by default
+- `.Values` contains component values configuration loaded from `config/values.yaml` by default
 
-- `.Version` contains component version configuration and is loaded from `config/version.yaml` by default
+- `.Version` contains component version configuration loaded from `config/version.yaml` by default
 
-- `.Images` contains component images configuration and is loaded from `config/images.yaml` by default
+- `.Images` contains component images configuration loaded from `config/images.yaml` by default
 
-- `.Components` contains build configuration and is loaded from `config/build.json` by default
+- `.Components` contains build configuration loaded from `config/build.json` by default
 
-### Update image configuration
+### Update images configuration
 
-Build tool has command `images` that creates `images.sh` script in deployment directory from template `_images.sh` in `config` directory, runs it and updates `images.yaml` configuration with the list of used images from helm charts, .yaml files in manifest and install directories, and images from `config/version.yaml` (for some charts the image plugin wont retrieve all the images that will be used in deployment)
+Build tool has command `images` that creates `images.sh` script in deployment directory from template `_images.sh` in `config` directory, runs it and updates `images.yaml` configuration with the list of used images from helm charts, .yaml files in manifest and install directories, and images from `config/version.yaml` (for some charts the image plugin wont retrieve all the images that will be used in deployment, you will have to update those versions manually)
 
 Script uses:
 - `/bin/bash` linux shell
@@ -252,7 +266,7 @@ sudo chmod a+x /usr/local/bin/yq
 
 Build program goes through all components as defined in `components` array in `build.json`, looks for files in `.path` + `/template/` directory, and processes them as follow:
 
-- `_prepare.sh` files are  all appended to `config/_prepare.sh` into single `config/prepare.sh` template and then processed into `deployment/prepare.sh` script
+- `_prepare.sh` files are all appended to `config/_prepare.sh` into single `config/prepare.sh` template and then processed into `deployment/prepare.sh` script
 
 - `_script.sh` files are each combined with `config/_script.sh` and processed into `deployment/scripts/{component name}.sh` scripts
 
@@ -266,7 +280,7 @@ Templates `_prepare.sh` and `_script.sh` in `config` directory contain service s
 
 - `_prepare.sh`/`prepare` - template for preparing component files, pass component value from `.Versions`
 
-- `_script.sh`/`script` - template for running script, pass `dict` function with `.Values`, component value from `.Version` and component value from `.Values`; template contains following blocks:
+- `_script.sh`/`script` - template for running script, pass `dict` function with `Values` as `.Values`, `Version` as component value from `.Version`, `Images` as component value from `.Images` and `Value` as component value from `.Values`; template contains following blocks:
   - `init` - initializing components, should be run as root user
   - `install` - installing component
   - `install-pre` - injection before helm install
@@ -281,7 +295,11 @@ Templates `_prepare.sh` and `_script.sh` in `config` directory contain service s
   - `uninstall-post` - injection after helm uninstall
   - `uninstall-echo` - injecting message about component uninstall
 
-Place a `#` at the end of `-echo` block to comment out the default message
+Place a `#` at the end of `-echo` block to comment out the default message if necessary
+
+- `_script.sh`/`wait` - template for waiting for the pod to be ready, pass `dict` function with `Label` as name of pod label, `Name` as value of pod label and `Namespace` as value of pod namespace
+
+- `_script.sh`/`etc-hosts` - template for adding records to `/etc/hosts` on server, pass `dict` function with `Values` as `.Values` and `Ingress` as ingress value
 
 ### Build configuration
 
@@ -345,3 +363,19 @@ Where:
 ### Snippets
 
 Project contains [Visual Studio Code](https://code.visualstudio.com/) snippets for `_prepare.sh` and `_script.sh` script templates in component's `deploy` directories, shortcuts are: `shPrepare` and `shScript`
+
+### VS Code launch.json
+
+```json
+        {
+            "name": "Launch Build",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${workspaceFolder}/src/",
+            "cwd": "${workspaceFolder}",
+            "args": [
+                "--values=values.yaml"
+            ]
+        }
+```

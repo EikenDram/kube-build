@@ -14,13 +14,13 @@ print_usage()
 
         -i              Transfer install
         -m              Transfer manifests
-        -p              Transfer packages
+        -p              Transfer docker images
         -b              Transfer binaries
         -s              Transfer script
         -l              Transfer helm
         -g              Transfer git
 
-        -f              Transfer all build information
+        -f              Transfer build information
 
         -h              Help
 
@@ -32,7 +32,7 @@ print_usage()
             sh transfer.sh -n gitea
 
         - transfer only ibmdb2 install files
-            sh transfer.sh -n ibmdb2 -p
+            sh transfer.sh -n ibmdb2 -i
 
         - transfer k3s binaries and packages
             sh transfer.sh -n k3s -b -p
@@ -65,7 +65,7 @@ matches() {
 
 # read parameters
 echo "Script for transferring deployment to server"
-while getopts n:pmbisleh flag;
+while getopts n:impbsflgh flag;
 do
     case "${flag}" in
         n) COMPONENT="<${OPTARG}>";;

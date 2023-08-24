@@ -3,7 +3,7 @@
 {{- template "script" (dict "Values" .Values "Version" .Version.argocd "Images" .Images.argocd)}}
 
 {{- define "init"}}
-    {{ template "etc-hosts" dict "Values" .Values "ingress" .Values.argocd.ingress }}
+    {{ template "etc-hosts" dict "Values" .Values "Ingress" .Values.argocd.ingress }}
 {{- end}}
 
 {{- define "install"}}

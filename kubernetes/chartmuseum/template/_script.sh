@@ -3,7 +3,7 @@
 {{- template "script" (dict "Values" .Values "Version" .Version.chartmuseum "Images" .Images.chartmuseum)}}
 
 {{- define "init"}}
-    {{ template "etc-hosts" dict "Values" .Values "ingress" .Values.chartmuseum.ingress }}
+    {{ template "etc-hosts" dict "Values" .Values "Ingress" .Values.chartmuseum.ingress }}
 {{- end}}
 
 {{- define "install"}}
