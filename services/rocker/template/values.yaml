@@ -1,0 +1,14 @@
+# RServer configuration
+rocker:
+  # password to access server
+  password: {{.Values.cluster.password}}
+  # Storage configuration
+  storage:
+    # Storage size for config
+    config: {{index .Values.rocker "storage-config"}}
+    # Storage size for workspace
+    workspace: {{index .Values.rocker "storage-workspace"}}
+
+ingress:
+  # Fully qualified domain name of a network host.
+  host: {{.Values.rocker.ingress}}.{{.Values.server.hostname | lower}}

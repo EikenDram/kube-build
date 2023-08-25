@@ -402,8 +402,11 @@ rocker:
   # subdomain name to access component from: <ingress>.<hostname>
   ingress: rocker
   #
-  # password to access RStudio server
-  pass: coreos
+  # storage size for component
+  storage-workspace: 2Gi
+  #
+  # storage size for configuration
+  storage-config: 1Gi
   #
   # helm install configuration
   helm:

@@ -318,6 +318,13 @@ registry-ui:
   name: docker-registry-ui
   version: 2.5.0
 
+rocker:
+- url: docker.io/rocker/tidyverse:4.3.1
+  host: docker.io
+  path: rocker
+  name: tidyverse
+  version: 4.3.1
+
 tekton:
 - url: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/controller:v0.44.4
   host: gcr.io

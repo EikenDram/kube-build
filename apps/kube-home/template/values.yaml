@@ -68,6 +68,11 @@ config:
           "url": "http://{{.Values.keycloak.ingress}}.{{.Values.server.hostname | lower}}"
         },
         {
+          "name": "RStudio",
+          "desc": "RStudio server",
+          "url": "http://{{index .Values "rocker" "ingress"}}.{{.Values.server.hostname | lower}}/"
+        },
+        {
           "name": "KubeR",
           "desc": "Report processing service",
           "url": "http://{{index .Values "kube-r" "ingress"}}.{{.Values.server.hostname | lower}}/"

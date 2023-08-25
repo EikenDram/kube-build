@@ -476,7 +476,7 @@ rocker:
     repo: aiken
     url: https://eikendram.github.io/kube-charts
     name: rocker
-    version: 0.1.0
+    version: 0.1.1
    
 # Custom homepage application KubeHome
 kube-home:
