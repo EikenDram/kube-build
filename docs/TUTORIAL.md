@@ -135,7 +135,7 @@ Wait until kubernetes cluster is up, you can monitor cluster with
 k9s
 ```
 
-<img>
+![k9s](img/k9s.png)
 
 ### Deploy docker registry
 
@@ -172,33 +172,33 @@ keycloak.sh
 
 ### Configure Keycloak
 
-Access Keycloak cluster with provided URL:
+Access Keycloak cluster with provided URL an create a new realm called "cluster":
 
-<img>
-
-Create new realm called "cluster":
-
-<img>
+![keycloak-realm](img/keycloak-realm.png)
 
 Create new client scopes called "audience":
 
-<img>
+![keycloak-scope-audience](img/keycloak-scope-audience.png)
+![keycloak-scope-audience-mapper](img/keycloak-scope-audience-mapper.png)
 
 and "groups":
 
-<img>
+![keycloak-scope-groups](img/keycloak-scope-groups.png)
+![keycloak-scope-groups-mapper](img/keycloak-scope-groups-mapper.png)
 
 Create new client called "oauth2-proxy":
 
-<img>
+![keycloak-client-1](img/keycloak-client-1.png)
+![keycloak-client-2](img/keycloak-client-2.png)
+![keycloak-client-3](img/keycloak-client-3.png)
 
 Create new user as provided in `values.yaml`:
 
-<img>
+![keycloak-user](img/keycloak-user.png)
 
 Check that user can authorize in client:
 
-<img>
+![keycloak-user-evaluate](img/keycloak-user-evaluate.png)
 
 ### Deploy OAuth2-proxy
 
@@ -252,11 +252,11 @@ loki.sh
 
 To view logs in grafana, add http://loki.monitoring:3100 as a new loki data source:
 
-<img>
+![loki](img/loki.png)
 
 Import `loki-dashboard.json` from `bin/loki/` as a new dashboard in grafana to monitor loki logs:
 
-<img>
+![loki-dashboard](img/loki-dashboard.png)
 
 ### Deploy MinIO
 
@@ -268,7 +268,7 @@ sudo minio.sh
 
 Access MinIO with provided URL and create a new bucked with the name "k3s":
 
-<img>
+![minio](img/minio.png)
 
 ### Deploy Velero
 
@@ -325,7 +325,7 @@ db2console.sh -a
 
 Access console with provided URL and configure repository database:
 
-<img>
+![db2console](img/db2console.png)
 
 ### Deploy KubeHome
 
