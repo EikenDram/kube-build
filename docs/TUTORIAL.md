@@ -28,6 +28,9 @@ Open `config/values.yaml` and change necessary parameters:
 | endpoint                  | endpoint for prometheus
 | **velero**                |
 | minio-url minio-public    | urls to minio server
+| **ibmdb2**                |
+| instance                  | db2 instance/admin name
+| password                  | db2 instance/admin password
 | **kube-home**             |
 | contacts spec minio utils | configuration for cluster's home page
 
