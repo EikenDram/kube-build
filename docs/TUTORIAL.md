@@ -43,14 +43,14 @@ Build tool supports optional parameters to change default configuration files an
 
 ## 2. Prepare necessary files
 
-Server will be in air-gapped environment so we'll need to download and transfer all the necessary files to the server first.
+Server will be in air-gapped environment so you'll need to download and transfer all the necessary files to the server first.
 
 Run the `prepare.sh` script in `deployment` directory:
 ```sh
 sh prepare.sh
 ```
 
-We'll need to run it on an internet-facing machine in linux shell (for example, [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/install-manual)) while having necessary tools:
+You'll need to run it on an internet-facing machine in linux shell (for example, [Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/install-manual)) while having necessary tools:
 
 - [helm](https://helm.sh/docs/intro/install/) for pulling helm charts
 ```sh
