@@ -1,0 +1,14 @@
+[Unit]
+Description=DB2 data management console
+After=local-fs.target
+
+[Container]
+ContainerName={{.Values.db2console.docker}}
+Image={{index .Images.db2console 0 "path"}}/{{index .Images.db2console 0 "name"}}:{{index .Images.db2console 0 "version"}}
+Volume=/home/{{.Values.server.user}}/{{.Values.db2console.dir}}:/mnt:Z
+--privileged
+PublishPort=11081:8443
+Environment=LICENSE=accept 
+Environment=ADMIN_NAME={{.Values.cluster.user}} 
+Environment=ADMIN_PASSWORD={{.Values.cluster.password}} 
+Environment=NAMESERVER=localhost

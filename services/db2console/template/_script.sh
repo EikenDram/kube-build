@@ -11,9 +11,6 @@
 {{- end}}
 
 {{- define "install"}}
-    
-    
-
     # load and run image
     echo "Loading db2console image..."
     podman load -i packages/{{.Version.dir}}/{{index .Images 0 "name"}}-{{index .Images 0 "version"}}.tar
