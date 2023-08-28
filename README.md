@@ -12,9 +12,9 @@ This project was initially a set of notes about setting everything up on a virtu
 
 | COMPONENT         | DIRECTORY              | CONTENT
 |-------------------|------------------------|-----------------------------------
-| **System**        |                        |
+| **SYSTEM**        |                        |
 | os                | os/coreos              | [Fedora CoreOS](https://fedoraproject.org/coreos/)
-| **Kubernetes**    |                        |
+| **KUBERNETES**    |                        |
 | k3s               | kubernetes/k3s         | [K3S](https://k3s.io/) kubernetes cluster
 | registry          | kubernetes/registry    | Private [Docker registry](https://docs.docker.com/registry/)
 | openebs           | kubernetes/openebs     | [OpenEBS](https://openebs.io/) storage provider
@@ -34,12 +34,12 @@ This project was initially a set of notes about setting everything up on a virtu
 | tekton            | cicd/tekton            | CI/CD pipeline [Tekton](https://tekton.dev/)
 | argocd            | cicd/argocd            | CD automation [Argo CD](https://argo-cd.readthedocs.io/en/stable/)
 | dev               | cicd/dev               | Loaders for npm/nuget/go packages into gitea
-| **Services**      |                        |
+| **SERVICES**      |                        |
 | ibmdb2            | services/ibmdb2        | [IBM DB2 community edition](https://www.ibm.com/products/db2/developers) database server
 | db2console        | services/db2console    | [DB2 data management console](https://www.ibm.com/products/db2-data-management-console)
 | rabbitmq          | services/rabbitmq      | Message query server [Rabbit MQ](https://www.rabbitmq.com/)
 | rocker            | services/rocker        | [RStudio server](https://posit.co/download/rstudio-server/)
-| **Applications**  |                        |
+| **APPLICATIONS**  |                        |
 | kube-home         | apps/kube-home         | [KubeHome](https://github.com/EikenDram/kube-home) home page for cluster
 | kube-r            | apps/kube-r            | [KubeR](https://github.com/EikenDram/kube-r) service for processing reports as R scripts
 | kube-utils        | apps/kube-utils        | [KubeUtils](https://github.com/EikenDram/kube-utils) tools for managing cluster resources
