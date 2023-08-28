@@ -26,7 +26,7 @@
 
     # recreate argocd application
     kubectl delete -f install/{{.Version.dir}}/application.yaml
-    wait 3
+    sleep 3
     kubectl apply -f install/{{.Version.dir}}/application.yaml
 {{- end}}
 
