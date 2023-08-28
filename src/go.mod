@@ -1,4 +1,4 @@
-module build
+module github.com/EikenDram/kube-build/build
 
 go 1.20
 

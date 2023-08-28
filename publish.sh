@@ -6,8 +6,8 @@ rm -r publish
 mkdir publish
 
 echo "Making binaries for all platforms..."
-GOOS=linux GOARCH=amd64 go build build
-GOOS=windows GOARCH=amd64 go build build
+GOOS=linux GOARCH=amd64 go build github.com/EikenDram/kube-build/build
+GOOS=windows GOARCH=amd64 go build github.com/EikenDram/kube-build/build
 echo "Making archives..."
 
 tar -czvf ./publish/build-tool-linux-amd64-$1.tar.gz ./build

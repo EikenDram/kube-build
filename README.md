@@ -74,14 +74,14 @@ Install [go](https://go.dev/)
 
 Clone this git repository and run 
 ```sh
-go run build
+go run github.com/EikenDram/kube-build/build
 ```
 
 ## Building from source code
 
 Run 
 ```sh
-GOOS=$os GOARCH=$arch go build build
+GOOS=$os GOARCH=$arch go build github.com/EikenDram/kube-build/build
 ``` 
 for building tool for specific platform
 
