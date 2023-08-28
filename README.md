@@ -1,6 +1,6 @@
 # About
 
-This is a CLI tool for building a [K3S](https://k3s.io/) kubernetes cluster deployment for a [Fedora CoreOS](https://fedoraproject.org/coreos/) server in an air-gapped environment, written in [go](https://go.dev/)
+This is a CLI tool for building a [K3S](https://k3s.io/) kubernetes cluster deployment for a [Fedora CoreOS](https://fedoraproject.org/coreos/) server in an air-gapped environment
 
 ## Introduction
 
