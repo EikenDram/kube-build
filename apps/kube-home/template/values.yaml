@@ -83,7 +83,7 @@ config:
         },
         {
           "name": "Rabbit MQ",
-          "desc": "Report processing service",
+          "desc": "Message query server",
           "url": "http://{{.Values.rabbitmq.ingress}}.{{.Values.server.hostname | lower}}/",
           "icon": "fa-solid fa-message"
         },
