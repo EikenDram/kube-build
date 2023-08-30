@@ -63,7 +63,7 @@
 			"\t# 2D",
 			"\t",
 			"\t# namespace",
-			"\tkubectl delete ns {{.Values.$1.namespace}}",
+			"\tkubectl delete ns {{.Values.$1.helm.namespace}}",
 			"{{- end}}",
 		],
 		"description": "script.sh template"

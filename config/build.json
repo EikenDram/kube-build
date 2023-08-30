@@ -199,6 +199,11 @@
             "message": "Rocker"
         },
         {
+            "name": "jasper",
+            "path": "./services/jasper",
+            "message": "Jasper"
+        },
+        {
             "name": "kube-home",
             "path": "./apps/kube-home",
             "message": "KubeHome"
@@ -251,13 +256,13 @@
             }
         },
         {
-            "comment": "Generate deployment/README.md script from config/README.md template",
+            "comment": "Generate deployment/README.md script from config/_README.md template",
             "message": "README.md",
             "type": "template",
             "name": "README.md",
             "from": {
                 "location": "config",
-                "name": "README.md"
+                "name": "_README.md"
             }
         },
         {

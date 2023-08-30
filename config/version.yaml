@@ -477,6 +477,16 @@ rocker:
     url: https://eikendram.github.io/kube-charts
     name: rocker
     version: 0.1.1
+
+## JasperReports server
+jasper:
+  dir: jasper
+  title: JasperReports server
+  helm:
+    repo: bitnami
+    url: https://charts.bitnami.com/bitnami
+    name: jasperreports
+    version: 16.1.0
    
 # Custom homepage application KubeHome
 kube-home:

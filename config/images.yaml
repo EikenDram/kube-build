@@ -103,6 +103,18 @@ ibmdb2:
   name: db2
   version: 11.5.8.0
 
+jasper:
+- url: docker.io/bitnami/jasperreports:8.2.0-debian-11-r51
+  host: docker.io
+  path: bitnami
+  name: jasperreports
+  version: 8.2.0-debian-11-r51
+- url: docker.io/bitnami/mariadb:11.0.3-debian-11-r5
+  host: docker.io
+  path: bitnami
+  name: mariadb
+  version: 11.0.3-debian-11-r5
+
 keycloak:
 - url: docker.io/bitnami/keycloak:21.1.2-debian-11-r5
   host: docker.io

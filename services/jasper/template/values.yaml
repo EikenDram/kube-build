@@ -1,0 +1,27 @@
+## @param jasperreportsUsername JasperReports user
+## ref: https://github.com/bitnami/containers/tree/main/bitnami/jasperreports#configuration
+##
+jasperreportsUsername: {{.Values.cluster.user}}
+## @param jasperreportsPassword JasperReports password (Ignored if `jasperreportsExistingSecret` is provided)
+## Defaults to a random 10-character alphanumeric string if not set
+## ref: https://github.com/bitnami/containers/tree/main/bitnami/jasperreports#configuration
+##
+jasperreportsPassword: "{{.Values.cluster.password}}"
+## Enable persistence using Persistent Volume Claims
+## ref: https://kubernetes.io/docs/user-guide/persistent-volumes/
+##
+persistence:
+  ## @param persistence.size PVC Storage Request for Jasperreports volume
+  ##
+  size: {{.Values.jasper.storage}}
+## Configure the ingress resource that allows you to access the
+## JasperReports installation. Set up the URL
+## ref: https://kubernetes.io/docs/user-guide/ingress/
+##
+ingress:
+  ## @param ingress.enabled Enable ingress controller resource
+  ##
+  enabled: true
+  ## @param ingress.hostname Default host for the ingress resource
+  ##
+  hostname: {{.Values.jasper.ingress}}.{{.Values.server.hostname | lower}}
