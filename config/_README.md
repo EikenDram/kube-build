@@ -380,6 +380,15 @@ rocker.sh
 ```
 to install R Studio server from custom helm chart
 {{- end}}
+{{- if eq .Name "jasper"}}
+### [JasperReports server](https://community.jaspersoft.com/project/jasperreports-library)
+
+Run
+```sh
+jasper.sh
+```
+to install JasperReports server from helm chart
+{{- end}}
 {{- end}}
 
 ## Applications

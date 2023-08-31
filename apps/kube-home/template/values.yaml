@@ -98,6 +98,12 @@ config:
           "desc": "Database port: {{.Values.ibmdb2.port}}",
           "url": "https://{{.Values.server.hostname | lower}}:11081/console/",
           "icon": "fa-solid fa-database"
+        },
+        {
+          "name": "JasperReports",
+          "desc": "Report server",
+          "url": "https://{{.Values.jasper.ingress}}.{{.Values.server.hostname | lower}}/",
+          "icon": "fa-solid fa-database"
         }
       ],
       "system": [
