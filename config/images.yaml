@@ -128,11 +128,11 @@ keycloak:
   version: 15.3.0-debian-11-r17
 
 kube-home:
-- url: ghcr.io/eikendram/kube-home:v0.2.6
+- url: ghcr.io/eikendram/kube-home:v0.3.0
   host: ghcr.io
   path: eikendram
   name: kube-home
-  version: v0.2.6
+  version: v0.3.0
 
 loki:
 - url: docker.io/bats/bats:1.8.2

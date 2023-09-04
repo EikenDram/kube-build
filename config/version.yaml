@@ -499,7 +499,7 @@ kube-home:
     repo: aiken
     url: https://eikendram.github.io/kube-charts
     name: kube-home
-    version: 0.1.4
+    version: "0.2.0"
       
 # Custom reporting service KubeR
 kube-r:

@@ -7,7 +7,7 @@
     kubectl run worker-git --image={{.Values.loaders.git}} --command -- sh -c 'while true; do sleep 10; done'
     {{ template "wait" dict "Label" "run" "Name" "worker-git"}}
     kubectl cp install/{{.Version.dir}}/values.yaml worker-git:/tmp
-    kubectl cp install/{{.Version.dir}}/logo.png worker-git:/tmp
+    #kubectl cp install/{{.Version.dir}}/logo.png worker-git:/tmp
     kubectl cp install/{{.Version.dir}}/workload.sh worker-git:/tmp
     kubectl exec -i worker-git -- sh /tmp/workload.sh
     kubectl delete pod worker-git --grace-period=1

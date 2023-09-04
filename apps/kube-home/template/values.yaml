@@ -1,167 +1,149 @@
 # KubeHome configuration
-config:
-  # logo url
-  logo: |
-    {
-      "url": "http://{{.Values.gitea.ingress}}.{{.Values.server.hostname | lower}}/{{.Values.cluster.user}}/cluster-config/raw/branch/main/kube-home/logo.png",
-      "height": "300"
-    }
-
+kube-home:
   # localization
-  locale: |
-    {
-      "app": "Kubernetes cluster",
-      "utils": "Tools",
-      "open": "Open",
-      "docs": "Documentation",
-      "services": "Services",
-      "contacts": "Contacts",
-      "system": "System",
-      "specs": "Specifications"
-    }
-
-  # applications
-  apps: |
-    [
-      {
-        "name": "Application template",
-        "desc": "Example of an application deployed in cluster",
-        "url": "http://{{index .Values "kube-app-template" "ingress"}}.{{.Values.server.hostname | lower}}",
-        "docs": "http://{{index .Values "kube-app-template" "ingress"}}.{{.Values.server.hostname | lower}}/docs"
-      }
-    ]
+  locale: en
 
   # cluster
-  cluster: |
+  config: |
     {
-      "name": "{{.Values.server.hostname}}",
-      "contacts": [
+      "apps": [
         {
-          {{- with index .Values "kube-home" "contacts"}}
-          "title": "{{.title}}",
-          "name": "{{.name}}",
-          "phone": "{{.phone}}",
-          "mail": "{{.mail}}"
+          "name": "Application template",
+          "desc": "Example of an application deployed in cluster",
+          "url": "http://{{index .Values "kube-app-template" "ingress"}}.{{.Values.server.hostname | lower}}",
+          "docs": "http://{{index .Values "kube-app-template" "ingress"}}.{{.Values.server.hostname | lower}}/docs"
+        }
+      ],
+      "cluster": {
+        "name": "{{.Values.server.hostname}}",
+        "contacts": [
+          {
+            {{- with index .Values "kube-home" "contacts"}}
+            "title": "{{.title}}",
+            "name": "{{.name}}",
+            "phone": "{{.phone}}",
+            "mail": "{{.mail}}"
+            {{- end}}
+          }
+        ],
+        "specs": [
+          { "name": "IP", "value": "{{.Values.server.ip}}" },
+          {{- with index .Values "kube-home" "spec"}}
+          { "name": "CPU", "value": "{{.cpu}}" },
+          { "name": "Memory", "value": "{{.memory}}" },
+          { "name": "Fedora CoreOS", "value": "{{.os}}" },
+          { "name": "K3S", "value": "{{.k3s}}" }
           {{- end}}
-        }
-      ],
-      "specs": [
-        { "name": "IP", "value": "{{.Values.server.ip}}" },
-        {{- with index .Values "kube-home" "spec"}}
-        { "name": "CPU", "value": "{{.cpu}}" },
-        { "name": "Memory", "value": "{{.memory}}" },
-        { "name": "Fedora CoreOS", "value": "{{.os}}" },
-        { "name": "K3S", "value": "{{.k3s}}" }
-        {{- end}}
-      ],
-      "utils": [
-        { 
-          "name": "Access manager",
-          "desc": "Tool for managing Keycloak users", 
-          "url": "http://{{.Values.gitea.ingress}}.{{.Values.server.hostname | lower}}/{{.Values.cluster.user}}/kube-utils/{{index .Values "kube-home" "utils" "access"}}",
-          "icon": "fa-solid fa-terminal"
-        }
-      ],
-      "services": [
-        {
-          "name": "Keycloak",
-          "desc": "Access management",
-          "url": "http://{{.Values.keycloak.ingress}}.{{.Values.server.hostname | lower}}",
-          "icon": "fa-solid fa-user-gear"
-        },
-        {
-          "name": "RStudio",
-          "desc": "RStudio server",
-          "url": "http://{{index .Values "rocker" "ingress"}}.{{.Values.server.hostname | lower}}/",
-          "icon": "fa-solid fa-registered"
-        },
-        {
-          "name": "KubeR",
-          "desc": "Report processing service",
-          "url": "http://{{index .Values "kube-r" "ingress"}}.{{.Values.server.hostname | lower}}/",
-          "icon": "fa-r"
-        },
-        {
-          "name": "Rabbit MQ",
-          "desc": "Message query server",
-          "url": "http://{{.Values.rabbitmq.ingress}}.{{.Values.server.hostname | lower}}/",
-          "icon": "fa-solid fa-message"
-        },
-        {
-          "name": "Gitea",
-          "desc": "Git server",
-          "url": "http://{{.Values.gitea.ingress}}.{{.Values.server.hostname | lower}}/",
-          "icon": "fa-brands fa-git"
-        },
-        {
-          "name": "IBM DB2",
-          "desc": "Database port: {{.Values.ibmdb2.port}}",
-          "url": "https://{{.Values.server.hostname | lower}}:11081/console/",
-          "icon": "fa-solid fa-database"
-        },
-        {
-          "name": "JasperReports",
-          "desc": "Report server",
-          "url": "https://{{.Values.jasper.ingress}}.{{.Values.server.hostname | lower}}/",
-          "icon": "fa-solid fa-database"
-        }
-      ],
-      "system": [
-        {
-          "name": "Dashboard",
-          "desc": "Kubernetes dashboard",
-          "url": "https://{{.Values.dashboard.ingress}}.{{.Values.server.hostname | lower}}/",
-          "icon": "fa-solid fa-chalkboard"
-        },
-        {
-          "name": "Portainer",
-          "desc": "Kubernetes management",
-          "url": "http://{{.Values.portainer.ingress}}.{{.Values.server.hostname | lower}}/",
-          "icon": "fa-solid fa-gauge"
-        },
-        {
-          "name": "Grafana",
-          "desc": "Monitoring UI",
-          "url": "http://{{.Values.grafana.ingress}}.{{.Values.server.hostname | lower}}/",
-          "icon": "fa-solid fa-chart-line"
-        },
-        {
-          "name": "Argo CD",
-          "desc": "Continuous delivery software",
-          "url": "https://{{.Values.argocd.ingress}}.{{.Values.server.hostname | lower}}/",
-          "icon": "fa-solid fa-truck-fast"
-        },
-        {
-          "name": "Tekton",
-          "desc": "CI/CD Pipelines",
-          "url": "http://{{.Values.tekton.ingress}}.{{.Values.server.hostname | lower}}/",
-          "icon": "fa-solid fa-diagram-project"
-        },
-        {
-          "name": "MinIO",
-          "desc": "Backup storage",
-          "url": "{{index .Values "kube-home" "minio"}}",
-          "icon": "fa-solid fa-hard-drive"
-        },
-        {
-          "name": "Prometheus",
-          "desc": "Monitoring aggregator",
-          "url": "http://{{.Values.prometheus.ingress}}.{{.Values.server.hostname | lower}}/",
-          "icon": "fa-solid fa-chart-bar"
-        },
-        {
-          "name": "Registry",
-          "desc": "Private docker registry",
-          "url": "http://{{index .Values "registry-ui" "ingress"}}.{{.Values.server.hostname | lower}}/",
-          "icon": "fa-solid fa-box"
-        },
-        {
-          "name": "Traefik",
-          "desc": "Traefik dashboard",
-          "url": "http://{{index .Values "traefik-ui" "ingress"}}.{{.Values.server.hostname | lower}}/dashboard/",
-          "icon": "fa-solid fa-network-wired"
-        }
-      ]
+        ],
+        "utils": [
+          { 
+            "name": "Access manager",
+            "desc": "Tool for managing Keycloak users", 
+            "url": "http://{{.Values.gitea.ingress}}.{{.Values.server.hostname | lower}}/{{.Values.cluster.user}}/kube-utils/{{index .Values "kube-home" "utils" "access"}}",
+            "icon": "fa-solid fa-terminal"
+          }
+        ],
+        "services": [
+          {
+            "name": "Keycloak",
+            "desc": "Access management",
+            "url": "http://{{.Values.keycloak.ingress}}.{{.Values.server.hostname | lower}}",
+            "icon": "fa-solid fa-user-gear"
+          },
+          {
+            "name": "RStudio",
+            "desc": "RStudio server",
+            "url": "http://{{index .Values "rocker" "ingress"}}.{{.Values.server.hostname | lower}}/",
+            "icon": "fa-solid fa-registered"
+          },
+          {
+            "name": "KubeR",
+            "desc": "Report processing service",
+            "url": "http://{{index .Values "kube-r" "ingress"}}.{{.Values.server.hostname | lower}}/",
+            "icon": "fa-r"
+          },
+          {
+            "name": "Rabbit MQ",
+            "desc": "Message query server",
+            "url": "http://{{.Values.rabbitmq.ingress}}.{{.Values.server.hostname | lower}}/",
+            "icon": "fa-solid fa-message"
+          },
+          {
+            "name": "Gitea",
+            "desc": "Git server",
+            "url": "http://{{.Values.gitea.ingress}}.{{.Values.server.hostname | lower}}/",
+            "icon": "fa-brands fa-git"
+          },
+          {
+            "name": "IBM DB2",
+            "desc": "Database port: {{.Values.ibmdb2.port}}",
+            "url": "https://{{.Values.server.hostname | lower}}:11081/console/",
+            "icon": "fa-solid fa-database"
+          },
+          {
+            "name": "JasperReports",
+            "desc": "Report server",
+            "url": "https://{{.Values.jasper.ingress}}.{{.Values.server.hostname | lower}}/",
+            "icon": "fa-solid fa-database"
+          }
+        ],
+        "system": [
+          {
+            "name": "Dashboard",
+            "desc": "Kubernetes dashboard",
+            "url": "https://{{.Values.dashboard.ingress}}.{{.Values.server.hostname | lower}}/",
+            "icon": "fa-solid fa-chalkboard"
+          },
+          {
+            "name": "Portainer",
+            "desc": "Kubernetes management",
+            "url": "http://{{.Values.portainer.ingress}}.{{.Values.server.hostname | lower}}/",
+            "icon": "fa-solid fa-gauge"
+          },
+          {
+            "name": "Grafana",
+            "desc": "Monitoring UI",
+            "url": "http://{{.Values.grafana.ingress}}.{{.Values.server.hostname | lower}}/",
+            "icon": "fa-solid fa-chart-line"
+          },
+          {
+            "name": "Argo CD",
+            "desc": "Continuous delivery software",
+            "url": "https://{{.Values.argocd.ingress}}.{{.Values.server.hostname | lower}}/",
+            "icon": "fa-solid fa-truck-fast"
+          },
+          {
+            "name": "Tekton",
+            "desc": "CI/CD Pipelines",
+            "url": "http://{{.Values.tekton.ingress}}.{{.Values.server.hostname | lower}}/",
+            "icon": "fa-solid fa-diagram-project"
+          },
+          {
+            "name": "MinIO",
+            "desc": "Backup storage",
+            "url": "{{index .Values "kube-home" "minio"}}",
+            "icon": "fa-solid fa-hard-drive"
+          },
+          {
+            "name": "Prometheus",
+            "desc": "Monitoring aggregator",
+            "url": "http://{{.Values.prometheus.ingress}}.{{.Values.server.hostname | lower}}/",
+            "icon": "fa-solid fa-chart-bar"
+          },
+          {
+            "name": "Registry",
+            "desc": "Private docker registry",
+            "url": "http://{{index .Values "registry-ui" "ingress"}}.{{.Values.server.hostname | lower}}/",
+            "icon": "fa-solid fa-box"
+          },
+          {
+            "name": "Traefik",
+            "desc": "Traefik dashboard",
+            "url": "http://{{index .Values "traefik-ui" "ingress"}}.{{.Values.server.hostname | lower}}/dashboard/",
+            "icon": "fa-solid fa-network-wired"
+          }
+        ]
+      }
     }
 
 ingress:
