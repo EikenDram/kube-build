@@ -36,6 +36,11 @@ sudo k3s.sh -i
 ```
 to place binaries in correct directories, and to add dummy default route
 
+Reboot server if DNS has been changed with
+```sh
+sudo reboot
+```
+
 Next, run
 ```sh
 k3s.sh -a
