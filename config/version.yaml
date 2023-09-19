@@ -435,7 +435,7 @@ dev:
     host: mcr.microsoft.com
     path: dotnet
     name: sdk
-    version: 7.0
+    version: "7.0"
 
 # Bitnami rabbitmq server
 rabbitmq:

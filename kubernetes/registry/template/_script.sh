@@ -76,7 +76,7 @@
     echo "Checking that registry is available:"
     {{template "wait" dict "Label" "app" "Name" "registry" "Namespace" .Values.registry.namespace}}
     
-    sleep 2
+    sleep 5
     curl -u {{.Values.registry.user}}:{{.Values.registry.password}} https://{{.Values.server.hostname}}:5000/v2/_catalog
     #{{- end}}
 
