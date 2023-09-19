@@ -117,9 +117,13 @@ To use Keycloak with reverse proxy for accessing cluster resources you'll need t
 
 - new realm called "cluster"
 
-- new client scopes "audience" and "groups"
+- new client called "oauth2-proxy" with client authentication and authorization, valid redirect URIs http://{resource}.{{.Values.cluster.hostname | lower}}/oauth2/callback
 
-- new client called "oauth2-proxy"
+- new client scope "audience" with mapper `Audience` with name, included client and custom audiences `oauth2-proxy` and options add to ID and access token
+
+- new client scope "groups" with mapper `Group Membership` with name and token claim name `groups`, and options full group path, add to ID and access token, userinfo
+
+- add these two client scopes to client `oauth2-proxy`
 
 - new user "{{.Values.cluster.user}}" with password "{{.Values.cluster.password}}"
 
