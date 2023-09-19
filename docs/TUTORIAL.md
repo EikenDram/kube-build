@@ -200,6 +200,12 @@ Access Keycloak cluster with provided URL an create a new realm called "cluster"
 
 ![keycloak-realm](img/keycloak-realm.png)
 
+Create new client called "oauth2-proxy":
+
+![keycloak-client-1](img/keycloak-client-1.png)
+![keycloak-client-2](img/keycloak-client-2.png)
+![keycloak-client-3](img/keycloak-client-3.png)
+
 Create new client scopes called "audience":
 
 ![keycloak-scope-audience](img/keycloak-scope-audience.png)
@@ -210,11 +216,7 @@ and "groups":
 ![keycloak-scope-groups](img/keycloak-scope-groups.png)
 ![keycloak-scope-groups-mapper](img/keycloak-scope-groups-mapper.png)
 
-Create new client called "oauth2-proxy":
-
-![keycloak-client-1](img/keycloak-client-1.png)
-![keycloak-client-2](img/keycloak-client-2.png)
-![keycloak-client-3](img/keycloak-client-3.png)
+Add these two scopes to client `oauth2-proxy`
 
 Create new user as provided in `values.yaml`:
 
