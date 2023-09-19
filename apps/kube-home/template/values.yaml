@@ -6,6 +6,7 @@ kube-home:
   # cluster
   config: |
     {
+      "locale": "en",
       "apps": [
         {
           "name": "Application template",
