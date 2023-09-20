@@ -132,7 +132,7 @@ kube-home:
   host: ghcr.io
   path: eikendram
   name: kube-home
-  version: v0.3.1
+  version: v0.3.2
 
 loki:
 - url: docker.io/bats/bats:1.8.2
