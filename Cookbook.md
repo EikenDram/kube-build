@@ -147,6 +147,11 @@ kubectl get pods --all-namespaces
 kubectl exec -ti <pod_name> -n <namespace> -- /bin/sh
 ```
 
+## Copy file to pod
+```sh
+kubectl cp filename.ext podname:/folder
+```
+
 ## Journal K3S logs:
 ```sh
 journalctl -u k3s -e
@@ -209,6 +214,8 @@ Let's say we want to add database `APD` on remote server `192.168.120.6` port `5
 
 Open shell into ibmdb2 pod:
 ```sh
+kubectl exec -ti db2-ibmdb2-server-0 -n ibmdb2 -c ibmdb2 -- /bin/sh
+
 # Switch to db2inst1 user
 su db2inst1
 
