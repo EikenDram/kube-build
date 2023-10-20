@@ -154,6 +154,11 @@
             "message": "MinIO"
         },
         {
+            "name": "nfs",
+            "path": "./kubernetes/nfs",
+            "message": "NFS"
+        },
+        {
             "name": "velero",
             "path": "./kubernetes/velero",
             "message": "Velero"

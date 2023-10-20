@@ -1,0 +1,12 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: nfs-server
+spec:
+  type: ClusterIP
+  clusterIP: 10.43.205.212
+  ports:
+    - name: nfs
+      port: 2049
+  selector:
+    role: nfs-server

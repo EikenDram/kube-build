@@ -293,6 +293,12 @@ velero:
     # namespace to deploy helm to
     namespace: velero
 
+# NFS server configuration
+nfs:
+  #
+  # node port for nfs server
+  port: 32100
+
 # gitea configuration
 gitea:
   #

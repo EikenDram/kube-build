@@ -181,6 +181,13 @@ loki:
   name: prometheus-config-reloader
   version: v0.47.0
 
+nfs:
+- url: docker.io/itsthenetwork/nfs-server-alpine:latest
+  host: docker.io
+  path: itsthenetwork
+  name: nfs-server-alpine
+  version: latest
+
 oauth2:
 - url: quay.io/oauth2-proxy/oauth2-proxy:v7.4.0
   host: quay.io

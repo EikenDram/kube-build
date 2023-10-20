@@ -313,6 +313,11 @@ minio:
   - url: https://dl.min.io/server/minio/release/linux-amd64/minio
     output: minio
 
+## NFS server
+nfs:
+  dir: nfs
+  title: NFS
+
 ## Backup manager Velero
 velero:
   dir: velero
