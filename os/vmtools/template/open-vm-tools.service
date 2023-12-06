@@ -1,0 +1,12 @@
+[Unit]
+Description=Open VM Tools
+After=network-online.target
+Wants=network-online.target
+ConditionVirtualization=vmware
+
+[Service]
+ExecStartPre=-docker rm -fv open-vm-tools
+ExecStart=docker run --privileged --pid=host --net=host --ipc=host --uts=host --restart always --name open-vm-tools arnegroskurth/open-vm-tools:latest
+
+[Install]
+WantedBy=multi-user.target

@@ -87,6 +87,11 @@ os:
   - url: https://builds.coreos.fedoraproject.org/prod/streams/stable/builds/38.20230625.3.0/x86_64/fedora-coreos-38.20230625.3.0-live.x86_64.iso
     output: fedora-coreos-38.20230625.3.0-live.x86_64.iso
 
+## Open VMware tools
+vmtools:
+  dir: vmtools
+  title: VM tools
+
 ## Kubernetes cluster K3S
 k3s: 
   dir: k3s

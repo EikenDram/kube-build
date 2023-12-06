@@ -88,6 +88,11 @@
             "message": "OS"
         },
         {
+            "name": "vmtools",
+            "path": "./os/vmtools",
+            "message": "VM tools"
+        },
+        {
             "name": "k3s",
             "path": "./kubernetes/k3s",
             "message": "K3S"

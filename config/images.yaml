@@ -462,3 +462,10 @@ velero:
   path: velero
   name: velero-plugin-for-aws
   version: v1.7.0
+
+vmtools:
+- url: docker.io/arnegroskurth/open-vm-tools:latest
+  host: docker.io
+  path: arnegroskurth
+  name: open-vm-tools
+  version: latest
