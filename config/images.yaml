@@ -234,6 +234,13 @@ portainer:
   name: portainer-ce
   version: 2.18.3
 
+port-forward:
+- url: docker.io/marcnuri/port-forward:latest
+  host: docker.io
+  path: marcnuri
+  name: port-forward
+  version: latest
+
 prometheus:
 - url: docker.io/bats/bats:v1.4.1
   host: docker.io

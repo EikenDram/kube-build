@@ -92,6 +92,11 @@ vmtools:
   dir: vmtools
   title: VM tools
 
+## Port forward
+port-forward:
+  dir: port-forward
+  title: Port forward
+
 ## Kubernetes cluster K3S
 k3s: 
   dir: k3s

@@ -93,6 +93,11 @@
             "message": "VM tools"
         },
         {
+            "name": "port-forward",
+            "path": "./os/port-forward",
+            "message": "Port forward"
+        },
+        {
             "name": "k3s",
             "path": "./kubernetes/k3s",
             "message": "K3S"
