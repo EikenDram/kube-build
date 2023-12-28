@@ -14,6 +14,8 @@ This project was initially a set of notes about setting everything up on a virtu
 |-------------------|------------------------|-----------------------------------
 | **SYSTEM**        |                        |
 | os                | os/coreos              | [Fedora CoreOS](https://fedoraproject.org/coreos/)
+| vmtools           | os/vmtools             | Optional [vmware tools](https://github.com/vmware/open-vm-tools)
+| port-forward      | os/port-forward        | Optional [port-forwarding container](https://hub.docker.com/r/marcnuri/port-forward/)
 | **KUBERNETES**    |                        |
 | k3s               | kubernetes/k3s         | [K3S](https://k3s.io/) kubernetes cluster
 | registry          | kubernetes/registry    | Private [Docker registry](https://docs.docker.com/registry/)
@@ -29,6 +31,7 @@ This project was initially a set of notes about setting everything up on a virtu
 | loki              | kubernetes/loki        | Logging service [Loki](https://grafana.com/oss/loki/)
 | minio             | kubernetes/minio       | Backup storage [MinIO](https://min.io/)
 | velero            | kubernetes/velero      | Backup service [Velero](https://velero.io/)
+| nfs               | kubernetes/nfs         | [NFS server] (https://hub.docker.com/r/itsthenetwork/nfs-server-alpine)
 | **CI/CD**         |                        |
 | gitea             | cicd/gitea             | Git and package repository [Gitea](https://about.gitea.com/)
 | tekton            | cicd/tekton            | CI/CD pipeline [Tekton](https://tekton.dev/)

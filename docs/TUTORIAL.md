@@ -319,6 +319,14 @@ velero.sh
 ```
 to install Velero CLI binary, and install Velero from helm chart
 
+### Deploy NFS server
+
+Run:
+```sh
+nfs.sh
+```
+to deploy NFS server inside kubernetes
+
 ### Deploy Gitea
 
 Run:
@@ -426,3 +434,27 @@ Run:
 kube-app-template.sh
 ```
 to install template application as CI/CD tekton pipeline from Gitea's `kube-app-tempalte` git repository and ArgoCD application from manifest in Gitea's `kube-app-template-manifest` git repository
+
+## Optional
+
+### Open vmware tools
+
+
+
+### Port-forwarding service
+
+Run:
+```sh
+port-forward.sh
+```
+to start a deployment of a port forwarding service inside kubernetes
+
+Next, run
+```sh
+kubectl kubectl port-forward deployment/port-forward 50000:80
+```
+to start port-forwarding inside terminal
+
+This will port-forward `50000` port to `192.168.120.6:50000` via `80` local port on the running pod
+
+Alternatively, you can change the `NodePort` range in kubernetes and change service to `NodePort` with `50000` port
