@@ -103,6 +103,10 @@ keycloak:
   # subdomain name to access component from: <ingress>.<hostname>
   ingress: keycloak
   #
+  # keycloak port
+  # needs to be in K3S NodePort range (30000-32767)
+  port: 32080
+  #
   # helm install configuration
   helm:
     #
@@ -392,6 +396,34 @@ ibmdb2:
     #
     # namespace to deploy helm to
     namespace: ibmdb2
+
+# postgresql configuration
+postgresql:
+  #
+  # admin name
+  username: postgres
+  # 
+  # admin password
+  password: coreos
+  #
+  # storage size for component
+  storage: 10Gi
+  #
+  # postgresql port 
+  # needs to be in K3S NodePort range (30000-32767)
+  port: 32002
+  #
+  # helm install configuration
+  helm:
+    #
+    # name
+    name: postgresql
+    #
+    # values file
+    values: values.yaml
+    #
+    # namespace to deploy helm to
+    namespace: postgresql
 
 # db2 data management console configuration
 db2console: 

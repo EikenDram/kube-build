@@ -204,6 +204,11 @@
             "message": "IBM DB2"
         },
         {
+            "name": "postgresql",
+            "path": "./services/postgresql",
+            "message": "PostgreSQL"
+        },
+        {
             "name": "db2console",
             "path": "./services/db2console",
             "message": "DB2 data management console"

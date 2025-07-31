@@ -363,6 +363,17 @@ ibmdb2.sh
 ```
 to install IBM DB2 community edition from custom helm chart
 {{- end}}
+{{- if eq .Name "postgresql"}}
+### [PostgreSQL](https://artifacthub.io/packages/helm/bitnami/postgresql)
+
+Database server 
+
+Run
+```sh
+postgresql.sh
+```
+to install PostgreSQL from bitnami helm chart
+{{- end}}
 {{- if eq .Name "db2console"}}
 ### [DB2 data management console](https://www.ibm.com/products/db2-data-management-console)
 

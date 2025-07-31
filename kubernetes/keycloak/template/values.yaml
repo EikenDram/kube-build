@@ -6,3 +6,8 @@ ingress:
   enabled: true
   ingressClassName: traefik
   hostname: {{.Values.keycloak.ingress}}.{{.Values.server.hostname | lower}}
+
+service:
+  type: NodePort
+  nodePorts: 
+    http: {{.Values.keycloak.port}}

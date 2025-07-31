@@ -39,6 +39,7 @@ This project was initially a set of notes about setting everything up on a virtu
 | dev               | cicd/dev               | Loaders for npm/nuget/go packages into gitea
 | **SERVICES**      |                        |
 | ibmdb2            | services/ibmdb2        | [IBM DB2 community edition](https://www.ibm.com/products/db2/developers) database server
+| postgresql        | services/postgresql    | [PostgreSQL](https://artifacthub.io/packages/helm/bitnami/postgresql) database server
 | db2console        | services/db2console    | [DB2 data management console](https://www.ibm.com/products/db2-data-management-console)
 | rabbitmq          | services/rabbitmq      | Message query server [Rabbit MQ](https://www.rabbitmq.com/)
 | rocker            | services/rocker        | [RStudio server](https://posit.co/download/rstudio-server/)
