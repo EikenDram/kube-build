@@ -472,7 +472,7 @@ ibmdb2:
     name: ibmdb2
     version: 0.1.1
 
-## Custom bitnami postgresql server
+## Bitnami postgresql server
 postgresql:
   dir: postgresql
   title: PostgreSQL database
@@ -486,6 +486,17 @@ postgresql:
   #  path: eikendram
   #  name: postgresql
   #  version: 17.5.0-debian-12-r20
+
+## pgAdmin web application
+pgadmin:
+  dir: pgadmin
+  title: pgAdmin web ui
+  helm: 
+    repo: runix
+    url: https://helm.runix.net
+    name: pgadmin4
+    version: 1.47.0
+
 
 ## DB2 data management console for docker
 db2console:

@@ -217,7 +217,7 @@ Open shell into ibmdb2 pod:
 kubectl exec -ti db2-ibmdb2-server-0 -n ibmdb2 -c ibmdb2 -- /bin/sh
 
 # Switch to db2inst1 user
-su db2inst1
+su - db2inst1
 
 # First, we need to add remote node to local catalog:
 db2 catalog tcpip node NODE6 remote 192.168.120.6 server 50000

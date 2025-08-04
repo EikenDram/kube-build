@@ -1,0 +1,25 @@
+service:
+  type: NodePort
+  port: 80
+  targetPort: 80
+  nodePort: {{.Values.pgadmin.port}}
+  portName: http
+
+## Ingress
+## Ref: https://kubernetes.io/docs/concepts/services-networking/ingress/
+ingress:
+  enabled: true
+  ingressClassName: "traefik"
+  hosts:
+    - host: "{{.Values.pgadmin.ingress}}.{{.Values.server.hostname | lower}}"
+      paths:
+        - path: /
+          pathType: Prefix
+
+## pgAdmin4 startup configuration
+## Values in here get injected as environment variables
+## Needed chart reinstall for apply changes
+env:
+  # can be email or nickname
+  email: {{.Values.pgadmin.email}}
+  password: {{.Values.pgadmin.password}}

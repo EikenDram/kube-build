@@ -425,6 +425,34 @@ postgresql:
     # namespace to deploy helm to
     namespace: postgresql
 
+pgadmin:
+  #
+  # login email
+  email: eikendram@gmail.com
+  # 
+  # admin password
+  password: coreos
+  #
+  # pgadmin port 
+  # needs to be in K3S NodePort range (30000-32767)
+  port: 32003
+  #
+  # subdomain name to access component from: <ingress>.<hostname>
+  ingress: pgadmin
+  #
+  # helm install configuration
+  helm:
+    #
+    # name
+    name: pgadmin4
+    #
+    # values file
+    values: values.yaml
+    #
+    # namespace to deploy helm to
+    namespace: postgresql
+
+
 # db2 data management console configuration
 db2console: 
   #

@@ -204,14 +204,19 @@
             "message": "IBM DB2"
         },
         {
+            "name": "db2console",
+            "path": "./services/db2console",
+            "message": "DB2 data management console"
+        },
+        {
             "name": "postgresql",
             "path": "./services/postgresql",
             "message": "PostgreSQL"
         },
         {
-            "name": "db2console",
-            "path": "./services/db2console",
-            "message": "DB2 data management console"
+            "name": "pgadmin",
+            "path": "./services/pgadmin",
+            "message": "pgAdmin"
         },
         {
             "name": "rocker",

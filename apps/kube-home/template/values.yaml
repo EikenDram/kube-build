@@ -82,6 +82,12 @@ kube-home:
             "icon": "fa-solid fa-database"
           },
           {
+            "name": "PostgreSQL",
+            "desc": "Database port: {{.Values.postgresql.port}}",
+            "url": "https://{{.Values.server.hostname | lower}}:{{.Values.pgadmin.port}}/",
+            "icon": "fa-solid fa-database"
+          },
+          {
             "name": "JasperReports",
             "desc": "Report server",
             "url": "https://{{.Values.jasper.ingress}}.{{.Values.server.hostname | lower}}/",
