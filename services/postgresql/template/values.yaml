@@ -10,6 +10,7 @@ auth:
   postgresPassword: {{.Values.postgresql.password}}
 
 primary:
+  resourcesPreset: "medium"
   service:
     type: NodePort
     nodePorts:
