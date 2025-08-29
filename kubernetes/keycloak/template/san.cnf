@@ -1,0 +1,19 @@
+[req]
+default_bits = 2048
+prompt = no
+default_md = sha256
+distinguished_name = dn
+req_extensions = req_ext
+
+[dn]
+C = {{.Values.keycloak.cert.C}}
+L = {{.Values.keycloak.cert.L}}
+O = {{.Values.keycloak.cert.O}}
+CN = {{.Values.server.hostname}}
+
+[req_ext]
+subjectAltName = @alt_names
+
+[alt_names]
+IP.1 = {{.Values.server.ip}}
+DNS.1 = {{.Values.server.hostname}}

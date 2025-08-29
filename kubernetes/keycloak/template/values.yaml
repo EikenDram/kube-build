@@ -2,6 +2,11 @@ auth:
   adminUser: {{.Values.cluster.user}}
   adminPassword: {{.Values.cluster.password}}
 
+tls:
+  enabled: true
+  existingSecret: "keycloak-cert"
+  usePem: true
+
 ingress:
   enabled: true
   ingressClassName: traefik
@@ -10,4 +15,5 @@ ingress:
 service:
   type: NodePort
   nodePorts: 
-    http: {{.Values.keycloak.port}}
+    https: {{.Values.keycloak.port}}
+    http: {{.Values.keycloak.http}}

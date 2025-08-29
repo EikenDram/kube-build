@@ -103,9 +103,19 @@ keycloak:
   # subdomain name to access component from: <ingress>.<hostname>
   ingress: keycloak
   #
-  # keycloak port
+  # keycloak https port
   # needs to be in K3S NodePort range (30000-32767)
   port: 32080
+  #
+  # keycloak http port
+  # needs to be in K3S NodePort range (30000-32767)
+  http: 32081
+  #
+  # self-signed certificate configuration
+  cert:
+    C: CountryName
+    L: Locality
+    O: Organization
   #
   # helm install configuration
   helm:
