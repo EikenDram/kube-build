@@ -106,15 +106,15 @@ k3s:
   - url: https://get.k3s.io
     output: install.sh
   # k3s binary
-  - url: https://github.com/k3s-io/k3s/releases/download/v1.25.11%2Bk3s1/k3s
+  - url: https://github.com/k3s-io/k3s/releases/download/v1.34.1%2Bk3s1/k3s
     output: k3s
   # k3s airgap images
-  - url: https://github.com/k3s-io/k3s/releases/download/v1.25.11%2Bk3s1/k3s-airgap-images-amd64.tar.gz
+  - url: https://github.com/k3s-io/k3s/releases/download/v1.34.1%2Bk3s1/k3s-airgap-images-amd64.tar.gz
     output: k3s-airgap-images-amd64.tar.gz
     unpack:
       tar: k3s-airgap-images-amd64.tar
   # helm binary
-  - url: https://get.helm.sh/helm-v3.12.2-linux-amd64.tar.gz
+  - url: https://get.helm.sh/helm-v4.0.0-linux-amd64.tar.gz
     output: helm.tar.gz
     unpack:
       extract: linux-amd64/helm
@@ -391,13 +391,13 @@ tekton:
   title: Tekton
   bin: 
   # tekton cli binary
-  - url: https://github.com/tektoncd/cli/releases/download/v0.31.1/tkn_0.31.1_Linux_x86_64.tar.gz
+  - url: https://github.com/tektoncd/cli/releases/download/v0.31.1/tkn_0.42.0_Linux_x86_64.tar.gz
     output: tkn.tar.gz
     unpack:
       extract: tkn
     usr-local-bin: tkn
   manifest: 
-  - url: https://storage.googleapis.com/tekton-releases/pipeline/previous/v0.44.4/release.yaml
+  - url: https://storage.googleapis.com/tekton-releases/pipeline/previous/v1.6.0/release.yaml
     output: pipelines.yaml
     remove-sha: true
     args:
@@ -410,23 +410,17 @@ tekton:
     - -workingdirinit-image
     - -gsutil-image
     - -shell-image
-  - url: https://storage.googleapis.com/tekton-releases/triggers/previous/v0.24.1/release.yaml
+  - url: https://storage.googleapis.com/tekton-releases/triggers/previous/v0.34.0/release.yaml
     output: triggers.yaml
     remove-sha: true
     args:
     - -el-image
-  - url: https://storage.googleapis.com/tekton-releases/triggers/previous/v0.24.1/interceptors.yaml
+  - url: https://storage.googleapis.com/tekton-releases/triggers/previous/v0.34.0/interceptors.yaml
     output: interceptors.yaml
     remove-sha: true
-  - url: https://storage.googleapis.com/tekton-releases/dashboard/previous/v0.37.0/release.yaml
+  - url: https://storage.googleapis.com/tekton-releases/dashboard/previous/v0.63.1/release.yaml
     output: dashboard.yaml
     remove-sha: true
-  images:
-  - url: mcr.microsoft.com/powershell:nanoserver
-    host: mcr.microsoft.com
-    name: powershell
-    version: nanoserver
-    args: --override-os windows
 
 # Developing applications inside cluster
 dev:

@@ -44,4 +44,38 @@
     INSTALL_K3S_SKIP_DOWNLOAD=true INSTALL_K3S_EXEC="--write-kubeconfig-mode 644"  INSTALL_K3S_SKIP_SELINUX_RPM=true INSTALL_K3S_SELINUX_WARN=true ./install.sh
 {{- end}}
 
+{{- define "upgrade"}}
+    # Drain nodes to safely evict workloads
+    echo "Draining node..."
+    kubectl drain $(hostname) --ignore-daemonsets --delete-emptydir-data
+    
+    systemctl stop k3s
+    ## K3S binaries
+    echo "Installing K3S binaries"
+    mv bin/{{.Version.dir}}/k3s-airgap-images-amd64.tar /var/lib/rancher/k3s/agent/images/
+    mv bin/{{.Version.dir}}/k3s /usr/local/bin/
+
+    echo "Fixing access"
+    chmod a+rx /usr/local/bin/k3s
+    chmod a+rx /var/lib/rancher/k3s/agent/images/k3s-airgap-images-amd64.tar
+
+    ## K9S binary
+    echo "Installing K9S binary to /usr/local/bin/"
+    mv bin/{{.Version.dir}}/k9s /usr/local/bin/
+    chmod a+rx /usr/local/bin/k9s
+
+    ## Helm binary
+    echo "Installing helm binary to /usr/local/bin/"
+    mv bin/{{.Version.dir}}/helm /usr/local/bin/
+    chmod +x /usr/local/bin/helm
+
+    # Start K3S again (it will upgrade)
+    systemctl start k3s
+
+    # Uncordon node when upgrade completes
+    sleep 10
+    echo "Uncordoning node..."
+    kubectl uncordon $(hostname)
+{{- end}}
+
 
