@@ -37,6 +37,11 @@ server:
     mask: 192.168.120.29/24
     gateway: 192.168.120.1
     dns: 8.8.8.8
+  #
+  # default tls
+  tls:
+    cert: ./../cert/tls.crt
+    key: ./../cert/tls.key
 
 # cluster admin credentials 
 # will have access to most cluster resources
@@ -351,6 +356,12 @@ tekton:
   #
   # subdomain name to access component from: <ingress>.<hostname>
   ingress: tekton
+
+# devops configuration
+dev:
+  #
+  # namespace to deploy tekton tasks to
+  namespace: devops
 
 # rabbitmq configuration
 rabbitmq:

@@ -1,0 +1,36 @@
+# Minimal builder image for offline Tekton builds
+# NuGet and pnpm caches are mounted from NFS volumes
+
+# Single stage: Base image with SDKs and tools only
+FROM mcr.microsoft.com/dotnet/sdk:9.0-noble
+
+# Set working directory
+WORKDIR /build
+
+# Install required build tools
+RUN apt-get update && apt-get install -y \
+    curl \
+    wget \
+    jq \
+    && rm -rf /var/lib/apt/lists/*
+
+# Add .dotnet/tools to PATH for global tool access
+ENV PATH="${PATH}:/root/.dotnet/tools"
+
+# Install NSwag CLI
+RUN dotnet tool install -g NSwag.ConsoleCore
+
+# Verify installations
+RUN dotnet --version && which nswag
+
+# Set environment variables
+# Cache paths will be mounted as volumes at runtime
+ENV DOTNET_SKIP_FIRST_TIME_EXPERIENCE=true \
+    DOTNET_CLI_TELEMETRY_OPTOUT=true \
+    NUGET_PACKAGES=/cache/nuget 
+
+LABEL description="Minimal builder image for dotnet Tekton builds (caches on NFS)"
+LABEL maintainer="DevOps Team"
+
+# Default command
+CMD ["/bin/bash"]

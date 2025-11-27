@@ -1,0 +1,58 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: clone-repo
+  namespace: {{.Values.dev.namespace}}
+spec:
+  description: Clone a Git repository
+  params:
+    - name: repository-url
+      description: Git repository URL
+      type: string
+    - name: revision
+      description: Git revision (branch, tag, commit)
+      default: master
+      type: string
+    - name: subdirectory
+      description: Subdirectory in workspace where repo is cloned
+      default: source
+      type: string
+  workspaces:
+    - name: output
+      description: Workspace where the cloned repo will be placed
+  # stepTemplate:
+  #   resources:
+  #     requests:
+  #       memory: "128Mi"
+  #       cpu: "100m"
+  #     limits:
+  #       memory: "512Mi"
+  #       cpu: "500m"
+  #   volumeMounts:
+  #     - name: git-credentials
+  #       mountPath: /creds
+  #       readOnly: true
+  steps:
+    - name: clone
+      image: SWK3S:5000/alpine/git:latest
+      imagePullPolicy: IfNotPresent
+      workingDir: $(workspaces.output.path)
+      script: |
+        #!/bin/sh
+        set -e
+        REPO_URL="$(params.repository-url)"
+        
+        # Read credentials from mounted secret
+        if [ -f /creds/username ] && [ -f /creds/password ]; then
+          GIT_USER=$(cat /creds/username)
+          GIT_PASS=$(cat /creds/password)
+          REPO_URL=$(echo "$REPO_URL" | sed "s|http://|http://${GIT_USER}:${GIT_PASS}@|")
+        fi
+        
+        git clone --depth=1 --branch=$(params.revision) "$REPO_URL" $(params.subdirectory)
+      securityContext:
+        runAsUser: 0
+  volumes:
+    - name: git-credentials
+      secret:
+        secretName: gitea-credentials

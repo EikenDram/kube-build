@@ -1,0 +1,104 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: gitea-credentials
+  namespace: {{.Values.dev.namespace}}
+  annotations:
+    tekton.dev/git-0: http://gitea-http.gitea.svc.cluster.local:3000
+type: kubernetes.io/basic-auth
+stringData:
+  username: k3sadmin
+  password: k3sadmin
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: registry-credentials
+  namespace: {{.Values.dev.namespace}}
+type: kubernetes.io/dockerconfigjson
+stringData:
+  .dockerconfigjson: |
+    {
+      "auths": {
+        "SWK3S:5000": {
+          "auth": "cmVnYWRtaW46cmVncGFzcw=="
+        }
+      }
+    }
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: tekton-builder
+  namespace: {{.Values.dev.namespace}}
+secrets:
+  - name: gitea-credentials
+imagePullSecrets:
+  - name: registry-credentials
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: tekton-builder-role
+  namespace: {{.Values.dev.namespace}}
+rules:
+  - apiGroups: ["tekton.dev"]
+    resources: ["pipelineruns", "taskruns", "tasks", "pipelines"]
+    verbs: ["create", "delete", "get", "list", "patch", "update", "watch"]
+  - apiGroups: ["triggers.tekton.dev"]
+    resources: ["eventlisteners", "triggerbindings", "triggertemplates", "interceptors", "triggers"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: [""]
+    resources: ["pods", "pods/log"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get"]
+  - apiGroups: [""]
+    resources: ["persistentvolumeclaims"]
+    verbs: ["create", "delete", "get", "list", "watch"]
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    verbs: ["get", "list", "watch"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: tekton-builder-rolebinding
+  namespace: {{.Values.dev.namespace}}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: tekton-builder-role
+subjects:
+  - kind: ServiceAccount
+    name: tekton-builder
+    namespace: {{.Values.dev.namespace}}
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: tekton-builder-clusterrole
+rules:
+  - apiGroups: ["triggers.tekton.dev"]
+    resources: ["clusterinterceptors", "clustertriggerbindings"]
+    verbs: ["get", "list", "watch"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: tekton-builder-clusterrolebinding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: tekton-builder-clusterrole
+subjects:
+  - kind: ServiceAccount
+    name: tekton-builder
+    namespace: {{.Values.dev.namespace}}

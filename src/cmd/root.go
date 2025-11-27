@@ -90,6 +90,13 @@ func buildComponent(dir string, name string) {
 			continue
 		}
 
+		if file.Name() == "_prepare.ps1" {
+			//need to make full template of all _prepare.ps1 files
+			//and process it as template later
+			copyFile(tDir+"/_prepare.ps1", "./"+configDir+"/prepare.ps1")
+			continue
+		}
+
 		if file.Name() == "_script.sh" {
 			//_script.sh => scripts/<name>.sh
 			// combine it with config/_script.sh template

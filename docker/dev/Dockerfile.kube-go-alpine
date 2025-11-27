@@ -1,0 +1,6 @@
+# Base dev image for a Go environment with git and linting based on Alpine Linux
+FROM golang:1.24.3-alpine
+
+RUN apk add --no-cache git bash golangci-lint
+
+WORKDIR /workspace

@@ -1,0 +1,9 @@
+# Base runtime image with ca-certificates and git pre-installed
+# Build this on your dev machine and push to your registry
+FROM alpine:latest
+
+RUN apk --no-cache add ca-certificates git
+
+WORKDIR /app
+
+CMD ["/bin/sh"]

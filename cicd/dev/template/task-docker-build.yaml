@@ -1,0 +1,108 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: docker-build
+  namespace: {{.Values.dev.namespace}}
+spec:
+  description: Build and push Docker image to registry using Buildah, tagged with git tag or latest
+  params:
+    - name: buildah-image
+      description: Buildah image to use
+      default: SWK3S:5000/buildah/stable:latest
+      type: string
+    - name: registry-url
+      description: Docker registry URL
+      default: SWK3S:5000
+      type: string
+    - name: base-registry-url
+      description: Registry URL for base images (for offline clusters)
+      default: SWK3S:5000
+      type: string
+    - name: image-name
+      description: Image name (without registry)
+      type: string
+    - name: dockerfile-path
+      description: Path to Dockerfile relative to workspace
+      default: Dockerfile
+      type: string
+    - name: git-revision
+      description: Git tag/revision for image tag
+      type: string
+  workspaces:
+    - name: source
+      description: Workspace containing the cloned repository and compiled artifacts
+  steps:
+    - name: build-and-push
+      image: $(params.buildah-image)
+      imagePullPolicy: IfNotPresent
+      workingDir: $(workspaces.source.path)/source
+      securityContext:
+        privileged: true
+      volumeMounts:
+        - name: docker-config
+          mountPath: /root/.docker
+          readOnly: true
+      script: |
+        #!/bin/bash
+        set -e
+        
+        echo "=== Docker Build and Push (Offline Registry Mode) ==="
+        
+        # Use git revision from parameter
+        GIT_TAG="$(params.git-revision)"
+        REGISTRY="$(params.registry-url)"
+        BASE_REGISTRY="$(params.base-registry-url)"
+        IMAGE_NAME="$(params.image-name)"
+        DOCKERFILE_PATH="$(params.dockerfile-path)"
+        FULL_IMAGE_NAME="$REGISTRY/$IMAGE_NAME:$GIT_TAG"
+        
+        echo "Building image: $FULL_IMAGE_NAME"
+        echo "Dockerfile path: $DOCKERFILE_PATH"
+        echo "Base image registry: $BASE_REGISTRY"
+        
+        # Configure buildah to use local registry for unqualified images (v2 format only)
+        mkdir -p /etc/containers
+        cat > /etc/containers/registries.conf << EOF
+        version = 2
+
+        unqualified-search-registries = ["$BASE_REGISTRY", "docker.io"]
+
+        [[registry]]
+        prefix = ""
+        location = "$BASE_REGISTRY"
+        insecure = true
+
+        [[registry]]
+        prefix = ""
+        location = "docker.io"
+        insecure = false
+        EOF
+        
+        # Configure authentication using docker config (mounted from secret)
+        # buildah will use credentials from /root/.docker/config.json
+        
+        # Build the image (buildah will use configured registries and credentials)
+        buildah bud \
+          --format docker \
+          -f "$DOCKERFILE_PATH" \
+          -t "$FULL_IMAGE_NAME" \
+          .
+        
+        echo "✓ Image built successfully: $FULL_IMAGE_NAME"
+        
+        # Push to registry
+        echo "Pushing image to registry..."
+        buildah push \
+          --tls-verify=false \
+          "$FULL_IMAGE_NAME" \
+          "docker://$FULL_IMAGE_NAME"
+        
+        echo "✓ Image pushed successfully: $FULL_IMAGE_NAME"
+
+  volumes:
+    - name: docker-config
+      secret:
+        secretName: registry-credentials
+        items:
+          - key: .dockerconfigjson
+            path: config.json

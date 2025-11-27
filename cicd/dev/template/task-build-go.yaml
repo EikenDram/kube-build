@@ -1,0 +1,70 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: build-go
+  namespace: {{.Values.dev.namespace}}
+spec:
+  description: Simple task to verify go mod cache works with NFS volume
+  params:
+    - name: go-image
+      description: Custom Go image to use
+      default: SWK3S:5000/kube/go-alpine:latest
+      type: string
+    - name: nfs-server
+      description: NFS server address
+      default: 10.42.0.40
+      type: string
+    - name: nfs-path
+      description: NFS server export path
+      default: /exchange
+      type: string
+    - name: enable-lint
+      description: Whether to run golangci-lint
+      default: "false"
+      type: string
+  workspaces:
+    - name: output
+      description: Workspace containing the cloned repository
+  steps:
+    - name: go-mod-verify-lint-compile
+      image: $(params.go-image)
+      imagePullPolicy: IfNotPresent
+      workingDir: $(workspaces.output.path)/source
+      env:
+        - name: GOMODCACHE
+          value: /exchange/cache/go
+        - name: GOPROXY
+          value: "off"
+        - name: GOSUMDB
+          value: "off"
+      volumeMounts:
+        - name: nfs-cache
+          mountPath: /exchange
+      script: |
+        #!/bin/sh
+        set -e
+        echo "=== Go Mod Verify with NFS Cache ==="
+        echo "GOMODCACHE set to: $GOMODCACHE"
+        go mod verify
+        echo "✓ Go mod verify passed"
+        if [ "$(params.enable-lint)" = "true" ]; then
+          echo "=== Go Lint ==="
+          if command -v golangci-lint &> /dev/null; then
+            golangci-lint run ./...
+            echo "✓ Linting passed"
+          else
+            echo "⚠ golangci-lint not found in image, skipping"
+          fi
+        fi
+        echo "=== Go Compile ==="
+        go build -o $(workspaces.output.path)/source/api ./cmd
+        echo "✓ Go compilation passed"
+      securityContext:
+        runAsUser: 0
+
+  volumes:
+    - name: nfs-cache
+      nfs:
+        server: 10.42.0.40
+        path: /exchange
+        readOnly: false

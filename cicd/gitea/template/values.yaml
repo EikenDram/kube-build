@@ -22,6 +22,17 @@ persistence:
   - ReadWriteOnce
 
 postgresql:
+  enabled: true
+  architecture: standalone
   primary:
     persistence:
       size: {{index .Values.gitea "storage-db"}}
+
+postgresql-ha:
+  enabled: false
+
+valkey:
+  enabled: true
+
+valkey-cluster:
+  enabled: false

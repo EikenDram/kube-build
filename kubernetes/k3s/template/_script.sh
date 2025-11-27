@@ -42,6 +42,12 @@
 {{- define "install"}}
     # Installing K3S
     INSTALL_K3S_SKIP_DOWNLOAD=true INSTALL_K3S_EXEC="--write-kubeconfig-mode 644"  INSTALL_K3S_SKIP_SELINUX_RPM=true INSTALL_K3S_SELINUX_WARN=true ./install.sh
+
+    # Set default cert
+    kubectl create secret tls server-default-cert --cert={{.Values.server.tls.cert}} --key={{.Values.server.tls.key}} -n kube-system
+
+    # Reference in TLSStore
+    kubectl apply -f - install/{{.Version.dir}}/default.yaml
 {{- end}}
 
 {{- define "upgrade"}}

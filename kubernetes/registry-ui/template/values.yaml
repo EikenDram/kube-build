@@ -1,6 +1,8 @@
 ui:
   #dockerRegistryUrl: https://svc-registry.{{.Values.registry.namespace}}:5000/
   dockerRegistryUrl: https://{{.Values.server.hostname}}:5000/
+  # Allow delete of images
+  deleteImages: true
   ingress:
     enabled: true
     host: {{index .Values "registry-ui" "ingress"}}.{{.Values.server.hostname | lower}}

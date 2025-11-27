@@ -34,6 +34,7 @@ INFRASTRUCTURE.md
 deployment/*
 deployment-*/*
 config/prepare.sh
+config/prepare.ps1
 config/init.sh
 
 # releases
@@ -60,3 +61,6 @@ config/README.*.md
 
 # ignition files
 **/*.ign
+
+# tar
+*.tar

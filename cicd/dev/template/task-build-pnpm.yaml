@@ -1,0 +1,52 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: build-pnpm
+  namespace: {{.Values.dev.namespace}}
+spec:
+  description: Simple task to verify go mod cache works with NFS volume
+  params:
+    - name: node-pnpm-image
+      description: Custom Node.js with pnpm image to use
+      default: SWK3S:5000/kube/node-pnpm:v10.12.1
+      type: string
+    - name: nfs-server
+      description: NFS server address
+      default: 10.42.0.40
+      type: string
+    - name: nfs-path
+      description: NFS server export path
+      default: /exchange
+      type: string
+  workspaces:
+    - name: output
+      description: Workspace containing the cloned repository
+  steps:
+    - name: pnpm-install-build
+      image: $(params.node-pnpm-image)
+      imagePullPolicy: Always
+      workingDir: $(workspaces.output.path)/source/web
+      volumeMounts:
+        - name: nfs-cache
+          mountPath: /exchange
+      script: |
+        #!/bin/sh
+        set -e
+        echo "=== Fixing NFS cache permissions ==="
+        chmod -R 755 /exchange/cache/pnpm
+        echo "=== Pnpm Build with NFS Cache ==="
+        echo "Using NFS cache at /exchange/cache/pnpm"
+        pnpm install --store-dir=/exchange/cache/pnpm --frozen-lockfile --offline
+        echo "=== Fixing all node_modules permissions ==="
+        chmod -R 755 node_modules
+        pnpm build
+        echo "✓ Pnpm build completed successfully"
+      securityContext:
+        runAsUser: 0
+
+  volumes:
+    - name: nfs-cache
+      nfs:
+        server: 10.42.0.40
+        path: /exchange
+        readOnly: false

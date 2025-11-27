@@ -7,10 +7,22 @@
             "name": "prepare.sh"
         },
         {
+            "comment": "Remove file config/prepare.ps1",
+            "type": "remove",
+            "location": "config",
+            "name": "prepare.ps1"
+        },
+        {
             "comment": "Remove file deployment/prepare.sh",
             "type": "remove",
             "location": "deployment",
             "name": "prepare.sh"
+        },
+        {
+            "comment": "Remove file deployment/prepare.ps1",
+            "type": "remove",
+            "location": "deployment",
+            "name": "prepare.ps1"
         },
         {
             "comment": "Remove file deployment/transfer.sh",
@@ -19,10 +31,10 @@
             "name": "transfer.sh"
         },
         {
-            "comment": "Remove file deployment/transfer.bat",
+            "comment": "Remove file deployment/transfer.ps1",
             "type": "remove",
             "location": "deployment",
-            "name": "transfer.bat"
+            "name": "transfer.ps1"
         },
         {
             "comment": "Remove file deployment/ignition.sh",
@@ -78,6 +90,18 @@
             "to": {
                 "location": "config",
                 "name": "prepare.sh"
+            }
+        },
+        {
+            "comment": "Copy content of config/_prepare.ps1 file into beginning of config/prepare.ps1 file",
+            "type": "copy",
+            "from": {
+                "location": "config",
+                "name": "_prepare.ps1"
+            },
+            "to": {
+                "location": "config",
+                "name": "prepare.ps1"
             }
         }
     ],
@@ -261,6 +285,16 @@
             }
         },
         {
+            "comment": "Generate deployment/prepare.ps1 script from config/prepare.ps1 template",
+            "message": "Prepare script",
+            "type": "template",
+            "name": "prepare.ps1",
+            "from": {
+                "location": "config",
+                "name": "prepare.ps1"
+            }
+        },
+        {
             "comment": "Generate deployment/transfer.sh script from config/_transfer.sh template",
             "message": "Transfer shell script",
             "type": "template",
@@ -271,13 +305,13 @@
             }
         },
         {
-            "comment": "Generate deployment/transfer.bat script from config/_transfer.bat template",
-            "message": "Transfer batch script",
+            "comment": "Generate deployment/transfer.ps1 script from config/_transfer.ps1 template",
+            "message": "Transfer PowerShell script",
             "type": "template",
-            "name": "transfer.bat",
+            "name": "transfer.ps1",
             "from": {
                 "location": "config",
-                "name": "_transfer.bat"
+                "name": "_transfer.ps1"
             }
         },
         {

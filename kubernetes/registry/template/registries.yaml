@@ -26,6 +26,12 @@ mirrors:
   mcr.microsoft.com:
     endpoint:
       - "https://{{.Values.server.hostname}}:5000"
+  public.ecr.aws:
+    endpoint:
+      - "https://{{.Values.server.hostname}}:5000"
+  docker.gitea.com:
+    endpoint:
+      - "https://{{.Values.server.hostname}}:5000"
 
 configs:
   "{{.Values.server.hostname}}:5000":
