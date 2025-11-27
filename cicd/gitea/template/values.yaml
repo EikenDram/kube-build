@@ -1,10 +1,5 @@
 ingress:
-  enabled: true
-  hosts:
-    - host: {{.Values.gitea.ingress}}.{{.Values.server.hostname | lower}}
-      paths:
-        - path: /
-          pathType: Prefix
+  enabled: false
       
 gitea: 
   admin:

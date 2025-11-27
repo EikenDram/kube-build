@@ -9,6 +9,8 @@
 {{- define "install-post"}}
     {{template "wait" dict "Label" "app" "Name" "gitea" "Namespace" .Value.helm.namespace}}
 
+    kubectl apply -f install/{{.Version.dir}}/ingress.yaml
+
     sleep 5
     # add login to tea
     # generate token (because token generated with tea login add user and password wont have any scopes)
