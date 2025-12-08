@@ -8,15 +8,15 @@ spec:
   params:
     - name: buildah-image
       description: Buildah image to use
-      default: SWK3S:5000/buildah/stable:latest
+      default: {{.Values.server.hostname}}:5000/buildah/stable:latest
       type: string
     - name: registry-url
       description: Docker registry URL
-      default: SWK3S:5000
+      default: {{.Values.server.hostname}}:5000
       type: string
     - name: base-registry-url
       description: Registry URL for base images (for offline clusters)
-      default: SWK3S:5000
+      default: {{.Values.server.hostname}}:5000
       type: string
     - name: image-name
       description: Image name (without registry)
@@ -29,13 +29,13 @@ spec:
       description: Git tag/revision for image tag
       type: string
   workspaces:
-    - name: source
+    - name: output
       description: Workspace containing the cloned repository and compiled artifacts
   steps:
     - name: build-and-push
       image: $(params.buildah-image)
       imagePullPolicy: IfNotPresent
-      workingDir: $(workspaces.source.path)/source
+      workingDir: $(workspaces.output.path)/source
       securityContext:
         privileged: true
       volumeMounts:
