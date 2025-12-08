@@ -20,21 +20,9 @@ spec:
   workspaces:
     - name: output
       description: Workspace where the cloned repo will be placed
-  # stepTemplate:
-  #   resources:
-  #     requests:
-  #       memory: "128Mi"
-  #       cpu: "100m"
-  #     limits:
-  #       memory: "512Mi"
-  #       cpu: "500m"
-  #   volumeMounts:
-  #     - name: git-credentials
-  #       mountPath: /creds
-  #       readOnly: true
   steps:
     - name: clone
-      image: SWK3S:5000/alpine/git:latest
+      image: {{.Values.server.hostname}}:5000/alpine/git:latest
       imagePullPolicy: IfNotPresent
       workingDir: $(workspaces.output.path)
       script: |

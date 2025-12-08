@@ -8,15 +8,11 @@ spec:
   params:
     - name: node-pnpm-image
       description: Custom Node.js with pnpm image to use
-      default: SWK3S:5000/kube/node-pnpm:v10.12.1
+      default: {{.Values.server.hostname}}:5000/kube/node-pnpm:v10.12.1
       type: string
-    - name: nfs-server
-      description: NFS server address
-      default: 10.42.0.40
-      type: string
-    - name: nfs-path
-      description: NFS server export path
-      default: /exchange
+    - name: working-dir
+      description: Working directory
+      default: /source/web
       type: string
   workspaces:
     - name: output
@@ -25,7 +21,7 @@ spec:
     - name: pnpm-install-build
       image: $(params.node-pnpm-image)
       imagePullPolicy: Always
-      workingDir: $(workspaces.output.path)/source/web
+      workingDir: $(workspaces.output.path)$(params.working-dir)
       volumeMounts:
         - name: nfs-cache
           mountPath: /exchange
@@ -47,6 +43,6 @@ spec:
   volumes:
     - name: nfs-cache
       nfs:
-        server: 10.42.0.40
+        server: 10.43.205.212
         path: /exchange
         readOnly: false

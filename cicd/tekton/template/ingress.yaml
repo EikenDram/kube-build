@@ -1,0 +1,28 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: tekton-dashboard
+  namespace: tekton-pipelines
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`{{.Values.tekton.ingress}}.{{.Values.server.hostname | lower}}`)
+#      middlewares:
+#        - name: tekton-basic-auth
+#          namespace: tekton-pipelines
+      services:
+        - name: tekton-dashboard
+          port: 9097
+  tls:
+    certResolver: default
+#---
+#apiVersion: traefik.io/v1alpha1
+#kind: Middleware
+#metadata:
+#  name: tekton-basic-auth
+# namespace: tekton-pipelines
+#spec:
+#  basicAuth:
+#    secret: tekton-auth-secret

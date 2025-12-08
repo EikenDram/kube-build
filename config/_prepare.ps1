@@ -81,10 +81,14 @@ function Check-Command {
 # String matching helper
 function Test-Match {
     param(
-        [string]$Input,
-        [string]$Pattern
+        [string]$Component,
+        [string]$ComponentList
     )
-    return $Input -match [regex]::Escape($Pattern)
+    # ComponentList is like "<tekton> <all>" or "<registry>"
+    # We want to match if Component is "tekton" or "all"
+    # Remove angle brackets and split by spaces
+    $components = $ComponentList -replace '<|>', '' -split '\s+'
+    $Component -in $components
 }
 
 # Build object list based on switches

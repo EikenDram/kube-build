@@ -26,6 +26,13 @@
 
     $secret | ConvertTo-Json -Depth 10 | kubectl apply -f -
 
+    # create secret for docker credentials
+    kubectl create secret docker-registry registry-credentials \
+        --docker-server={{.Values.server.hostname}}:5000 \
+        --docker-username={{.Values.registry.user}} \
+        --docker-password={{.Values.registry.password}} \
+        --namespace={{.Values.dev.namespace}}
+
     kubectl apply -n {{.Values.dev.namespace}} -f install/{{.Version.dir}}/rbac.yaml
     kubectl apply -n {{.Values.dev.namespace}} -f install/{{.Version.dir}}/task-build-dotnet.yaml
     kubectl apply -n {{.Values.dev.namespace}} -f install/{{.Version.dir}}/task-build-go.yaml
@@ -35,5 +42,5 @@
 {{- end}}
 
 {{- define "install-echo"}}
-    echo "2D"
+    
     #{{- end}}

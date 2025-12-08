@@ -51,7 +51,7 @@ spec:
         - name: REGISTRY_HTTP_HEADERS_Access-Control-Allow-Headers
           value: "['Authorization', 'Accept', 'Cache-Control']"
         - name: REGISTRY_HTTP_HEADERS_Access-Control-Allow-Methods
-          value: "['HEAD', 'GET', 'OPTIONS']"
+          value: "['HEAD', 'GET', 'OPTIONS', 'DELETE', 'PUT', 'POST']"
         volumeMounts:
         - name: registry
           mountPath: /var/lib/registry

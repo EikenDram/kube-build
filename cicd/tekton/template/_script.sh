@@ -9,15 +9,15 @@
     kubectl apply -f manifest/{{.Version.dir}}/interceptors.yaml
     kubectl apply -f manifest/{{.Version.dir}}/dashboard.yaml
 
+    
+    # Create htpasswd secret
+    echo "Creating secrets"
+    kubectl -n tekton-pipelines create secret generic tekton-auth-secret --from-file=htpasswd=./install/{{.Version.dir}}/htpasswd
     # ingress
     # basic auth
-    #kubectl apply -f install/{{.Version.dir}}/ingress-basic.yaml
-    # keycloak auth
-    kubectl apply -f install/{{.Version.dir}}/ingress-auth.yaml
+    kubectl apply -f install/{{.Version.dir}}/ingress.yaml
 
     # copy certificate to cert.yaml and apply it
-    #sed -e '1d' -e '$d' cert/registry.pem >> install/{{.Version.dir}}/cert.yaml
-    #kubectl apply -f install/{{.Version.dir}}/cert.yaml
     kubectl -n tekton-pipelines create configmap config-registry-cert --from-file=cert=cert/registry.pem
     kubectl -n tekton-pipelines label configmap config-registry-cert "app.kubernetes.io/instance=default"
     kubectl -n tekton-pipelines label configmap config-registry-cert "app.kubernetes.io/part-of=tekton-pipelines"

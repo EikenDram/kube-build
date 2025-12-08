@@ -8,22 +8,24 @@ spec:
   params:
     - name: dotnet-image
       description: Custom .NET builder image to use
-      default: SWK3S:5000/kube/dotnet:9.0-noble
-      type: string
-    - name: nfs-server
-      description: NFS server address
-      default: 10.42.0.40
-      type: string
-    - name: nfs-path
-      description: NFS server export path
-      default: /exchange
+      default: {{.Values.server.hostname}}:5000/kube/dotnet:9.0-noble
       type: string
     - name: configuration
       description: Build configuration (Debug or Release)
       default: Release
       type: string
+    - name: solution
+      description: Solution name
+      type: string
+    - name: project
+      description: Project name
+      type: string
     - name: skip-npm
       description: Skip npm/pnpm build (use when frontend is pre-built)
+      default: "true"
+      type: string
+    - name: skip-nswag
+      description: Skip NSwag build (use when frontend is pre-built)
       default: "true"
       type: string
   workspaces:
@@ -41,6 +43,8 @@ spec:
           value: "true"
         - name: NUGET_PACKAGES
           value: /exchange/cache/nuget
+        - name: NUGET_XMLDOC_MODE
+          value: "skip"
       volumeMounts:
         - name: nfs-cache
           mountPath: /exchange
@@ -51,27 +55,34 @@ spec:
         echo "NUGET_PACKAGES set to: $NUGET_PACKAGES"
         echo "Configuration: $(params.configuration)"
         echo "Skip NPM: $(params.skip-npm)"
+        echo "Skip NSwag: $(params.skip-nswag)"
+        
+        echo "📦 Configuring NuGet sources..."
+        dotnet nuget remove source nuget.org || true
+        dotnet nuget add source /exchange/cache/nuget --name offline-cache
         
         echo "📦 Restoring NuGet packages..."
-        dotnet restore
+        dotnet restore $(params.solution) \
+          --disable-parallel
         echo "✓ Restore passed"
         
         echo "🚀 Publishing application..."
-        dotnet publish \
+        dotnet publish $(params.project) \
           -c $(params.configuration) \
-          -o $(workspaces.output.path)/publish \
+          -o $(workspaces.output.path)/source/out \
           /p:SkipNpm=$(params.skip-npm) \
+          /p:SkipNSwag=$(params.skip-nswag) \
           --no-restore
         echo "✓ Publish passed"
         
         echo "=== Build Complete ==="
-        ls -la $(workspaces.output.path)/publish
+        ls -la $(workspaces.output.path)/source/out
       securityContext:
         runAsUser: 0
 
   volumes:
     - name: nfs-cache
       nfs:
-        server: $(params.nfs-server)
-        path: $(params.nfs-path)
+        server: 10.43.205.212
+        path: /exchange
         readOnly: false
