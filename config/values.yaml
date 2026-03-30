@@ -387,6 +387,27 @@ rabbitmq:
     # namespace to deploy helm to
     namespace: rabbitmq
 
+# verdaccio configuration
+verdaccio:
+  #
+  # subdomain name to access component from: <ingress>.<hostname>
+  ingress: verdaccio
+  #
+  # storage size for component
+  storage: 2Gi
+  #
+  # helm install configuration
+  helm:
+    #
+    # name
+    name: verdaccio
+    #
+    # values file
+    values: values.yaml
+    #
+    # namespace to deploy helm to
+    namespace: devops
+
 # ibm db2 configuration
 ibmdb2:
   #

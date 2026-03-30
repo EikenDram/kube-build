@@ -480,6 +480,16 @@ rabbitmq:
     name: rabbitmq
     version: 12.0.9
 
+# Verdaccio server
+verdaccio:
+  dir: verdaccio
+  title: Verdaccio
+  helm: 
+    repo: verdaccio
+    url: https://charts.verdaccio.org/
+    name: verdaccio
+    version: 4.31.0
+
 # Custom IBM DB2 community edition server
 ibmdb2:
   dir: ibmdb2

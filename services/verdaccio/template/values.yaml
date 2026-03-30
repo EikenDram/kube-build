@@ -1,0 +1,7 @@
+# Ingress
+ingress:
+  # Enable the ingress for the user interface.
+  enabled: false
+  # Fully qualified domain name of a network host.
+  hosts:
+  - {{.Values.verdaccio.ingress}}.{{.Values.server.hostname | lower}}

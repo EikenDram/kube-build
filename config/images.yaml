@@ -500,3 +500,10 @@ vmtools:
   path: arnegroskurth
   name: open-vm-tools
   version: latest
+
+verdaccio:
+- url: docker.io/verdaccio/verdaccio:6.2.3
+  host: docker.io
+  path: verdaccio
+  name: verdaccio
+  version: 6.2.3

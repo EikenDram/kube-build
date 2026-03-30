@@ -223,6 +223,11 @@
             "message": "RabbitMQ"
         },
         {
+            "name": "verdaccio",
+            "path": "./services/verdaccio",
+            "message": "Verdaccio"
+        },
+        {
             "name": "ibmdb2",
             "path": "./services/ibmdb2",
             "message": "IBM DB2"
