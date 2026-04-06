@@ -228,6 +228,11 @@
             "message": "Verdaccio"
         },
         {
+            "name": "athens",
+            "path": "./services/athens",
+            "message": "Athens"
+        },
+        {
             "name": "ibmdb2",
             "path": "./services/ibmdb2",
             "message": "IBM DB2"
@@ -251,11 +256,6 @@
             "name": "rocker",
             "path": "./services/rocker",
             "message": "Rocker"
-        },
-        {
-            "name": "jasper",
-            "path": "./services/jasper",
-            "message": "Jasper"
         },
         {
             "name": "kube-home",

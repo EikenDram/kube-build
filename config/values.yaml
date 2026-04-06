@@ -408,6 +408,27 @@ verdaccio:
     # namespace to deploy helm to
     namespace: devops
 
+# athens configuration
+athens:
+  #
+  # subdomain name to access component from: <ingress>.<hostname>
+  ingress: athens
+  #
+  # storage size for component
+  storage: 2Gi
+  #
+  # helm install configuration
+  helm:
+    #
+    # name
+    name: athens
+    #
+    # values file
+    values: values.yaml
+    #
+    # namespace to deploy helm to
+    namespace: devops
+
 # ibm db2 configuration
 ibmdb2:
   #

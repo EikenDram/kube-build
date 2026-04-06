@@ -507,3 +507,10 @@ verdaccio:
   path: verdaccio
   name: verdaccio
   version: 6.2.3
+
+athens:
+- url: docker.io/gomods/athens:v0.16.2
+  host: docker.io
+  path: gomods
+  name: athens
+  version: v0.16.2

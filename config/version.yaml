@@ -480,7 +480,7 @@ rabbitmq:
     name: rabbitmq
     version: 12.0.9
 
-# Verdaccio server
+# Verdaccio npm proxy server
 verdaccio:
   dir: verdaccio
   title: Verdaccio
@@ -489,6 +489,17 @@ verdaccio:
     url: https://charts.verdaccio.org/
     name: verdaccio
     version: 4.31.0
+
+# Athens go proxy server
+athens:
+  dir: athens
+  title: Athens
+  helm: 
+    repo: athens
+    url: https://gomods.github.io/athens-charts
+    name: athens-proxy
+    version: 0.15.5
+
 
 # Custom IBM DB2 community edition server
 ibmdb2:

@@ -30,6 +30,12 @@ tar cfz name_of_archive_file.tar.gz name_of_directory_to_tar
 tar xf archive.tgz
 ```
 
+grow hdd on fedora coreos:
+```sh
+sudo growpart /dev/sda 4
+sudo xfs_growfs /
+```
+
 ## Adding aliases
 
 To add aliases permanently to bash run `sudo nano ~/.bashrc` and add aliases at the end there (there's an option to use `.bashrc.d` folder, but couldn't do it for some reason, maybe access was wrong?)
